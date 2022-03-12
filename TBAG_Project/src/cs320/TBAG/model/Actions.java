@@ -1,5 +1,6 @@
 package cs320.TBAG.model;
 
+
 public class Actions {
 	public String direction;
 	public String item;
@@ -9,7 +10,7 @@ public class Actions {
 	}
 	
 	public void pickUpItem(String currActor, String item) {
-		//Attempt to pickup item
+		currActor.Inventory.addItem(item);
 	}
 	
 	
