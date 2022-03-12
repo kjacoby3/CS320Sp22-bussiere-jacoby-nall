@@ -1,11 +1,12 @@
 package cs320.TBAG.model;
 
-public class Weapons extends Items{
+public class Weapon extends Item{
 		int damage;
 		int durability;
 		
-		public Weapons(String name, int damage, int durability) {
+		public Weapon(String name, int damage, int durability) {
 			this.name = name;
+			this.type = "Weapon";
 			this.damage = damage;
 			this.durability = durability;
 		}

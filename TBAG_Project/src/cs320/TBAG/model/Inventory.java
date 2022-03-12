@@ -1,5 +1,4 @@
 package cs320.TBAG.model;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Inventory{
@@ -10,11 +9,10 @@ public class Inventory{
 	private ArrayList<Treasures> treasures;*/
 	private int maxSize;
 	private HashMap<String, Equipment> equipment;
-	private HashMap<String, Weapons> weapons;
-	private HashMap<String, Trophies> trophies;
-	private HashMap<String, Usables> usables;
-	private HashMap<String, Treasures> treasures;
-	private ArrayList<Equipment> equip= new ArrayList<Equipment>();
+	private HashMap<String, Weapon> weapons;
+	private HashMap<String, Trophy> trophies;
+	private HashMap<String, Usable> usables;
+	private HashMap<String, Treasure> treasures;
 	
 	public Inventory(int maxSize) {
 		/*equipment = new ArrayList<Equipment>();
@@ -23,15 +21,15 @@ public class Inventory{
 		usables = new ArrayList<Usables>();
 		treasures = new ArrayList<Treasures>();*/
 		equipment = new HashMap<String, Equipment>();
-		weapons = new HashMap<String, Weapons>();
-		trophies = new HashMap<String, Trophies>();
-		usables = new HashMap<String, Usables>();
-		treasures = new HashMap<String, Treasures>();
+		weapons = new HashMap<String, Weapon>();
+		trophies = new HashMap<String, Trophy>();
+		usables = new HashMap<String, Usable>();
+		treasures = new HashMap<String, Treasure>();
 		this.maxSize = maxSize;
 		
 	}
 	
-	public boolean addItem(Items item) {
+	public boolean addItem(Item item) {
 		
 		if(item.getType().equals("Equipment")) {
 			if(equipment.size()<maxSize) {
@@ -40,30 +38,30 @@ public class Inventory{
 			}
 		}
 		
-		else if(item.getType() == "Weapons") {
+		else if(item.getType() == "Weapon") {
 			if(weapons.size()<maxSize) {
-				weapons.put(item.getName(), (Weapons) item);
+				weapons.put(item.getName(), (Weapon) item);
 				return true;
 			}
 		}
 		
-		else if(item.getType().equals("Trophies")) {
+		else if(item.getType().equals("Trophy")) {
 			if(trophies.size()<maxSize) {
-				trophies.put(item.getName(), (Trophies) item);
+				trophies.put(item.getName(), (Trophy) item);
 				return true;
 			}
 		}
 		
-		else if(item.getType().equals("Usables")) {
+		else if(item.getType().equals("Usable")) {
 			if(usables.size()<maxSize) {
-				usables.put(item.getName(), (Usables) item);
+				usables.put(item.getName(), (Usable) item);
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	public boolean addItem(Treasures treasure) {
+	public boolean addItem(Treasure treasure) {
 		if(treasures.size()<maxSize) {
 			treasures.put(treasure.getName(), treasure);
 			return true;
@@ -72,24 +70,28 @@ public class Inventory{
 		return false;
 	}
 	
-	public Items removeItem(Items item) {
+	public Item removeItem(Item item) {
 		if(item.getType().equals("Equipment")) {
 			return equipment.remove(item.getName());
 		}
 		
-		else if(item.getType() == "Weapons") {
-			return equipment.remove(item.getName());
+		else if(item.getType() == "Weapon") {
+			return weapons.remove(item.getName());
 		}
 		
-		else if(item.getType().equals("Trophies")) {
-			return equipment.remove(item.getName());
+		else if(item.getType().equals("Trophy")) {
+			return trophies.remove(item.getName());
 		}
 		
-		else if(item.getType().equals("Usables")) {
-			return equipment.remove(item.getName());
+		else if(item.getType().equals("Usable")) {
+			return usables.remove(item.getName());
 		}
 		
 		return null;	
+	}
+	
+	public Treasure removeItem(Treasure treasure) {
+		return (treasures.remove(treasure.getName()));
 	}
 	
 	public boolean checkFull(String type) {
@@ -98,23 +100,48 @@ public class Inventory{
 				
 		}
 		
-		else if(type.equals( "Weapons") && weapons.size() >= maxSize) {
+		else if(type.equals( "Weapon") && weapons.size() >= maxSize) {
 			return true;
 		}
 		
-		else if(type.equals("Trophies") && trophies.size() >= maxSize) {
+		else if(type.equals("Trophy") && trophies.size() >= maxSize) {
 			return true;
 		}
 		
-		else if(type.equals("Usables") && usables.size() >= maxSize) {
+		else if(type.equals("Usable") && usables.size() >= maxSize) {
 			return true;
 		}
-		else if(type.equals("Treasures") && treasures.size() >= maxSize) {
+		else if(type.equals("Treasure") && treasures.size() >= maxSize) {
 			return true;
 		}
 		
 		return false;
 	}
+	
+	public HashMap<String, Equipment> getEquipment() {
+		return equipment;
+	}
+	
+	public HashMap<String, Weapon> getWeapons(){
+		return weapons;
+	}
+	
+	public HashMap<String, Trophy> getTrophies(){
+		return trophies;
+	}
+	
+	public HashMap<String, Usable> getUsables(){
+		return usables;
+	}
+	
+	public HashMap<String, Treasure> getTreasures(){
+		return treasures;
+	}
+	
+	public void setMaxSize(int size) {
+		maxSize = size;
+	}
+	
 	
 	
 }

@@ -1,6 +1,6 @@
 package cs320.TBAG.model;
 
-public class Treasures{
+public class Treasure{
 	String name;
 	String type;
 	int hpMod;
@@ -8,9 +8,9 @@ public class Treasures{
 	int spdMod;
 	int dmgMod;
 	
-	public Treasures(String name, int hpMod, int defMod, int spdMod, int dmgMod) {
+	public Treasure(String name, int hpMod, int defMod, int spdMod, int dmgMod) {
 		this.name = name;
-		type = "Treasures";
+		type = "Treasure";
 		this.hpMod = hpMod;
 		this.defMod = hpMod;
 		this.spdMod = spdMod;

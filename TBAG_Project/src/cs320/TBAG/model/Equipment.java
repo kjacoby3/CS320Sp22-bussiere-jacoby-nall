@@ -1,6 +1,6 @@
 package cs320.TBAG.model;
 
-public class Equipment extends Items{
+public class Equipment extends Item{
 	int defenseMod;
 	int durability;
 	int hpMod;

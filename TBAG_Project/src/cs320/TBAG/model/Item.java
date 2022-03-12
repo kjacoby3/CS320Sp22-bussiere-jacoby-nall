@@ -1,6 +1,6 @@
 package cs320.TBAG.model;
 
-public abstract class Items {
+public abstract class Item {
 	String name;
 	String type;
 	
