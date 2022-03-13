@@ -2,29 +2,37 @@ package cs320.TBAG.model;
 import cs320.TBAG.model.Inventory;
 import cs320.TBAG.model.Map;
 
-public class Actions {
+interface ActionsInterface{
+	
+	void move();
+	void pickUp();
+}
+
+public class Actions implements ActionsInterface {
 	public String direction;
-	public String item;
-			
-	public void moveActor(String currActor, String direction) {
-		String actor = currActor;
-		String dir = direction;
-		
-		int currloc = actor.getCurrRoom();
-		if (dir.checkMove() == true) {
-			actor.setNewRoom();
-			System.out.println(roomDescrip());
+	public Item item;
+	
+	@Override
+	public void move() {
+		Map tempMap = new Map();
+		boolean verify = tempMap.checkMove(actorCurrRoom, direction);
+		if(verify = true) {
+			int newID = tempMap.getNewRoomID();
+			tempMap.setNewRoom();
+			System.out.println(tempMap.getRoomDescription(actorCurrRoom));
 		}
 		else {
-			System.out.println("There's no way to go that diretion");
+			System.out.println("There's no way to go that direction");
 		}
 		
 		
 	}
-	
-	public void pickUpItem(String currActor, String item) {
-		currActor.Inventory.addItem(item);
+	@Override
+	public void pickUp() {
+		Inventory tempInv = new Inventory(1);
+		tempInv.addItem(item);
+		
 	}
-	
+			
 	
 }
