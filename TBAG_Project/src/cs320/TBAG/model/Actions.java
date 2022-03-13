@@ -10,16 +10,23 @@ interface ActionsInterface{
 
 public class Actions implements ActionsInterface {
 	public String direction;
-	public String item;
+	public Item item;
 	
 	@Override
 	public void move() {
-		// TODO Auto-generated method stub
+		Map tempMap = new Map();
+		boolean verify = tempMap.checkMove(actorCurrRoom, direction);
+		if(verify = true) {
+			int newID = tempMap.getNewRoomID();
+			tempMap.setNewRoom();
+		}
+		
 		
 	}
 	@Override
 	public void pickUp() {
-		// TODO Auto-generated method stub
+		Inventory tempInv = new Inventory(1);
+		tempInv.addItem(item);
 		
 	}
 			
