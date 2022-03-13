@@ -51,8 +51,9 @@ public class Map{
 		return newRoomID;
 	}
 	
-	public void setNewRoom() {
+	public int setNewRoom(int newRoomID) {
 		this.actorNewRoom = newRoomID;
+		return actorNewRoom;
 	}
 	
 	public String getRoomDescription(int actorCurrRoom) {
