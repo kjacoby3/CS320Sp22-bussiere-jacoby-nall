@@ -19,6 +19,10 @@ public class Actions implements ActionsInterface {
 		if(verify = true) {
 			int newID = tempMap.getNewRoomID();
 			tempMap.setNewRoom();
+			System.out.println(tempMap.getRoomDescription(actorCurrRoom));
+		}
+		else {
+			System.out.println("There's no way to go that direction");
 		}
 		
 		
