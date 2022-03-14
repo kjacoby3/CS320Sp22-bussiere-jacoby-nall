@@ -21,6 +21,7 @@ public class GameController {
 	}
 
 	public void newGame() {
+		model.addEmptyPlayer();
 		model.addEmptyNPC();
 	}
 	
