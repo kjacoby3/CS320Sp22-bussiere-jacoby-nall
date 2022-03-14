@@ -5,14 +5,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert.*;
 
-class MoveTest {
+import junit.framework.TestCase;
+
+public class MoveTest extends TestCase{
 	int currentRoom = 1;
 	int newRoom;
 	String direction = "north";
 	
 	
 	@Before
-	void setUp() {
+	protected void setUp() {
 		Map map = new Map();
 	}
 	

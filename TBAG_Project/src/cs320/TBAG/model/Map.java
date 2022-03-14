@@ -27,7 +27,7 @@ public class Map{
 		
 	public boolean checkMove(int actorCurrRoom, String direction)
 	{
-		int currRoom = actorCurrRoom-1;
+		int currRoom = actorCurrRoom;
 		
 		
 		if(trialMap[currRoom][2] == direction){
@@ -66,7 +66,7 @@ public class Map{
 	}
 	
 	public String getRoomDescription(int actorCurrRoom) {
-		int currRoom = actorCurrRoom-1;
+		int currRoom = actorCurrRoom;
 		return trialMapDescrip[currRoom][1];
 	}
 	
