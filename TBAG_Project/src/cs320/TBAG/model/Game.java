@@ -1,14 +1,20 @@
 package cs320.TBAG.model;
 
 import cs320.TBAG.model.Map;
+
+import java.util.ArrayList;
+
 import cs320.TBAG.model.Actor;
 
 public class Game {
 	private String username;
 	private String password;
 	private Save save;
-	private static Map map;
+	private ArrayList<Actor> actorsList;
+	private ArrayList<Inventory> inventories;
+	private Map map;
 	private String input;
+	private Player player1;
 	
 	public Game() {
 		
@@ -38,7 +44,39 @@ public class Game {
 		return save;
 	}
 	
-	public static Map getMap() {
+	public Map getMap() {
 		return map;
+	}
+	
+	public void newActorsList() {
+		actorsList = new ArrayList<Actor>();
+	}
+	
+	public ArrayList<Actor> getActorsList() {
+		return actorsList;
+	}
+	
+	public void newInventoryList() {
+		inventories = new ArrayList<Inventory>();
+	}
+	
+	public ArrayList<Inventory> getInventories() {
+		return inventories;
+	}
+	
+	public Player getPlayer() {
+		return player1;
+	}
+	
+	public void addEmptyPlayer() {
+		Player player2 = new Player();
+		actorsList.add(player2);
+		inventories.add(player2.getInventory());
+	}
+	
+	public void addEmptyNPC() {
+		NPC npc1 = new NPC();
+		actorsList.add(npc1);
+		inventories.add(npc1.getInventory());
 	}
 }
