@@ -39,6 +39,11 @@ public class Actions implements ActionsInterface {
 		}
 		
 	}
+	
+	@Override
+	public void attack() {
+		System.out.println("You successfully attack and defeat the target");
+	}
 			
 	
 }
