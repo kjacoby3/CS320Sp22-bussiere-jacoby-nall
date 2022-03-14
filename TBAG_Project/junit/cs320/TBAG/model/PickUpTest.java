@@ -5,26 +5,23 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert.*;
 
-
-
-
 class PickUpTest {
 	
-	@Before
-	public void setUp() {
-		Inventory InvenOpen = new Inventory(20);
-		Inventory InvenFull = new Inventory(0);
-		
-	}
 	
 	@Test
 	void testPickUp() {
-		fail("Not yet implemented");
+		Inventory InvenOpen = new Inventory(20);
+		Weapon banana = new Weapon("banana", 1000000000, 1000000000);
+		boolean check = InvenOpen.addItem(banana);
+		assertEquals(check,true);
 	}
 	
 	@Test
 	void testFullPickUp() {
-		fail("Not yet implemented");
+		Inventory InvenFull = new Inventory(0);
+		Weapon banana = new Weapon("banana", 1000000000, 1000000000);
+		boolean check = InvenFull.addItem(banana);
+		assertEquals(check,false);
 	}
 
 }
