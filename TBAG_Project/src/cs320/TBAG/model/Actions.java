@@ -5,8 +5,8 @@ import cs320.TBAG.model.Item;
 
 interface ActionsInterface{
 	
-	void move(String actor, String direction);
-	void pickUp(String actor, Item item);
+	void move(String direction);
+	void pickUp(Item item);
 	void attack();
 }
 
@@ -16,7 +16,7 @@ public class Actions implements ActionsInterface {
 	Weapon banana = new Weapon("banana", 1000000000, 1000000000);
 	
 	@Override
-	public void move(String currActor, String direction) {
+	public void move(String direction) {
 		Map tempMap = new Map();
 		boolean verify = tempMap.checkMove(tempMap.getCurrRoom(), direction);
 		if(verify = true) {
@@ -31,7 +31,7 @@ public class Actions implements ActionsInterface {
 		
 	}
 	@Override
-	public void pickUp(String currActor, Item item) {
+	public void pickUp(Item item) {
 		Inventory tempInv = new Inventory(1);
 		boolean check = tempInv.addItem(banana);
 		if(check = true) {
