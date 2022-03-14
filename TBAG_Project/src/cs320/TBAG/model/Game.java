@@ -7,7 +7,8 @@ public class Game {
 	private String username;
 	private String password;
 	private Save save;
-	private Map map;
+	private static Map map;
+	private String input;
 	
 	public Game() {
 		
@@ -35,5 +36,9 @@ public class Game {
 	
 	public Save getSave() {
 		return save;
+	}
+	
+	public static Map getMap() {
+		return map;
 	}
 }

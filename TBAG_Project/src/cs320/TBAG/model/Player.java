@@ -21,7 +21,7 @@ public class Player extends Actor implements Actions{
 		
 		Room curLoc = location;
 		if (Game.getMap().checkMove() == true) {
-			actor.setNewRoom();
+			Game.getMap().setNewRoom();
 			System.out.println(location.roomDescrip);
 		}
 		else {
