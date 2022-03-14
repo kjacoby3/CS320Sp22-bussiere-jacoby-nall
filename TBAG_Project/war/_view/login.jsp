@@ -3,14 +3,26 @@
 <html>
 	<head>
 		<title>Login</title>
+        <style type="text/css">
+            .error{
+                color: red
+            }
+            .title{
+                text-align: center;
+                width: 540px;
+                font-size: 200%;
+                color: blue;
+            }
+        </style>
 	</head>
 
 
     
 
 	<body>
+        <div class="title">Text Based Adventure Game</div>
         <c:if test="${! empty errorMessage}">
-			<div>${errorMessage}</div>
+			<div class = error>${errorMessage}</div>
 		</c:if>
 
 		<form action="login" method="post">

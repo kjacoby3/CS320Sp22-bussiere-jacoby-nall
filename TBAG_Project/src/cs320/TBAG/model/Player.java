@@ -11,6 +11,7 @@ public class Player extends Actor{
 		location = new Room();
 		inventory = new Inventory(100);
 		actorStats = new ActorStats();
+		inventory.addItem(new Equipment("Cloth Armor", 50, 50,50, 50));
 	}
 	
 	public Player(String name, Room location, Inventory inventory, ActorStats actorStats) {

@@ -17,7 +17,8 @@ public class Game {
 	private Player player1;
 	
 	public Game() {
-		
+		player1 = new Player();
+		map = new Map();
 	}
 	
 	public void setUsername(String username) {

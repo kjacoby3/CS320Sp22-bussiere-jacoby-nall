@@ -17,8 +17,20 @@ public class InventoryServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
-		System.out.println("doGet");
-		req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
+		Inventory inventory = new Inventory(5);
+		inventory.addItem(new Weapon("Sword", 5, 5));
+		inventory.addItem(new Weapon("Axe", 10, 15));
+		inventory.addItem(new Equipment("Chest", 10, 25, 35, 40));
+		inventory.addItem(new Equipment("Leg", 25, 30, 45, 50));
+		
+		
+		req.setAttribute("weapons", inventory.getWeapons().keySet());
+		req.setAttribute("equipment", inventory.getEquipment().keySet());
+		req.setAttribute("trophies", inventory.getTrophies().keySet());
+		req.setAttribute("usables", inventory.getUsables().keySet());
+		req.setAttribute("treasures", inventory.getTreasures().keySet());
+		
+		req.getRequestDispatcher("/_view/inventory.jsp").forward(req, resp);
 	}
 		
 	
@@ -31,6 +43,14 @@ public class InventoryServlet extends HttpServlet{
 		inventory.addItem(new Equipment("Chest", 10, 25, 35, 40));
 		inventory.addItem(new Equipment("Leg", 25, 30, 45, 50));
 		
+		
+		req.setAttribute("weapons", inventory.getWeapons().keySet());
+		req.setAttribute("equipment", inventory.getEquipment().keySet());
+		req.setAttribute("trophies", inventory.getTrophies().keySet());
+		req.setAttribute("usables", inventory.getUsables().keySet());
+		req.setAttribute("treasures", inventory.getTreasures().keySet());
+		
+		req.getRequestDispatcher("/_view/inventory.jsp").forward(req, resp);
 		
 		
 	}
