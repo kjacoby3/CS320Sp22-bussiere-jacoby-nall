@@ -1,8 +1,10 @@
 package cs320.TBAG.model;
 
-import cs320.TBAG.model.Game;
+import cs320.TBAG.model.Actions;
 
-public class Player extends Actor implements Actions{
+public class Player extends Actor{
+	
+	private Actions action = new Actions();
 	
 	public Player() {
 		name = "Player 1";
@@ -15,23 +17,16 @@ public class Player extends Actor implements Actions{
 		
 	}
 
-	//Actions from Actions interface		
-	public void moveActor(String direction) {
-		String dir = direction;
-		
-		Room curLoc = location;
-		if (Game.getMap().checkMove() == true) {
-			Game.getMap().setNewRoom();
-			System.out.println(location.roomDescrip);
-		}
-		else {
-			System.out.println("There's no way to go that diretion");
-		}
-		
-		
+	//Actions from Actions interface	
+	public void movePlayer(String direction) {
+		action.move(direction);
 	}
 	
 	public void pickUpItem(Item item) {
-		inventory.addItem(item);
+		action.pickUp(item);
+	}
+	
+	public void attack() {
+		action.attack();
 	}
 }

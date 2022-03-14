@@ -1,6 +1,10 @@
 package cs320.TBAG.model;
 
-public class NPC extends Actor implements Actions{
+import cs320.TBAG.model.Actions;
+
+public class NPC extends Actor{
+	
+	private Actions action = new Actions();
 	
 	public NPC() {
 		name = "NPC 1";
