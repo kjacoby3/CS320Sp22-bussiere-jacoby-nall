@@ -5,7 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert.*;
 
-class PickUpTest {
+import junit.framework.TestCase;
+
+public class PickUpTest extends TestCase{
 	
 	
 	@Test
