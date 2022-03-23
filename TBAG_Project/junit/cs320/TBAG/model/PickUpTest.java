@@ -11,7 +11,7 @@ public class PickUpTest extends TestCase{
 	
 	
 	@Test
-	void testPickUp() {
+	public void testPickUp() {
 		Inventory InvenOpen = new Inventory(20);
 		Weapon banana = new Weapon("banana", 1000000000, 1000000000);
 		boolean check = InvenOpen.addItem(banana);
@@ -19,7 +19,7 @@ public class PickUpTest extends TestCase{
 	}
 	
 	@Test
-	void testFullPickUp() {
+	public void testFullPickUp() {
 		Inventory InvenFull = new Inventory(0);
 		Weapon banana = new Weapon("banana", 1000000000, 1000000000);
 		boolean check = InvenFull.addItem(banana);

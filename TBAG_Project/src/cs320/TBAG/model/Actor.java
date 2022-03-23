@@ -28,8 +28,16 @@ public abstract class Actor {
 		return inventory;
 	}
 	
+	public void setInventory(Inventory inventory) {
+		this.inventory = inventory;
+	}
+	
 	public ActorStats getActorStats() {
 		return actorStats;
+	}
+	
+	public void setActorStats(ActorStats actorStats) {
+		this.actorStats = actorStats;
 	}
 	
 }

@@ -30,25 +30,25 @@ public class GameModelTest extends TestCase{
 	}
 	
 	@Test
-	void testGetUsername() {
+	public void testGetUsername() {
 		model.setUsername(username);
 		assertEquals(model.getUsername(), "kjacoby3");
 	}
 	
 	@Test
-	void testGetPassword() {
+	public void testGetPassword() {
 		model.setPassword(password);
 		assertEquals(model.getPassword(), "kjacoby3");
 	}
 	
 	@Test 
-	void testGetActorsList() {
+	public void testGetActorsList() {
 		model.newActorsList();
 		assertEquals(model.getActorsList(), actorsList);
 	}
 
 	@Test
-	void testGetInventoriesList() {
+	public void testGetInventoriesList() {
 		model.newInventoryList();
 		assertEquals(model.getInventories(), inventories);
 	}
