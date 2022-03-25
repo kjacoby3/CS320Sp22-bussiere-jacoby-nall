@@ -8,14 +8,18 @@ public class Player extends Actor{
 	
 	public Player() {
 		name = "Player 1";
+		type = "player";
 		location = new Room();
 		inventory = new Inventory(100);
 		actorStats = new ActorStats();
 		inventory.addItem(new Equipment("Cloth Armor", 50, 50,50, 50));
+		eqWeap = new Weapon("Fists", 0, 100);
+		equipped = new Equipment("Bare", 100, 0, 0, 0);
 	}
 	
-	public Player(String name, Room location, Inventory inventory, ActorStats actorStats) {
-		
+	public Player(String name, Room location, Inventory inventory, ActorStats actorStats,
+			Weapon eqWeap, Equipment equipped) {
+		type = "player";
 	}
 
 	//Actions from Actions interface	
