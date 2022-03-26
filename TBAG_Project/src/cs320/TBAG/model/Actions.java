@@ -47,6 +47,61 @@ public class Actions implements ActionsInterface {
 	public void attack() {
 		System.out.println("You successfully attack and defeat the target");
 	}
+<<<<<<< Updated upstream
 			
+=======
+	
+	
+	public static String equipWeapon(Weapon weapon, Inventory actorWeapons) {
+		
+		String successOrFail;
+		boolean verify = actorWeapons.addItem(weapon);
+				
+		if (verify == true){
+			successOrFail = "Succesfully equipped " + weapon;
+			return successOrFail;
+		}
+		
+		successOrFail = "Could not equip " + weapon;
+		return successOrFail;
+		
+	}
+	
+	public static String unequipWeapon(Weapon weapon, Inventory actorWeapons) {
+		
+		String successOrFail;
+		actorWeapons.removeItem(weapon);
+		
+		successOrFail = "Succesfully unequipped " + weapon;
+		return successOrFail;
+	
+	}
+	
+	public static String equipEquipment(Equipment equipment, Inventory actorWeapons) {
+		
+		String successOrFail;
+		boolean verify = actorWeapons.addItem(equipment);
+				
+		if (verify == true){
+			successOrFail = "Succesfully equipped " + equipment;
+			return successOrFail;
+		}
+		
+		successOrFail = "Could not equip " + equipment;
+		return successOrFail;
+		
+	}
+	
+	public static String unequipEquipment(Equipment equipment, Inventory actorWeapons) {
+		
+		String successOrFail;
+		actorWeapons.removeItem(equipment);
+
+		successOrFail = "Succesfully unequipped " + equipment;
+		return successOrFail;
+		
+	}
+
+>>>>>>> Stashed changes
 	
 }
