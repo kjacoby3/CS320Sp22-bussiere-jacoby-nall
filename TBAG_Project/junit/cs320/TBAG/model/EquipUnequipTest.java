@@ -1,9 +1,6 @@
 package cs320.TBAG.model;
 
 import static org.junit.Assert.*;
-
-import cs320.TBAG.model.Inventory;
-import cs320.TBAG.model.Actions;
 import org.junit.Test;
 
 public class EquipUnequipTest {
@@ -14,40 +11,40 @@ public class EquipUnequipTest {
 	
 	
 	@Test
-	public void equipEmptyWeapons() {
-		String result = equipWeapon(banana, playerInv);
+	public void testEquipEmptyWeapons() {
+		String result = Actions.equipWeapon(banana, playerInv);
 		assertEquals(result, "Succesfully equipped banana");
 	}
 
 
 	@Test
-	public void equipFullWeapons() {
-		String result = equipWeapon(banana, playerInv);
-		assertEquals(result, "Succesfully equipped banana");
+	public void testEquipFullWeapons() {
+		String result = Actions.equipWeapon(banana, playerInv);
+		assertEquals(result, "Could not equip banana");
 	}
 	
 	@Test
-	public void unequipWeapon() {
-		String result = unequipWeapon(banana, playerInv);
-		assertEquals(result, "Succesfully equipped banana");
+	public void testUnequipWeapon() {
+		String result = Actions.unequipWeapon(banana, playerInv);
+		assertEquals(result, "Succesfully unequipped banana");
 	}
 	
 	@Test
-	public void equipEmptyEquipment() {
-		String result = equipEquipment(flakJacket, playerInv);
-		assertEquals(result, "Succesfully equipped banana");
+	public void testEquipEmptyEquipment() {
+		String result = Actions.equipEquipment(flakJacket, playerInv);
+		assertEquals(result, "Succesfully equipped Flak Jacket");
 	}
 	
 	@Test
-	public void equipFullEquipment() {
-		String result = equipEquipment(flakJacket, playerInv);
-		assertEquals(result, "Succesfully equipped banana");
+	public void testEquipFullEquipment() {
+		String result = Actions.equipEquipment(flakJacket, playerInv);
+		assertEquals(result, "Could not equip Flak Jacket");
 	}
 	
 	@Test
-	public void unequipEquipment() {
-		String result = unequipEquipment(flakJacket, playerInv);
-		assertEquals(result, "Succesfully equipped banana");
+	public void testUnequipEquipment() {
+		String result = Actions.unequipEquipment(flakJacket, playerInv);
+		assertEquals(result, "Succesfully unequipped Flak Jacket");
 	}
 	
 
