@@ -24,6 +24,9 @@ public class Map{
 	public int getCurrRoom() {
 		return actorCurrRoom;
 	}
+	public void setCurrRoom(int currRoom) {
+		actorCurrRoom = currRoom;
+	}
 		
 	public boolean checkMove(int actorCurrRoom, String direction)
 	{

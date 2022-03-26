@@ -29,7 +29,7 @@ public class ActorStats {
 		this.dmg = dmg;
 		this.def = def;
 		this.spd = spd;
-		curExp = 0;
+		curExp = 25;
 		maxExp = 0;
 		curLvl = 0;
 	}
@@ -47,6 +47,8 @@ public class ActorStats {
 		this.curLvl = curLvl;
 		
 	}
+	
+	/*-------------------Getters and Setters----------------*/
 	
 	public void setCurHP(int curHP) {
 		this.curHP = curHP;
@@ -110,5 +112,11 @@ public class ActorStats {
 	
 	public int getCurLvl() {
 		return curLvl;
+	}
+	
+	/*-------------------------------------------------*/
+	
+	public void addExp(int exp) {
+		curExp += exp;
 	}
 }

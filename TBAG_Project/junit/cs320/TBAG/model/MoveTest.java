@@ -19,26 +19,26 @@ public class MoveTest extends TestCase{
 	}
 	
 	@Test
-	void testRoomDescrip() {
+	public void testRoomDescrip() {
 		Map map = new Map();
 		assertEquals("You find yourself in the starting area.  There is a banana on the floor", map.getRoomDescription(currentRoom));
 	}
 	
 	@Test
-	void testSuccesfulMove() {
+	public void testSuccesfulMove() {
 		Map map = new Map();
 		assertTrue(map.checkMove(currentRoom,direction));
 	}
 	
 	@Test
-	void testIllegalMove() {
+	public void testIllegalMove() {
 		String southDirection = "south";
 		Map map = new Map();
 		assertFalse(map.checkMove(currentRoom,southDirection));
 	}
 	
 	@Test
-	void testSetNewRoom() {
+	public void testSetNewRoom() {
 		Map map = new Map();
 		map.checkMove(currentRoom,direction);
 		currentRoom = map.setNewRoom(map.getNewRoomID());

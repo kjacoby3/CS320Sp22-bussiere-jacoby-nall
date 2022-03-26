@@ -2,11 +2,6 @@ package cs320.TBAG.model;
 import java.util.HashMap;
 
 public class Inventory{
-	/*private ArrayList<Equipment> equipment;
-	private ArrayList<Weapons> weapons;
-	private ArrayList<Trophies> trophies;
-	private ArrayList<Usables> usables;
-	private ArrayList<Treasures> treasures;*/
 	private int maxSize;
 	private HashMap<String, Equipment> equipment;
 	private HashMap<String, Weapon> weapons;
@@ -15,11 +10,6 @@ public class Inventory{
 	private HashMap<String, Treasure> treasures;
 	
 	public Inventory(int maxSize) {
-		/*equipment = new ArrayList<Equipment>();
-		weapons = new ArrayList<Weapons>();
-		trophies = new ArrayList<Trophies>();
-		usables = new ArrayList<Usables>();
-		treasures = new ArrayList<Treasures>();*/
 		equipment = new HashMap<String, Equipment>();
 		weapons = new HashMap<String, Weapon>();
 		trophies = new HashMap<String, Trophy>();
