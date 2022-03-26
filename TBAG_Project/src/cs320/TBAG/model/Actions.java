@@ -2,6 +2,8 @@ package cs320.TBAG.model;
 import cs320.TBAG.model.Inventory;
 import cs320.TBAG.model.Map;
 import cs320.TBAG.model.Item;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 interface ActionsInterface{
 	
@@ -47,6 +49,57 @@ public class Actions implements ActionsInterface {
 	public void attack() {
 		System.out.println("You successfully attack and defeat the target");
 	}
-			
+	
+	
+	public String equipWeapon(Weapon weapon, Inventory actorWeapons) {
+		
+		String successOrFail;
+		boolean verify = actorWeapons.addItem(weapon);
+				
+		if (verify == true){
+			successOrFail = "Succesfully equipped " + weapon;
+			return successOrFail;
+		}
+		
+		successOrFail = "Could not equip " + weapon;
+		return successOrFail;
+		
+	}
+	
+	public String unequipWeapon(Weapon weapon, Inventory actorWeapons) {
+		
+		String successOrFail;
+		actorWeapons.removeItem(weapon);
+		
+		successOrFail = "Succesfully unequipped " + weapon;
+		return successOrFail;
+	
+	}
+	
+	public String equipEquipment(Equipment equipment, Inventory actorWeapons) {
+		
+		String successOrFail;
+		boolean verify = actorWeapons.addItem(equipment);
+				
+		if (verify == true){
+			successOrFail = "Succesfully quipped " + equipment;
+			return successOrFail;
+		}
+		
+		successOrFail = "Could not equip " + equipment;
+		return successOrFail;
+		
+	}
+	
+	public String unequipEquipment(Equipment equipment, Inventory actorWeapons) {
+		
+		String successOrFail;
+		actorWeapons.removeItem(equipment);
+
+		successOrFail = "Succesfully unequipped " + equipment;
+		return successOrFail;
+		
+	}
+
 	
 }
