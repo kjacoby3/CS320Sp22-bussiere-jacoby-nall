@@ -216,7 +216,16 @@ public class Combat{
 	
 	public double actor1CalcAttackDMG() {
 		double dmgDone;
-		double z = actor1TotalDMG * (1 - ((2 * actor2TotalDEF) / (100 + actor1TotalDMG)));
+		double z = actor1TotalDMG * (1 - ((2 * actor2TotalDEF) / (3 * actor1TotalDMG)));
+		double lowerBound = z * 0.9;
+		double upperBound = z * 1.1;
+		dmgDone = intDiceRoll((int) lowerBound, (int) upperBound);
+		return dmgDone;
+	}
+	
+	public double actor2CalcAttackDMG() {
+		double dmgDone;
+		double z = actor2TotalDMG * (1 - ((2 * actor1TotalDEF) / (3 * actor2TotalDMG)));
 		double lowerBound = z * 0.9;
 		double upperBound = z * 1.1;
 		dmgDone = intDiceRoll((int) lowerBound, (int) upperBound);
