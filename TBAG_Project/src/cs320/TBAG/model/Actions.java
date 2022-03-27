@@ -5,18 +5,11 @@ import cs320.TBAG.model.Item;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-interface ActionsInterface{
-	
-	void move(String direction);
-	void pickUp(Item item);
-	void attack();
-}
-
 public class Actions implements ActionsInterface {
 	public String direction;
 	public Item item;
-	Weapon banana = new Weapon("banana", 1000000000, 1000000000);
-	
+	public Inventory inventory;
+		
 	@Override
 	public void move(String direction) {
 		Map tempMap = new Map();
@@ -34,15 +27,7 @@ public class Actions implements ActionsInterface {
 	}
 	@Override
 	public void pickUp(Item item) {
-		Inventory tempInv = new Inventory(1);
-		boolean check = tempInv.addItem(banana);
-		if(check = true) {
-			System.out.println("You put the " + banana.getName() + " in your inventory");
-		}
-		else {
-			System.out.println("You can't add that to your inventory at this time");
-		}
-		
+		inventory.addItem(item);
 	}
 	
 	@Override
@@ -50,55 +35,24 @@ public class Actions implements ActionsInterface {
 		System.out.println("You successfully attack and defeat the target");
 	}
 	
-	
-	public String equipWeapon(Weapon weapon, Inventory actorWeapons) {
-		
-		String successOrFail;
-		boolean verify = actorWeapons.addItem(weapon);
-				
-		if (verify == true){
-			successOrFail = "Succesfully equipped " + weapon;
-			return successOrFail;
-		}
-		
-		successOrFail = "Could not equip " + weapon;
-		return successOrFail;
-		
+	@Override
+	public void equipWeapon(Weapon weapon) {
+		inventory.addItem(weapon);
 	}
 	
-	public String unequipWeapon(Weapon weapon, Inventory actorWeapons) {
-		
-		String successOrFail;
-		actorWeapons.removeItem(weapon);
-		
-		successOrFail = "Succesfully unequipped " + weapon;
-		return successOrFail;
-	
+	@Override
+	public void unequipWeapon(Weapon weapon) {
+		inventory.removeItem(weapon);
 	}
 	
-	public String equipEquipment(Equipment equipment, Inventory actorWeapons) {
-		
-		String successOrFail;
-		boolean verify = actorWeapons.addItem(equipment);
-				
-		if (verify == true){
-			successOrFail = "Succesfully quipped " + equipment;
-			return successOrFail;
-		}
-		
-		successOrFail = "Could not equip " + equipment;
-		return successOrFail;
-		
+	@Override
+	public void equipEquipment(Equipment equipment) {
+		inventory.addItem(equipment);
 	}
 	
-	public String unequipEquipment(Equipment equipment, Inventory actorWeapons) {
-		
-		String successOrFail;
-		actorWeapons.removeItem(equipment);
-
-		successOrFail = "Succesfully unequipped " + equipment;
-		return successOrFail;
-		
+	@Override
+	public void unequipEquipment(Equipment equipment) {
+		inventory.removeItem(equipment);
 	}
 
 	
