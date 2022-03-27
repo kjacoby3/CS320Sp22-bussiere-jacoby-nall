@@ -2,19 +2,14 @@ package cs320.TBAG.model;
 import cs320.TBAG.model.Inventory;
 import cs320.TBAG.model.Map;
 import cs320.TBAG.model.Item;
-
-interface ActionsInterface{
-	
-	void move(String direction);
-	void pickUp(Item item);
-	void attack();
-}
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Actions implements ActionsInterface {
 	public String direction;
 	public Item item;
-	Weapon banana = new Weapon("banana", 1000000000, 1000000000);
-	
+	public Inventory inventory;
+		
 	@Override
 	public void move(String direction) {
 		Map tempMap = new Map();
@@ -32,21 +27,33 @@ public class Actions implements ActionsInterface {
 	}
 	@Override
 	public void pickUp(Item item) {
-		Inventory tempInv = new Inventory(1);
-		boolean check = tempInv.addItem(banana);
-		if(check = true) {
-			System.out.println("You put the " + banana.getName() + " in your inventory");
-		}
-		else {
-			System.out.println("You can't add that to your inventory at this time");
-		}
-		
+		inventory.addItem(item);
 	}
 	
 	@Override
 	public void attack() {
 		System.out.println("You successfully attack and defeat the target");
 	}
-			
+	
+	@Override
+	public void equipWeapon(Weapon weapon) {
+		inventory.addItem(weapon);
+	}
+	
+	@Override
+	public void unequipWeapon(Weapon weapon) {
+		inventory.removeItem(weapon);
+	}
+	
+	@Override
+	public void equipEquipment(Equipment equipment) {
+		inventory.addItem(equipment);
+	}
+	
+	@Override
+	public void unequipEquipment(Equipment equipment) {
+		inventory.removeItem(equipment);
+	}
+
 	
 }
