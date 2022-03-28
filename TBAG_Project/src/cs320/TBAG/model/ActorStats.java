@@ -119,4 +119,8 @@ public class ActorStats {
 	public void addExp(int exp) {
 		curExp += exp;
 	}
+	
+	public void subtractHP(int subtractedHP) {
+		curHP -= subtractedHP;
+	}
 }

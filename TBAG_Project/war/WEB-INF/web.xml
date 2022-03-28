@@ -19,6 +19,10 @@
   	<servlet-name>InventoryServlet</servlet-name>
   	<servlet-class>cs320.TBAG.servlet.InventoryServlet</servlet-class>
   </servlet>
+    <servlet>
+  	<servlet-name>CombatServlet</servlet-name>
+  	<servlet-class>cs320.TBAG.servlet.CombatServlet</servlet-class>
+  </servlet>
 
   <!-- Servlet mappings -->
   <servlet-mapping>
@@ -36,6 +40,10 @@
   	<url-pattern>/inventory</url-pattern>
   </servlet-mapping>
   
+    <servlet-mapping>
+  	<servlet-name>CombatServlet</servlet-name>
+  	<url-pattern>/combat</url-pattern>
+  </servlet-mapping>
 </web-app>
 
 

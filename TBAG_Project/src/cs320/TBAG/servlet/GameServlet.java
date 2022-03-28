@@ -124,6 +124,11 @@ public class GameServlet extends HttpServlet{
 				req.setAttribute("roomMessage",map.getRoomDescription(1));
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
+			else if(input.equalsIgnoreCase("attack")) {
+				updateHistory(input);
+				req.setAttribute("game", model);
+				req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
+			}
 			else {
 				error = "unsupported command";
 				req.setAttribute("errorMessage", error);

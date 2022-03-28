@@ -101,6 +101,33 @@ public class Combat{
 		actor2TotalSPD = (int)actor2TotalSPD();
 	}
 	
+//	public void setActor1(Actor actor1) {
+//		this.actor1 = actor1;
+//	}
+//	
+//	public void setActor2(Actor actor2) {
+//		this.actor2 = actor2;
+//	}
+	public int getTurn() {
+		return turn;
+	}
+	
+	public void updateTurn() {
+		if (turn == 1) {
+			turn = 2;
+		} else {
+			turn = 1;
+		}
+	}
+	
+	public Actor getActor1() {
+		return actor1;
+	}
+	
+	public Actor getActor2() {
+		return actor2;
+	}
+	
 	// Calculates total damage stat for actor 1
 	public double actor1TotalDMG() {
 		double statDMG = actor1Stats.getDmg();
