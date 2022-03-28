@@ -30,7 +30,7 @@ public class GameServlet extends HttpServlet{
 		
 		session.setAttribute("commandHistory", "");
 		
-		String roomDesc = map.getRoomDescription(1);
+		String roomDesc = map.getRoomDescription();
 		req.setAttribute("roomMessage", roomDesc);
 		req.getRequestDispatcher("/_view/Game.jsp").forward(req,resp);
 	}
@@ -59,10 +59,10 @@ public class GameServlet extends HttpServlet{
 			
 			
 			if(input.equalsIgnoreCase("north")) {
-				if(map.checkMove(map.getCurrRoom(), "north")){
+				if(map.checkMove("north")){
 					map.setNewRoom(map.getNewRoomID());
 					updateHistory(input);
-					req.setAttribute("roomMessage", map.getRoomDescription(map.getCurrRoom()+1));
+					req.setAttribute("roomMessage", map.getRoomDescription());
 					req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 				}
 				
@@ -70,10 +70,10 @@ public class GameServlet extends HttpServlet{
 			
 			else if(input.equalsIgnoreCase("south")) {
 				if(input.equalsIgnoreCase("south")) {
-					if(map.checkMove(map.getCurrRoom(), "south")){
+					if(map.checkMove("south")){
 						updateHistory(input);
 						map.setNewRoom(map.getNewRoomID());
-						req.setAttribute("roomMessage", map.getRoomDescription(map.getCurrRoom()));
+						req.setAttribute("roomMessage", map.getRoomDescription());
 						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 					}
 				}
@@ -81,10 +81,10 @@ public class GameServlet extends HttpServlet{
 			
 			else if(input.equalsIgnoreCase("west")) {
 				if(input.equalsIgnoreCase("west")) {
-					if(map.checkMove(map.getCurrRoom(), "west")){
+					if(map.checkMove("west")){
 						updateHistory(input);
 						map.setNewRoom(map.getNewRoomID());
-						req.setAttribute("roomMessage", map.getRoomDescription(map.getCurrRoom()));
+						req.setAttribute("roomMessage", map.getRoomDescription());
 						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 					}
 					
@@ -93,10 +93,10 @@ public class GameServlet extends HttpServlet{
 			
 			else if(input.equalsIgnoreCase("east")) {
 				if(input.equalsIgnoreCase("east")) {
-					if(map.checkMove(map.getCurrRoom(), "east")){
+					if(map.checkMove("east")){
 						updateHistory(input);
 						map.setNewRoom(map.getNewRoomID());
-						req.setAttribute("roomMessage", map.getRoomDescription(map.getCurrRoom()));
+						req.setAttribute("roomMessage", map.getRoomDescription());
 						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 					}
 					
@@ -115,13 +115,13 @@ public class GameServlet extends HttpServlet{
 			else if(input.equalsIgnoreCase("pickup")) {
 				player.getInventory().addItem(new Weapon("banana", 100000000, 1000000));
 				updateHistory(input);
-				req.setAttribute("roomMessage", map.getRoomDescription(map.getCurrRoom()));
+				req.setAttribute("roomMessage", map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req,resp);
 			}
 			else if(input.equalsIgnoreCase("start")) {
 				map.setCurrRoom(1);
 				updateHistory(input);
-				req.setAttribute("roomMessage",map.getRoomDescription(1));
+				req.setAttribute("roomMessage",map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 			else if(input.equalsIgnoreCase("attack")) {
@@ -132,13 +132,13 @@ public class GameServlet extends HttpServlet{
 			else {
 				error = "unsupported command";
 				req.setAttribute("errorMessage", error);
-				req.setAttribute("roomMessage",map.getRoomDescription(1));
+				req.setAttribute("roomMessage",map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 		}
 		else {
 			System.out.println("else");
-			req.setAttribute("roomMessage", map.getRoomDescription(1));
+			req.setAttribute("roomMessage", map.getRoomDescription());
 			req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 		}
 		
