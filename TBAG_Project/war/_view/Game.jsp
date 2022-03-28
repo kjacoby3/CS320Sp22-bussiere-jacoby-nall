@@ -58,11 +58,13 @@
                 <input type="Submit" name="submit" value = "Enter">
             </form>
 
+            <div class = "history"> Input History:<br>
+                ${sessionScope['commandHistory']}
+            </div>
+
         </c:if>
 
-        <div class = "history"> Input History:<br>
-            ${sessionScope['commandHistory']}
-        </div>
+        
         
 
 
