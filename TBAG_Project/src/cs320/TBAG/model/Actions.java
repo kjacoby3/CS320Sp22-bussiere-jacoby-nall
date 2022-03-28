@@ -9,20 +9,22 @@ public class Actions implements ActionsInterface {
 	public String direction;
 	public Item item;
 	public Inventory inventory;
+	int currRoom;
 		
 	@Override
 	public void move(String direction) {
-		Map tempMap = new Map();
-		boolean verify = tempMap.checkMove(tempMap.getCurrRoom(), direction);
-		if(verify = true) {
-			int newID = tempMap.getNewRoomID();
-			tempMap.setNewRoom(newID);
-			System.out.println(tempMap.getRoomDescription(tempMap.getCurrRoom()));
-		}
-		else {
-			System.out.println("There's no way to go that direction");
-		}
+		//Map tempMap = new Map();
+		//boolean verify = tempMap.checkMove(tempMap.getCurrRoom(), direction);
+		//if(verify = true) {
+		//	int newID = tempMap.getNewRoomID();
+		//	tempMap.setNewRoom(newID);
+		//	System.out.println(tempMap.getRoomDescription(tempMap.getCurrRoom()));
+		//}
+		//else {
+		//	System.out.println("There's no way to go that direction");
+		//}
 		
+		boolean verify = Map.checkMove(direction);
 		
 	}
 	@Override
