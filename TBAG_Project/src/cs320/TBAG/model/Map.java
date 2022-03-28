@@ -10,6 +10,8 @@ public class Map{
 	private String enteredMove;
 	int newRoomID;
 	int prevRoomID;
+	String currRoomName;
+	String currRoomDescrip;
 	
 	String[][] mapLayout;
 	String[][] mapDescrips;
@@ -31,28 +33,28 @@ public class Map{
 		Room2.set(1,2);
 		Room2.set(2,0);
 		Room2.set(3,4);
-		Room second = new Room(2, "North Area. You can go South to Start or East", null, null, Room2);
+		Room second = new Room(2, "second", "North Area. You can go South to Start or East", null, null, Room2);
 		trialRooms.add(second);
 		ArrayList<Integer> Room3 = new ArrayList<Integer>();
 		Room3.set(0,0);
 		Room3.set(1,5);
 		Room3.set(2,0);
 		Room3.set(3,1);
-		Room third = new Room(3, "West Area. You can go East to Start or South", null, null, Room3);
+		Room third = new Room(3, "third" ,"West Area. You can go East to Start or South", null, null, Room3);
 		trialRooms.add(third);
 		ArrayList<Integer> Room4 = new ArrayList<Integer>();
 		Room4.set(0,0);
 		Room4.set(1,0);
 		Room4.set(2,2);
 		Room4.set(3,0);
-		Room fourth = new Room(4, "North East Area. You can only go back West to the previous room", null, null, Room4);
+		Room fourth = new Room(4, "fourth", "North East Area. You can only go back West to the previous room", null, null, Room4);
 		trialRooms.add(fourth);
 		ArrayList<Integer> Room5 = new ArrayList<Integer>();
 		Room5.set(0, 3);
 		Room5.set(1, 0);
 		Room5.set(2, 0);
 		Room5.set(3, 0);
-		Room fifth = new Room(5, "West South Area. You can only go back North to the previous room", null, null, Room5);
+		Room fifth = new Room(5, "fifth",  "West South Area. You can only go back North to the previous room", null, null, Room5);
 		trialRooms.add(fifth);
 	}
 	
@@ -69,28 +71,28 @@ public class Map{
 		Room2.set(1,2);
 		Room2.set(2,0);
 		Room2.set(3,4);
-		Room second = new Room(2, "North Area. You can go South to Start or East", null, null, Room2);
+		Room second = new Room(2, "second", "North Area. You can go South to Start or East", null, null, Room2);
 		trialRooms.add(second);
 		ArrayList<Integer> Room3 = new ArrayList<Integer>();
 		Room3.set(0,0);
 		Room3.set(1,5);
 		Room3.set(2,0);
 		Room3.set(3,1);
-		Room third = new Room(3, "West Area. You can go East to Start or South", null, null, Room3);
+		Room third = new Room(3, "third" ,"West Area. You can go East to Start or South", null, null, Room3);
 		trialRooms.add(third);
 		ArrayList<Integer> Room4 = new ArrayList<Integer>();
 		Room4.set(0,0);
 		Room4.set(1,0);
 		Room4.set(2,2);
 		Room4.set(3,0);
-		Room fourth = new Room(4, "North East Area. You can only go back West to the previous room", null, null, Room4);
+		Room fourth = new Room(4, "fourth", "North East Area. You can only go back West to the previous room", null, null, Room4);
 		trialRooms.add(fourth);
 		ArrayList<Integer> Room5 = new ArrayList<Integer>();
 		Room5.set(0, 3);
 		Room5.set(1, 0);
 		Room5.set(2, 0);
 		Room5.set(3, 0);
-		Room fifth = new Room(5, "West South Area. You can only go back North to the previous room", null, null, Room5);
+		Room fifth = new Room(5, "fifth",  "West South Area. You can only go back North to the previous room", null, null, Room5);
 		trialRooms.add(fifth);
 	}
 	
@@ -133,6 +135,8 @@ public class Map{
 		if (directionCheck.verifyExit(direction) == true) {
 			this.prevRoomID = actorCurrRoom;
 			this.actorCurrRoom = directionCheck.getConnectingID();
+			currRoomName = directionCheck.getRoomName();
+			currRoomDescrip = directionCheck.getRoomDescrip();
 			return true;
 		}
 		

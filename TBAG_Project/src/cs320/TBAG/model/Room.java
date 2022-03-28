@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class Room extends Map{
 	int roomID;
 	int connectingID;
+	String roomName;
 	String roomDescrip;
 	Inventory roomItems;
 	ArrayList<Actor> actorsInRoom = new ArrayList<Actor>();
@@ -22,7 +23,7 @@ public class Room extends Map{
 	
 	
 	
-	public Room(int roomID, String roomDescrip, Inventory roomItems, ArrayList<Actor> actorsInRoom, ArrayList<Integer> exits) { //exits must be entered as four values <0,0,0,0> for n,s,w,e
+	public Room(int roomID, String roomName, String roomDescrip, Inventory roomItems, ArrayList<Actor> actorsInRoom, ArrayList<Integer> exits) { //exits must be entered as four values <0,0,0,0> for n,s,w,e
 		this.roomID = roomID;
 		this.roomDescrip = roomDescrip;
 		this.roomItems = roomItems;
@@ -32,6 +33,7 @@ public class Room extends Map{
 	
 	public Room() {
 		this.roomID = 1;
+		this.roomName = "starting";
 		this.roomDescrip = "This is the starting area.  You can go North(n)";  //"You awaken to sound of explosions and the rocking of the ship.  You shoot up out of bed and notice that your cabinmate is not in their bed.  There is a door leading out into the hall";
 		this.roomItems = null;	
 		this.actorsInRoom = null;
@@ -43,6 +45,10 @@ public class Room extends Map{
 	
 	public int getRoomID() {
 		return roomID;
+	}
+	
+	public String getRoomName() {
+		return roomName;
 	}
 	
 	public String getRoomDescrip() {
