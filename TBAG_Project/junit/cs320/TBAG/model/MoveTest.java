@@ -13,6 +13,7 @@ public class MoveTest{
 	int startingRoom = 1;
 	int newRoom;
 	String direction = "n";
+	String direction2 = "e";
 	Map testMap = new Map();
 	
 	@Test
@@ -33,8 +34,9 @@ public class MoveTest{
 	@Test
 	public void testSuccesfulMove() {
 		testMap.checkMove(direction);
-		String roomName = testMap.currRoomName;
-		assertEquals("second", roomName);
+		testMap.checkMove(direction2);
+		String roomName = testMap.currRoomDescrip;
+		assertEquals("North East Area. You can only go back West to the previous room", roomName);
 	}
 	
 	@Test

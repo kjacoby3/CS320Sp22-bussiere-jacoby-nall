@@ -13,6 +13,9 @@ public class Map{
 	String currRoomName;
 	String currRoomDescrip;
 	ArrayList<Integer> validExits = new ArrayList<Integer>();
+	//ArrayList<Room> trialRooms = new ArrayList<Room>();
+	ArrayList<Integer> startRoom = new ArrayList<Integer>();
+	
 	
 	ArrayList<Actor> actors = null;
 	Inventory roomInventory = null;
@@ -25,55 +28,55 @@ public class Map{
 	String[][] trialMap = {{"RoomID","RoomName","Move","ID","Move","ID"},{"1","Starting Area","north","2","n","2" },{"2","North Area","south","2","s","2","east","4","e","4"},{"3","West Area","east","1","e","1","south","5","s","5"},{"4","North East Area","west","2","w","2"},{"5","West South","north","3","n","3"}};
 	String[][] trialMapDescrip = {{"RoomID","LongDescrip"},{"1","You find yourself in the starting area.  There is a banana on the floor"},{"2","You head North into another area"},{"3","You head West into an area that seems more Western"},{"4","You head East from the North area. "},{"5","You head South from the West area"}};
 	
-	public ArrayList<Room> trialRooms = new ArrayList<Room>();
+	public static ArrayList<Room> trialRooms = new ArrayList<Room>();
 	
-	public Map() {
-		actorCurrRoom = 1;
-		this.mapLayout = trialMap;
-		this.mapDescrips = trialMapDescrip;
-		//Room starting = new Room();
+	static {
 		ArrayList<Integer> startRoom = new ArrayList<Integer>();
-		startRoom.set(0,2);
-		startRoom.set(1,0);
-		startRoom.set(2,0);
-		startRoom.set(3,0);
+		startRoom.add(2);
+		startRoom.add(0);
+		startRoom.add(0);
+		startRoom.add(0);
 		Room starting = new Room(1, "starting", "This is the starting area.  You can go North(n)", null, null, startRoom);
 		trialRooms.add(starting);
 		ArrayList<Integer> Room2 = new ArrayList<Integer>();
-		Room2.set(0,0);
-		Room2.set(1,2);
-		Room2.set(2,0);
-		Room2.set(3,4);
+		Room2.add(0);
+		Room2.add(2);
+		Room2.add(0);
+		Room2.add(4);
 		Room second = new Room(2, "second", "North Area. You can go South to Start or East", null, null, Room2);
 		trialRooms.add(second);
 		ArrayList<Integer> Room3 = new ArrayList<Integer>();
-		Room3.set(0,0);
-		Room3.set(1,5);
-		Room3.set(2,0);
-		Room3.set(3,1);
+		Room3.add(0);
+		Room3.add(5);
+		Room3.add(0);
+		Room3.add(1);
 		Room third = new Room(3, "third" ,"West Area. You can go East to Start or South", null, null, Room3);
 		trialRooms.add(third);
 		ArrayList<Integer> Room4 = new ArrayList<Integer>();
-		Room4.set(0,0);
-		Room4.set(1,0);
-		Room4.set(2,2);
-		Room4.set(3,0);
+		Room4.add(0);
+		Room4.add(0);
+		Room4.add(2);
+		Room4.add(0);
 		Room fourth = new Room(4, "fourth", "North East Area. You can only go back West to the previous room", null, null, Room4);
 		trialRooms.add(fourth);
 		ArrayList<Integer> Room5 = new ArrayList<Integer>();
-		Room5.set(0, 3);
-		Room5.set(1, 0);
-		Room5.set(2, 0);
-		Room5.set(3, 0);
+		Room5.add(3);
+		Room5.add(0);
+		Room5.add(0);
+		Room5.add(0);
 		Room fifth = new Room(5, "fifth",  "West South Area. You can only go back North to the previous room", null, null, Room5);
 		trialRooms.add(fifth);
+	}
+	
+	
+	public Map() {
 		
 		this.actorCurrRoom = 1;
 		this.currRoomName = "starting";
 		this.currRoomDescrip = "This is the starting area.  You can go North(n)";
 		this.actors = null;
 		this.roomInventory = null;
-		this.validExits = startRoom;
+		//this.validExits = startRoom;
 		
 	}
 	
@@ -81,9 +84,12 @@ public class Map{
 		return actorCurrRoom;
 	}
 	public void setCurrRoom(int currRoom) {
-		this.actorCurrRoom = currRoom;
+		actorCurrRoom = currRoom;
 	}
-		
+	
+	public String getCurrRoomName() {
+		return currRoomName;
+	}
 	//public boolean checkMove(int actorCurrRoom, String direction)
 	public boolean checkMove(String direction)
 	{
@@ -114,10 +120,13 @@ public class Map{
 		
 		Room directionCheck = trialRooms.get(actorCurrRoom-1);
 		if (directionCheck.verifyExit(direction) == true) {
-			this.prevRoomID = actorCurrRoom;
-			this.actorCurrRoom = directionCheck.getConnectingID();
-			currRoomName = directionCheck.getRoomName();
-			currRoomDescrip = directionCheck.getRoomDescrip();
+			int connectedRoomID = directionCheck.getConnectingID();
+			Room connectedRoom = trialRooms.get(connectedRoomID-1);
+			
+			prevRoomID = actorCurrRoom;
+			actorCurrRoom = connectedRoom.getRoomID();
+			currRoomName = connectedRoom.getRoomName();
+			currRoomDescrip = connectedRoom.getRoomDescrip();
 			return true;
 		}
 		

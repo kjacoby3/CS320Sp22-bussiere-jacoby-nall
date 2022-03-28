@@ -37,10 +37,10 @@ public class Room extends Map{
 		this.roomDescrip = "This is the starting area.  You can go North(n)";  //"You awaken to sound of explosions and the rocking of the ship.  You shoot up out of bed and notice that your cabinmate is not in their bed.  There is a door leading out into the hall";
 		this.roomItems = null;	
 		this.actorsInRoom = null;
-		this.roomExits.set(0,  2);
-		this.roomExits.set(1,  0);
-		this.roomExits.set(2,  3);
-		this.roomExits.set(3,  0);
+		this.roomExits.add(2);
+		this.roomExits.add(0);
+		this.roomExits.add(3);
+		this.roomExits.add(0);
 	}
 	
 	public int getRoomID() {
