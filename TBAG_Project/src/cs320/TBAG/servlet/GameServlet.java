@@ -59,7 +59,7 @@ public class GameServlet extends HttpServlet{
 			
 			
 			if(input.equalsIgnoreCase("north")) {
-				if(map.checkMove("north")){
+				if(map.checkMove("n")){
 					map.setNewRoom(map.getNewRoomID());
 					updateHistory(input);
 					req.setAttribute("roomMessage", map.getRoomDescription());
@@ -70,7 +70,7 @@ public class GameServlet extends HttpServlet{
 			
 			else if(input.equalsIgnoreCase("south")) {
 				if(input.equalsIgnoreCase("south")) {
-					if(map.checkMove("south")){
+					if(map.checkMove("s")){
 						updateHistory(input);
 						map.setNewRoom(map.getNewRoomID());
 						req.setAttribute("roomMessage", map.getRoomDescription());
@@ -81,7 +81,7 @@ public class GameServlet extends HttpServlet{
 			
 			else if(input.equalsIgnoreCase("west")) {
 				if(input.equalsIgnoreCase("west")) {
-					if(map.checkMove("west")){
+					if(map.checkMove("w")){
 						updateHistory(input);
 						map.setNewRoom(map.getNewRoomID());
 						req.setAttribute("roomMessage", map.getRoomDescription());
@@ -93,7 +93,7 @@ public class GameServlet extends HttpServlet{
 			
 			else if(input.equalsIgnoreCase("east")) {
 				if(input.equalsIgnoreCase("east")) {
-					if(map.checkMove("east")){
+					if(map.checkMove("e")){
 						updateHistory(input);
 						map.setNewRoom(map.getNewRoomID());
 						req.setAttribute("roomMessage", map.getRoomDescription());

@@ -99,6 +99,7 @@ public class Combat{
 		
 		actor1TotalSPD = (int)actor1TotalSPD();
 		actor2TotalSPD = (int)actor2TotalSPD();
+		turn = 1;
 	}
 	
 //	public void setActor1(Actor actor1) {

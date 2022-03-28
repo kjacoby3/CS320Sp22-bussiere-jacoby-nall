@@ -146,9 +146,11 @@ public class Map{
 	}
 	
 	public String getRoomDescription() {
-		Room test = new Room(actorCurrRoom, currRoomName,currRoomDescrip, roomInventory, actors, validExits);
+		/*Room test = new Room(actorCurrRoom, currRoomName,currRoomDescrip, roomInventory, actors, validExits);
 		String roomDescrip = test.getRoomDescrip();
-		return roomDescrip;
+		return roomDescrip;*/
+		return trialRooms.get(actorCurrRoom-1).getRoomDescrip();
+		//return currRoomDescrip;
 	}
 	
 	public void loadLevel(String[][] layout, String[][] descrip) {
