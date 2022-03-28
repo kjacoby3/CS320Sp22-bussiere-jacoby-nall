@@ -12,6 +12,11 @@ public class Map{
 	int prevRoomID;
 	String currRoomName;
 	String currRoomDescrip;
+	ArrayList<Integer> validExits = new ArrayList<Integer>();
+	
+	ArrayList<Actor> actors = null;
+	Inventory roomInventory = null;
+	
 	
 	String[][] mapLayout;
 	String[][] mapDescrips;
@@ -26,7 +31,13 @@ public class Map{
 	
 	
 	static {
-		Room starting = new Room();
+		//Room starting = new Room();
+		ArrayList<Integer> startRoom = new ArrayList<Integer>();
+		startRoom.set(0,2);
+		startRoom.set(1,0);
+		startRoom.set(2,0);
+		startRoom.set(3,0);
+		Room starting = new Room(1, "starting", "This is the starting area.  You can go North(n)", null, null, startRoom);
 		trialRooms.add(starting);
 		ArrayList<Integer> Room2 = new ArrayList<Integer>();
 		Room2.set(0,0);
@@ -64,7 +75,13 @@ public class Map{
 		actorCurrRoom = 1;
 		this.mapLayout = trialMap;
 		this.mapDescrips = trialMapDescrip;
-		Room starting = new Room();
+		//Room starting = new Room();
+		ArrayList<Integer> startRoom = new ArrayList<Integer>();
+		startRoom.set(0,2);
+		startRoom.set(1,0);
+		startRoom.set(2,0);
+		startRoom.set(3,0);
+		Room starting = new Room(1, "starting", "This is the starting area.  You can go North(n)", null, null, startRoom);
 		trialRooms.add(starting);
 		ArrayList<Integer> Room2 = new ArrayList<Integer>();
 		Room2.set(0,0);
@@ -94,6 +111,14 @@ public class Map{
 		Room5.set(3, 0);
 		Room fifth = new Room(5, "fifth",  "West South Area. You can only go back North to the previous room", null, null, Room5);
 		trialRooms.add(fifth);
+		
+		this.actorCurrRoom = 1;
+		this.currRoomName = "starting";
+		this.currRoomDescrip = "This is the starting area.  You can go North(n)";
+		this.actors = null;
+		this.roomInventory = null;
+		this.validExits = startRoom;
+		
 	}
 	
 	public int getCurrRoom() {
@@ -155,9 +180,10 @@ public class Map{
 		this.actorNewRoom = newRoomID;
 	}
 	
-	public String getRoomDescription(int actorCurrRoom) {
-		int currRoom = actorCurrRoom;
-		return trialMapDescrip[currRoom][1];
+	public String getRoomDescription() {
+		Room test = new Room(actorCurrRoom, currRoomName,currRoomDescrip, roomInventory, actors, validExits);
+		String roomDescrip = test.getRoomDescrip();
+		return roomDescrip;
 	}
 	
 	public void loadLevel(String[][] layout, String[][] descrip) {
