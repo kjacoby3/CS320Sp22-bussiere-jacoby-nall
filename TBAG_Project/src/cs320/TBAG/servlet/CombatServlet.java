@@ -70,11 +70,21 @@ public class CombatServlet extends HttpServlet{
 				if(combatMod.getActor2().getActorStats().getCurHP() <= 0) {
 					req.getRequestDispatcher("/_view/Game.jsp").forward(req,  resp);
 				}
+				
+				else if(combatMod.getTurn() == 2) {
+					combatMod.getActor1().getActorStats().subtractHP((int) combatMod.actor2CalcAttackDMG());
+					req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
+					req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
+					combatMod.updateTurn();
+					if(combatMod.getActor1().getActorStats().getCurHP() <= 0) {
+						req.getRequestDispatcher("/_view/Game.jsp").forward(req,  resp);
+					}
+				}
+				
 			} else {
 				error = "It is not your turn.";
 				req.setAttribute("errorMessage", error);
 				req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
-				
 				if(combatMod.getTurn() == 2) {
 					combatMod.getActor1().getActorStats().subtractHP((int) combatMod.actor2CalcAttackDMG());
 					req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
@@ -84,6 +94,7 @@ public class CombatServlet extends HttpServlet{
 						req.getRequestDispatcher("/_view/Game.jsp").forward(req,  resp);
 					}
 				}
+
 			}
 		} else if (req.getParameter("run") != null) {
 			if(combatMod.getTurn() == 1) {

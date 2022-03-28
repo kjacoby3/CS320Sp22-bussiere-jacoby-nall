@@ -34,4 +34,12 @@ public class Player extends Actor{
 	public void attack() {
 		action.attack();
 	}
+	
+	public void equipEquipment(Equipment equipment) {
+		
+	}
+	
+	public void unequipEquipment(Equipment equipment) {
+		
+	}
 }

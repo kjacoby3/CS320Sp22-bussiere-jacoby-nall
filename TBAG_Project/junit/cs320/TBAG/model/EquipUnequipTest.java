@@ -11,7 +11,7 @@ public class EquipUnequipTest {
 	Weapon banana = new Weapon("banana", 1000000, 1000000);
 	Equipment flakJacket = new Equipment("Flak Jacket", 10, 10, 100, -1);
 	Inventory playerInv = new Inventory(1);
-	Actor player;
+	Player player;
 	
 	
 	@Test

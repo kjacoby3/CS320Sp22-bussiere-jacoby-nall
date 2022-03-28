@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 public class CombatTest extends TestCase {
 	private Player player1;
 	private NPC npc1;
+	private Combat combat;
 	Weapon sword;
 	Weapon fists;
 	Equipment bare;
@@ -27,6 +28,13 @@ public class CombatTest extends TestCase {
 		
 		player1.setEqWeap(sword);
 		player1.setEquipped(chestArmor);
+		combat = new Combat(player1, npc1);
 	}
+	
+	@Test
+	public void testGetTurn() {
+		assertEquals(combat.getTurn(), 1);
+	}
+	
 }
 

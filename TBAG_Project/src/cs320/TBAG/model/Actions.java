@@ -24,7 +24,8 @@ public class Actions implements ActionsInterface {
 		//	System.out.println("There's no way to go that direction");
 		//}
 		
-		boolean verify = Map.checkMove(direction);
+		//boolean verify = Map.checkMove(direction);
+		boolean verify = true;
 		
 	}
 	@Override

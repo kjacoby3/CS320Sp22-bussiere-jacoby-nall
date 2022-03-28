@@ -40,7 +40,7 @@ public class Map{
 		trialRooms.add(starting);
 		ArrayList<Integer> Room2 = new ArrayList<Integer>();
 		Room2.add(0);
-		Room2.add(2);
+		Room2.add(1);
 		Room2.add(0);
 		Room2.add(4);
 		Room second = new Room(2, "second", "North Area. You can go South to Start or East", null, null, Room2);
