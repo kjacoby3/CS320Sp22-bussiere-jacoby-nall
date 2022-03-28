@@ -25,51 +25,7 @@ public class Map{
 	String[][] trialMap = {{"RoomID","RoomName","Move","ID","Move","ID"},{"1","Starting Area","north","2","n","2" },{"2","North Area","south","2","s","2","east","4","e","4"},{"3","West Area","east","1","e","1","south","5","s","5"},{"4","North East Area","west","2","w","2"},{"5","West South","north","3","n","3"}};
 	String[][] trialMapDescrip = {{"RoomID","LongDescrip"},{"1","You find yourself in the starting area.  There is a banana on the floor"},{"2","You head North into another area"},{"3","You head West into an area that seems more Western"},{"4","You head East from the North area. "},{"5","You head South from the West area"}};
 	
-	public static ArrayList<Room> trialRooms = new ArrayList<Room>();
-	
-
-	
-	
-	static {
-		//Room starting = new Room();
-		ArrayList<Integer> startRoom = new ArrayList<Integer>();
-		startRoom.set(0,2);
-		startRoom.set(1,0);
-		startRoom.set(2,0);
-		startRoom.set(3,0);
-		Room starting = new Room(1, "starting", "This is the starting area.  You can go North(n)", null, null, startRoom);
-		trialRooms.add(starting);
-		ArrayList<Integer> Room2 = new ArrayList<Integer>();
-		Room2.set(0,0);
-		Room2.set(1,2);
-		Room2.set(2,0);
-		Room2.set(3,4);
-		Room second = new Room(2, "second", "North Area. You can go South to Start or East", null, null, Room2);
-		trialRooms.add(second);
-		ArrayList<Integer> Room3 = new ArrayList<Integer>();
-		Room3.set(0,0);
-		Room3.set(1,5);
-		Room3.set(2,0);
-		Room3.set(3,1);
-		Room third = new Room(3, "third" ,"West Area. You can go East to Start or South", null, null, Room3);
-		trialRooms.add(third);
-		ArrayList<Integer> Room4 = new ArrayList<Integer>();
-		Room4.set(0,0);
-		Room4.set(1,0);
-		Room4.set(2,2);
-		Room4.set(3,0);
-		Room fourth = new Room(4, "fourth", "North East Area. You can only go back West to the previous room", null, null, Room4);
-		trialRooms.add(fourth);
-		ArrayList<Integer> Room5 = new ArrayList<Integer>();
-		Room5.set(0, 3);
-		Room5.set(1, 0);
-		Room5.set(2, 0);
-		Room5.set(3, 0);
-		Room fifth = new Room(5, "fifth",  "West South Area. You can only go back North to the previous room", null, null, Room5);
-		trialRooms.add(fifth);
-	}
-	
-	
+	public ArrayList<Room> trialRooms = new ArrayList<Room>();
 	
 	public Map() {
 		actorCurrRoom = 1;
