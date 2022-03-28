@@ -21,6 +21,12 @@
                 
             }
 
+            .history{
+                color: black;
+                font-size: 100%;
+
+            }
+
         </style>
         
         
@@ -53,6 +59,10 @@
             </form>
 
         </c:if>
+
+        <div class = "history"> Input History:<br>
+            ${sessionScope['commandHistory']}
+        </div>
         
 
 
