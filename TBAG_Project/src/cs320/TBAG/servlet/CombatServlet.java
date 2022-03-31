@@ -23,13 +23,8 @@ public class CombatServlet extends HttpServlet{
 	
 	Player player = new Player();
 	NPC npc1 = new NPC();
-	
-	
-	
-	Combat combatMod = new Combat(player, npc1);
-	
+	Combat combatMod; // = new Combat(player, npc1);
 	HttpSession session;
-	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -37,21 +32,30 @@ public class CombatServlet extends HttpServlet{
 		
 		session = req.getSession();
 		
-		req.setAttribute("player", combatMod.getActor1().getName());
-		req.setAttribute("enemy", combatMod.getActor2().getName());
+		combatMod = (Combat) session.getAttribute("combatMod");
+		String playerName = combatMod.getActor1().getName();
+		String npcName = combatMod.getActor2().getName();
+		String result2 = null;
+		
+		
+		
+		req.setAttribute("player", playerName);
+		req.setAttribute("enemy", npcName);
 		req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
 		req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
 		
 		if(combatMod.getTurn() == 2) {
-			combatMod.getActor1().getActorStats().subtractHP((int) combatMod.actor2CalcAttackDMG());
-			req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
-			req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
-			combatMod.updateTurn();
-			if(combatMod.getActor1().getActorStats().getCurHP() <= 0) {
-				req.getRequestDispatcher("/_view/Game.jsp").forward(req,  resp);
-			}
+			result2 = combatMod.actor2Attack();
+//			combatMod.getActor1().getActorStats().subtractHP((int) combatMod.actor2CalcAttackDMG());
+//			req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
+//			req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
+//			combatMod.updateTurn();
+//			if(combatMod.getActor1().getActorStats().getCurHP() <= 0) {
+//				req.getRequestDispatcher("/_view/Game.jsp").forward(req,  resp);
+//			}
 		}
 		
+		req.setAttribute("result2", result2);
 		req.getRequestDispatcher("/_view/combat.jsp").forward(req,resp);
 	}
 	
@@ -59,7 +63,15 @@ public class CombatServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException{
 		
+		session = req.getSession();
+		
+		combatMod = (Combat) session.getAttribute("combatMod");
+		
 		String error = null;
+		String finish = null;
+		String result1 = null;
+		String result2 = null;
+		String result3 = null;
 		
 		req.setAttribute("player", combatMod.getActor1().getName());
 		req.setAttribute("enemy", combatMod.getActor2().getName());
@@ -67,56 +79,50 @@ public class CombatServlet extends HttpServlet{
 		req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
 		
 		if (req.getParameter("attack") != null) {
-			if(combatMod.getTurn() == 1) {
-				combatMod.getActor2().getActorStats().subtractHP((int) combatMod.actor1CalcAttackDMG());
-				req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
-				req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
-				combatMod.updateTurn();
-				if(combatMod.getActor2().getActorStats().getCurHP() <= 0) {
-					req.getRequestDispatcher("/_view/Game.jsp").forward(req,  resp);
-				}
-				
-				else if(combatMod.getTurn() == 2) {
-					combatMod.getActor1().getActorStats().subtractHP((int) combatMod.actor2CalcAttackDMG());
-					req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
-					req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
-					combatMod.updateTurn();
-					if(combatMod.getActor1().getActorStats().getCurHP() <= 0) {
-						req.getRequestDispatcher("/_view/Game.jsp").forward(req,  resp);
-					}
-				}
-				
-			} else {
-				error = "It is not your turn.";
-				req.setAttribute("errorMessage", error);
-				req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
-				if(combatMod.getTurn() == 2) {
-					combatMod.getActor1().getActorStats().subtractHP((int) combatMod.actor2CalcAttackDMG());
-					req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
-					req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
-					combatMod.updateTurn();
-					if(combatMod.getActor1().getActorStats().getCurHP() <= 0) {
-						req.getRequestDispatcher("/_view/Game.jsp").forward(req,  resp);
-					}
-				}
-
+			result1 = combatMod.actor1Attack();
+			if(combatMod.getActor2Defeated() == true) {
+				result3 = combatMod.actor1DefeatsActor2();
+				finish = "true";
 			}
-		} else if (req.getParameter("run") != null) {
-			if(combatMod.getTurn() == 1) {
-				if(combatMod.boolDiceRoll((int) combatMod.actor1RunChance()) == true) {
-					req.getRequestDispatcher("/_view/Game.jsp").forward(req,  resp);
-				} else {
-					error = "You were not able to escape.";
-					req.setAttribute("errorMessage", error);
-					req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
-				}
-			} else {
-				error = "It is not your turn.";
-				req.setAttribute("errorMessage", error);
-				req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
-			}
-			
 		}
+		
+		if(req.getParameter("run") != null) {
+			Boolean run = combatMod.actor1RunAttempt();
+			if (run == true) {
+				result1 = "You successfully ran away";
+				finish = "true";
+			} else {
+				result1 = "You could not get away.";
+			}
+		}
+		
+		if(combatMod.getTurn() == 2) {
+			result2 = combatMod.actor2Attack();
+		}
+		
+		req.setAttribute("result1", result1);
+		req.setAttribute("result2", result2);
+		req.setAttribute("result3", result3);	
+		req.setAttribute("finished", finish);
+		
+		req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
+		req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
+		
+		req.setAttribute("enemyDMG", combatMod.getActor2().getActorStats().getDmg());
+		req.setAttribute("playerDMG", combatMod.getActor1().getActorStats().getDmg());
+		
+		req.setAttribute("enemyDEF", combatMod.getActor2().getActorStats().getDef());
+		req.setAttribute("playerDEF", combatMod.getActor1().getActorStats().getDef());
+		
+		req.setAttribute("enemySPD", combatMod.getActor2().getActorStats().getSpd());
+		req.setAttribute("playerSPD", combatMod.getActor1().getActorStats().getSpd());
+		
+		req.setAttribute("enemyWeapon", combatMod.getActor2().getEqWeap().getName());
+		req.setAttribute("playerWeapon", combatMod.getActor1().getEqWeap().getName());
+		
+		req.setAttribute("playerLVL", combatMod.getActor1().getActorStats().getCurLvl());
+		req.setAttribute("playerEXP", combatMod.getActor1().getActorStats().getCurExp());
+		req.setAttribute("playerMaxEXP", combatMod.getActor1().getActorStats().getMaxExp());
 		
 		req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
 	}

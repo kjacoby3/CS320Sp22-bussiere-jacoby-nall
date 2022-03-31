@@ -57,11 +57,34 @@
 				<tr>
 					<td class="label">Health: ${enemyHealth} </td>
 					<td class="label">Health: ${playerHealth} </td>
+                    <td class="label">${result1} </td>
 				</tr>
 				<tr>
-					<td class="label"> </td>
-					<td class="label">Damage: 10 </td>
+					<td class="label">Damage: ${enemyDMG} </td>
+					<td class="label">Damage: ${playerDMG} </td>
+                    <td class="label">${result2} </td>
 				</tr>
+                <tr>
+                    <td class="label">Defense: ${enemyDEF}</td>
+                    <td class="label">Defense: ${playerDEF}</td>
+                    <td class="label">${result3} </td>
+                </tr>
+                <tr>
+                    <td class="label">Speed: ${enemySPD}</td>
+                    <td class="label">Speed: ${playerSPD}</td>
+                </tr>
+                <tr>
+                    <td class="label">Weapon: ${enemyWeapon}</td>
+                    <td class="label">Weapon: ${playerWeapon}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="label">Level: ${playerLVL}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="label">XP: ${playerEXP}/${playerMaxEXP}</td>
+                </tr>
 				
 		</table><br><br><br><br><br><br><br>
 
@@ -70,6 +93,14 @@
             <input style="height: 100px; width: 100px;" type="Submit" name="attack" value="Attack">
             <input  style="height: 100px; width: 100px;" type="Submit" name="run" value="Run">
         </form>
+        <script>
+            let finish = ${finished}
+            if (finish == "true") {
+                <form style="text-align:center" action="${pageContext.servletContext.contextPath}/game" method="post">
+                    <input style="height: 100px; width: 100px;" type="Submit" name="back" value="Back"> </input>
+                </form>
+            }
+        </script>
         <div class="error">${error}</div>
 
 

@@ -282,12 +282,24 @@ public class Combat{
 	
 	//Returns if actor 1's run attempt is successful or not
 	public boolean actor1RunAttempt() {
-		return boolDiceRoll((int) actor1RunChance());
+		Boolean run = boolDiceRoll((int) actor1RunChance());
+		if (run == true) {
+			turn = actor1Turn;
+		} else {
+			updateTurn();
+		}
+		return run;
 	}
 	
 	//Returns if actor 2's run attempt is successful or not
 	public boolean actor2RunAttempt() {
-		return boolDiceRoll((int) actor2RunChance());
+		Boolean run = boolDiceRoll((int) actor2RunChance());
+		if (run == true) {
+			turn = actor2Turn;
+		} else {
+			updateTurn();
+		}
+		return run;
 	}
 	
 	//Returns result string of actor 1's attack
@@ -300,10 +312,10 @@ public class Combat{
 				if(dmg <= 0) {
 					result = actor2.getName() + " was too strong and your attack did 0 damage.";
 				} else {
-					result = "You attacked " + actor2.getName() + " for " + dmg + "damage.";
+					result = "You attacked " + actor2.getName() + " for " + dmg + " damage.";
 					actor2Stats.subtractHP(dmg);
 					if(actor2Stats.getCurHP() <= 0) {
-						actor1DefeatsActor2();
+						actor2Defeated = true;
 					}
 				}
 			} else {
@@ -325,21 +337,23 @@ public class Combat{
 				dmg = (int)actor2CalcAttackDMG();
 				if(dmg <= 0) {
 					result = "You were too strong and " + actor2.getName() + "'s attack did 0 damage.";
+					updateTurn();
 				} else {
-					result = actor2.getName() + " attacked you for " + dmg + "damage.";
+					result = actor2.getName() + " attacked you for " + dmg + " damage.";
 					actor1Stats.subtractHP(dmg);
+					updateTurn();
 					if(actor1Stats.getCurHP() <= 0) {
-						actor2DefeatsActor1();
+						actor1Defeated = true;
 					}
 				}
 			} else {
-				result = "You missed your attack.";
+				result = actor2.getName() + " missed their attack.";
+				updateTurn();
 			}
 		} else {
 			result = "It is not your turn.";
 		}
 		
-		updateTurn();
 		return result;
 	}
 	
@@ -347,6 +361,7 @@ public class Combat{
 	public String actor1DefeatsActor2() {
 		String result;
 		actor2Defeated = true;
+		actor2Stats.setCurHP(0);
 		Inventory actor1Inv = actor1.getInventory();
 		Inventory actor2Inv = actor2.getInventory();
 		Inventory roomInv = actor1.getLocation().getRoomItems();

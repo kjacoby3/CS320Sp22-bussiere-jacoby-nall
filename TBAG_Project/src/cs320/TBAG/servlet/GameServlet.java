@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import cs320.TBAG.model.Map;
+import cs320.TBAG.model.NPC;
 import cs320.TBAG.controller.GameController;
+import cs320.TBAG.model.Combat;
 import cs320.TBAG.model.Game;
 import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Weapon;
@@ -127,6 +129,39 @@ public class GameServlet extends HttpServlet{
 			else if(input.equalsIgnoreCase("attack")) {
 				updateHistory(input);
 				req.setAttribute("game", model);
+				
+				//For purposes of testing, I am foregoing this test and creating a blank enemy
+				//if(player.getLocation().getActorsInRoom().size() == 1) {
+				
+					//Gets only NPC from Room to be Actor2 in the Combat Model
+					
+					NPC enemy = new NPC();/* (NPC) player.getLocation().getActorsInRoom().get(0)*/;
+					
+					//Creates a new combat model to pass to CombatServlet
+					Combat combatMod = new Combat(player, enemy);
+					session.setAttribute("combatMod", combatMod);
+					//Sets initial attributes for CombatServlet
+					req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
+					req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
+					
+					req.setAttribute("enemyDMG", combatMod.getActor2().getActorStats().getDmg());
+					req.setAttribute("playerDMG", combatMod.getActor1().getActorStats().getDmg());
+					
+					req.setAttribute("enemyDEF", combatMod.getActor2().getActorStats().getDef());
+					req.setAttribute("playerDEF", combatMod.getActor1().getActorStats().getDef());
+					
+					req.setAttribute("enemySPD", combatMod.getActor2().getActorStats().getSpd());
+					req.setAttribute("playerSPD", combatMod.getActor1().getActorStats().getSpd());
+					
+					req.setAttribute("enemyWeapon", combatMod.getActor2().getEqWeap().getName());
+					req.setAttribute("playerWeapon", combatMod.getActor1().getEqWeap().getName());
+					
+					req.setAttribute("playerLVL", combatMod.getActor1().getActorStats().getCurLvl());
+					req.setAttribute("playerEXP", combatMod.getActor1().getActorStats().getCurExp());
+					req.setAttribute("playerMaxEXP", combatMod.getActor1().getActorStats().getMaxExp());
+				//} else {
+					// Return message asking for clarification of who should be attacked
+				//}
 				req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
 			}
 			else {
