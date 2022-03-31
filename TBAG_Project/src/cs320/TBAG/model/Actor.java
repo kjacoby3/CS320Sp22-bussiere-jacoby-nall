@@ -68,4 +68,12 @@ public abstract class Actor {
 	public void setEquipped(Equipment equipped) {
 		this.equipped = equipped;
 	}
+	
+	public boolean isDead() {
+		if(actorStats.getCurHP() <= 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

@@ -1,53 +1,7 @@
-//package cs320.TBAG.model;
-//
-//import cs320.TBAG.model.Actor;
-//
-//public class Combat{
-//	
-//	private Actor actor1;
-//	private Actor actor2;
-//	private ActorStats actor1Stats;
-//	private ActorStats actor2Stats;
-//	private int turn = 1;
-//	
-//	public Combat(Actor actor1, Actor actor2) {
-//		this.actor1 = actor1;
-//		this.actor2 = actor2;
-//		actor1Stats = actor1.getActorStats();
-//		actor2Stats = actor2.getActorStats();
-//		
-//	}
-//	
-//	public int attackActor() {
-//		int dmgDone = 0;
-//		
-//		
-//		return dmgDone;
-//	}
-//	
-//	
-//	public int intDiceRoll(int lowerBound, int upperBound) {
-//		int value = (int) (Math.random() * 100);
-//		while (value < lowerBound || value > upperBound) {
-//			value = (int) (Math.random() * 100);
-//		}
-//		return value;
-//	}
-//	
-//	public boolean boolDiceRoll(int threshold) {
-//		int value = (int) (Math.random() * 100);
-//		if (value < threshold) {
-//			return false;
-//		}
-//		else {
-//			return true;
-//		}
-//	}
-//}
-
 package cs320.TBAG.model;
 
 import cs320.TBAG.model.Actor;
+import java.util.HashMap;
 
 public class Combat{
 	
@@ -58,6 +12,7 @@ public class Combat{
 	private int actor1Turn = 1;
 	private int actor2Turn = 2;
 	private int turn;
+	private int turnCount = 0;
 	
 	private int actor1TotalDMG;
 	private int actor2TotalDMG;
@@ -73,7 +28,9 @@ public class Combat{
 	
 	private int actor1TotalSPD;
 	private int actor2TotalSPD;
-	//private boolean inCombat;
+	
+	private boolean actor1Defeated;
+	private boolean actor2Defeated;
 	
 	public Combat(Actor actor1, Actor actor2) {
 		this.actor1 = actor1;
@@ -99,26 +56,37 @@ public class Combat{
 		
 		actor1TotalSPD = (int)actor1TotalSPD();
 		actor2TotalSPD = (int)actor2TotalSPD();
+		
+		actor1Defeated = false;
+		actor2Defeated = false;
+		
 		turn = 1;
+		turnCount = 0;
+		
 	}
 	
-//	public void setActor1(Actor actor1) {
-//		this.actor1 = actor1;
-//	}
-//	
-//	public void setActor2(Actor actor2) {
-//		this.actor2 = actor2;
-//	}
 	public int getTurn() {
 		return turn;
 	}
 	
+	//Returns if actor 1 has been defeated or not
+	public boolean getActor1Defeated() {
+		return actor1Defeated;
+	}
+	
+	//Returns if actor 2 has been defeated or not
+	public boolean getActor2Defeated() {
+		return actor2Defeated;
+	}
+	
+	//Updates turn and adds to total count of turns made
 	public void updateTurn() {
 		if (turn == 1) {
 			turn = 2;
 		} else {
 			turn = 1;
 		}
+		turnCount += 1;
 	}
 	
 	public Actor getActor1() {
@@ -133,7 +101,7 @@ public class Combat{
 	public double actor1TotalDMG() {
 		double statDMG = actor1Stats.getDmg();
 		double weapDMG = actor1.getEqWeap().getDamage();
-		double totalDMG = statDMG * ((weapDMG / 100) + 1);
+		double totalDMG = weapDMG * ((statDMG / 100) + 1);
 		
 		
 		return totalDMG;
@@ -143,7 +111,7 @@ public class Combat{
 	public double actor2TotalDMG() {
 		double statDMG = actor2Stats.getDmg();
 		double weapDMG = actor2.getEqWeap().getDamage();
-		double totalDMG = statDMG * ((weapDMG / 100) + 1);
+		double totalDMG = weapDMG * ((statDMG / 100) + 1);
 		
 		
 		return totalDMG;
@@ -153,7 +121,7 @@ public class Combat{
 	public double actor1TotalDEF() {
 		double statDEF = actor1Stats.getDef();
 		double equipDEF = actor1.getEquipped().getDefenseMod();
-		double totalDEF = statDEF * ((equipDEF / 100) + 1);
+		double totalDEF = equipDEF * ((statDEF / 100) + 1);
 		
 		return totalDEF;
 	}
@@ -162,7 +130,7 @@ public class Combat{
 	public double actor2TotalDEF() {
 		double statDEF = actor2Stats.getDef();
 		double equipDEF = actor2.getEquipped().getDefenseMod();
-		double totalDEF = statDEF * ((equipDEF / 100) + 1);
+		double totalDEF = equipDEF * ((statDEF / 100) + 1);
 		
 		return totalDEF;
 	}
@@ -225,7 +193,7 @@ public class Combat{
 		return totalSPD;
 	}
 	
-	
+	//Calculates probability of actor 1 successfully running
 	public double actor1RunChance() {
 		double chance;
 		double spdDiff = actor1TotalSPD - actor2TotalSPD;
@@ -234,6 +202,7 @@ public class Combat{
 		return chance;
 	}
 	
+	//Calculates probability of actor 2 successfully running
 	public double actor2RunChance() {
 		double chance;
 		double spdDiff = actor2TotalSPD - actor1TotalSPD;
@@ -242,6 +211,26 @@ public class Combat{
 		return chance;
 	}
 	
+	
+	//Calculates probability of actor 1 landing an attack
+	public double actor1HitChance() {
+		double chance;
+		double spdDiff = actor1AttackSPD - actor2MoveSPD;
+		chance = 100 - (90 * ((spdDiff / 100) + 1));
+		
+		return chance;
+	}
+	
+	//Calculates probability of actor 2 landing an attack
+	public double actor2HitChance() {
+		double chance;
+		double spdDiff = actor2AttackSPD - actor1MoveSPD;
+		chance = 100 - (90 * ((spdDiff / 100) + 1));
+		
+		return chance;
+	}
+	
+	//Calculates damage done by actor 1
 	public double actor1CalcAttackDMG() {
 		double dmgDone;
 		double z = actor1TotalDMG * (1 - ((2 * actor2TotalDEF) / (3 * actor1TotalDMG)));
@@ -251,6 +240,7 @@ public class Combat{
 		return dmgDone;
 	}
 	
+	//Calculates damage done by actor 2
 	public double actor2CalcAttackDMG() {
 		double dmgDone;
 		double z = actor2TotalDMG * (1 - ((2 * actor1TotalDEF) / (3 * actor2TotalDMG)));
@@ -278,6 +268,156 @@ public class Combat{
 		else {
 			return true;
 		}
+	}
+	
+	//Returns if actor 1's attack lands or not
+	public boolean actor1HitAttempt() {
+		return boolDiceRoll((int) actor1HitChance());
+	}
+	
+	//Returns if actor 2's attack lands or not
+	public boolean actor2HitAttempt() {
+		return boolDiceRoll((int) actor2HitChance());
+	}
+	
+	//Returns if actor 1's run attempt is successful or not
+	public boolean actor1RunAttempt() {
+		return boolDiceRoll((int) actor1RunChance());
+	}
+	
+	//Returns if actor 2's run attempt is successful or not
+	public boolean actor2RunAttempt() {
+		return boolDiceRoll((int) actor2RunChance());
+	}
+	
+	//Returns result string of actor 1's attack
+	public String actor1Attack() {
+		String result;
+		int dmg;
+		if(turn == 1) {
+			if(actor1HitAttempt()) {
+				dmg = (int)actor1CalcAttackDMG();
+				if(dmg <= 0) {
+					result = actor2.getName() + " was too strong and your attack did 0 damage.";
+				} else {
+					result = "You attacked " + actor2.getName() + " for " + dmg + "damage.";
+					actor2Stats.subtractHP(dmg);
+					if(actor2Stats.getCurHP() <= 0) {
+						actor1DefeatsActor2();
+					}
+				}
+			} else {
+				result = "You missed your attack.";
+			}
+		} else {
+			result = "It is not your turn.";
+		}
+		
+		updateTurn();
+		return result;
+	}
+	
+	public String actor2Attack() {
+		String result;
+		int dmg;
+		if(turn == 2) {
+			if(actor2HitAttempt()) {
+				dmg = (int)actor2CalcAttackDMG();
+				if(dmg <= 0) {
+					result = "You were too strong and " + actor2.getName() + "'s attack did 0 damage.";
+				} else {
+					result = actor2.getName() + " attacked you for " + dmg + "damage.";
+					actor1Stats.subtractHP(dmg);
+					if(actor1Stats.getCurHP() <= 0) {
+						actor2DefeatsActor1();
+					}
+				}
+			} else {
+				result = "You missed your attack.";
+			}
+		} else {
+			result = "It is not your turn.";
+		}
+		
+		updateTurn();
+		return result;
+	}
+	
+	//Returns result string of actor 1 defeating actor 2
+	public String actor1DefeatsActor2() {
+		String result;
+		actor2Defeated = true;
+		Inventory actor1Inv = actor1.getInventory();
+		Inventory actor2Inv = actor2.getInventory();
+		Inventory roomInv = actor1.getLocation().getRoomItems();
+		actor1Stats.addExp(actor2Stats.getCurExp());
+		result = "Congrats, you have defeated " + actor2.getName() +
+				"and have earned " + actor2Stats.getCurExp() + " XP!";
+		
+		//Add dropped equipment to actor 1 inventory
+		for(Equipment i : actor2Inv.getEquipment().values()) {
+			if(!actor1.getInventory().checkFull("Equipment")) {
+				actor1Inv.addItem(i);
+				actor2DropMessage(i, false);
+			} else {
+				roomInv.addItem(i);
+				actor2DropMessage(i, true);
+			}
+		}
+		
+		//Add dropped weapons to actor 1 inventory
+		for(Weapon i : actor2Inv.getWeapons().values()) {
+			if(!actor1.getInventory().checkFull("Weapons")) {
+				actor1Inv.addItem(i);
+				actor2DropMessage(i, false);
+			} else {
+				roomInv.addItem(i);
+				actor2DropMessage(i, true);
+			}
+		}
+		
+		//Add dropped trophies to actor 1 inventory
+		for(Trophy i : actor2Inv.getTrophies().values()) {
+			if(!actor1.getInventory().checkFull("Trophies")) {
+				actor1Inv.addItem(i);
+				actor2DropMessage(i, false);
+			} else {
+				roomInv.addItem(i);
+				actor2DropMessage(i, true);
+			}
+		}
+		
+		//Add dropped usables to actor 1 inventory (without message)
+		for(Usable i : actor2Inv.getUsables().values()) {
+			if(!actor1.getInventory().checkFull("Usables")) {
+				actor1Inv.addItem(i);
+				//actor2DropMessage(i, false);
+			} else {
+				roomInv.addItem(i);
+				//actor2DropMessage(i, true);
+			}
+		}
+		return result;
+	}
+	
+	
+	public String actor2DefeatsActor1() {
+		String result;
+		result = actor2.getName() + " killed you.";
+		return result;
+	}
+	
+	//Returns result string of actor 2 dropping an item on death
+	public String actor2DropMessage(Item item, boolean fullInventory) {
+		String result;
+		if(!fullInventory) {
+			result = actor2.getName() + " dropped " + item;
+		} else {
+			result = "You cannot carry anymore " + item.getType() +
+					", but" + actor2.getName() + " dropped " + item +
+					" on the ground";
+		}
+		return result;
 	}
 }
 

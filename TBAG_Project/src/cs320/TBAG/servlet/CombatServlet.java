@@ -61,6 +61,11 @@ public class CombatServlet extends HttpServlet{
 		
 		String error = null;
 		
+		req.setAttribute("player", combatMod.getActor1().getName());
+		req.setAttribute("enemy", combatMod.getActor2().getName());
+		req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
+		req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
+		
 		if (req.getParameter("attack") != null) {
 			if(combatMod.getTurn() == 1) {
 				combatMod.getActor2().getActorStats().subtractHP((int) combatMod.actor1CalcAttackDMG());

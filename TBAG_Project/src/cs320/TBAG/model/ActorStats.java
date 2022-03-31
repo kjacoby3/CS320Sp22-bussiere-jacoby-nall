@@ -123,4 +123,12 @@ public class ActorStats {
 	public void subtractHP(int subtractedHP) {
 		curHP -= subtractedHP;
 	}
+	
+	public boolean checkLevelUp() {
+		if(curExp >= maxHP) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

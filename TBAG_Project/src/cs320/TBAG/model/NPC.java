@@ -12,8 +12,8 @@ public class NPC extends Actor{
 		location = new Room();
 		inventory = new Inventory(100);
 		actorStats = new ActorStats(100, 10, 10, 10);
-		eqWeap = new Weapon("Fists", 0, 100);
-		equipped = new Equipment("Bare", 100, 0, 0, 0);
+		eqWeap = new Weapon("Fists", 10, 100);
+		equipped = new Equipment("Bare", 100, 10, 0, 0);
 	}
 	
 	public NPC(String name, Room location, Inventory inventory,
