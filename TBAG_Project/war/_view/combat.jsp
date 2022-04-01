@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
     <head>
         <title>Text Based Adventure Game</title>
         <style type = "text/css">
@@ -86,21 +88,21 @@
                     <td class="label">XP: ${playerEXP}/${playerMaxEXP}</td>
                 </tr>
 				
-		</table><br><br><br><br><br><br><br>
-
-        <form style="text-align:center" action="${pageContext.servletContext.contextPath}/combat" method="post">
-
-            <input style="height: 100px; width: 100px;" type="Submit" name="attack" value="Attack">
-            <input  style="height: 100px; width: 100px;" type="Submit" name="run" value="Run">
-        </form>
-        <script>
-            let finish = ${finished}
-            if (finish == "true") {
+		</table><br><br><br><br>
+        <div class="buttons">
+            <form style="text-align:center" action="${pageContext.servletContext.contextPath}/combat" method="post">
+                <c:if test="${empty finished}">
+                    <input style="height: 100px; width: 100px;" type="Submit" name="attack" value="Attack">
+                    <input style="height: 100px; width: 100px;" type="Submit" name="run" value="Run">
+                    <input style="height: 100px; width: 100px;" type="Submit" name="items" value="Items">
+                </c:if>
+            </form>
+            <c:if test="${! empty finished}">
                 <form style="text-align:center" action="${pageContext.servletContext.contextPath}/game" method="post">
                     <input style="height: 100px; width: 100px;" type="Submit" name="back" value="Back"> </input>
                 </form>
-            }
-        </script>
+            </c:if>
+        </div>
         <div class="error">${error}</div>
 
 
