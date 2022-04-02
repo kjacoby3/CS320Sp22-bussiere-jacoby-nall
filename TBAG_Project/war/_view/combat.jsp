@@ -45,6 +45,15 @@
 				font-family: Rockwell;
 				color:red;
 			}
+            .buttons input{
+                background-color: #808080;
+                float: center;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 5px;
+
+            }
         </style>
         
 

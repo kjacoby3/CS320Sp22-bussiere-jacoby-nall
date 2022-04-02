@@ -83,10 +83,14 @@ public class Combat{
 	public void updateTurn() {
 		if (turn == 1) {
 			turn = 2;
-		} else {
+			turnCount += 1;
+		} else if (turn == 2){
 			turn = 1;
+			turnCount += 1;
+		} else {
+			turn = turn;
 		}
-		turnCount += 1;
+		
 	}
 	
 	public Actor getActor1() {
@@ -321,8 +325,10 @@ public class Combat{
 			} else {
 				result = "You missed your attack.";
 			}
-		} else {
+		} else if(turn == 2){
 			result = "It is not your turn.";
+		} else {
+			result = "The combat is over, please go back.";
 		}
 		
 		updateTurn();
@@ -350,8 +356,10 @@ public class Combat{
 				result = actor2.getName() + " missed their attack.";
 				updateTurn();
 			}
-		} else {
+		} else if(turn == 1){
 			result = "It is not your turn.";
+		} else {
+			result = "The combat is over, please go back";
 		}
 		
 		return result;
@@ -412,6 +420,7 @@ public class Combat{
 				//actor2DropMessage(i, true);
 			}
 		}
+		turn = 0;
 		return result;
 	}
 	
@@ -419,6 +428,7 @@ public class Combat{
 	public String actor2DefeatsActor1() {
 		String result;
 		result = actor2.getName() + " killed you.";
+		turn = 0;
 		return result;
 	}
 	

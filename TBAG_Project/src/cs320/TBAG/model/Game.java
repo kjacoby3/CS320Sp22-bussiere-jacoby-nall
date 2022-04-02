@@ -80,4 +80,8 @@ public class Game {
 		actorsList.add(npc1);
 		inventories.add(npc1.getInventory());
 	}
+	
+	public String mesg(String mesg) {
+		return mesg;
+	}
 }
