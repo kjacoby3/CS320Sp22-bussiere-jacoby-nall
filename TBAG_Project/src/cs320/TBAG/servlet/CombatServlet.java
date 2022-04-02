@@ -120,6 +120,7 @@ public class CombatServlet extends HttpServlet{
 		req.setAttribute("enemyWeapon", combatMod.getActor2().getEqWeap().getName());
 		req.setAttribute("playerWeapon", combatMod.getActor1().getEqWeap().getName());
 		
+		req.setAttribute("enemyType", combatMod.getActor2().getType());
 		req.setAttribute("playerLVL", combatMod.getActor1().getActorStats().getCurLvl());
 		req.setAttribute("playerEXP", combatMod.getActor1().getActorStats().getCurExp());
 		req.setAttribute("playerMaxEXP", combatMod.getActor1().getActorStats().getMaxExp());

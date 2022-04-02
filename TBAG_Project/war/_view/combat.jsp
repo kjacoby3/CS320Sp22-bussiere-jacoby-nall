@@ -89,7 +89,7 @@
                     <td class="label">Weapon: ${playerWeapon}</td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td class="label">Type: ${enemyType}</td>
                     <td class="label">Level: ${playerLVL}</td>
                 </tr>
                 <tr>
