@@ -8,4 +8,8 @@ public interface ActionsInterface {
 	void unequipWeapon();
 	void equipEquipment(Equipment equipment);
 	void unequipEquipment();
+	void talk(NPC npc);
+	void buy(Item item);
+	void sell(Item item);
+	void use(Item item);
 }
