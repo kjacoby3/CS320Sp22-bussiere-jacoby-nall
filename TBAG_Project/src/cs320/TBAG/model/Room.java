@@ -1,5 +1,6 @@
 package cs320.TBAG.model;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Room extends Map{
 	int roomID;
@@ -7,7 +8,7 @@ public class Room extends Map{
 	String roomName;
 	String roomDescrip;
 	Inventory roomItems;
-	ArrayList<Actor> actorsInRoom = new ArrayList<Actor>();
+	ArrayList<NPC> NPCsInRoom = new ArrayList<NPC>();
 	
 	static ArrayList<String> directionsForValidation = new ArrayList<>();
 	static {
@@ -23,11 +24,11 @@ public class Room extends Map{
 	
 	
 	
-	public Room(int roomID, String roomName, String roomDescrip, Inventory roomItems, ArrayList<Actor> actorsInRoom, ArrayList<Integer> exits) { //exits must be entered as four values <0,0,0,0> for n,s,w,e
+	public Room(int roomID, String roomName, String roomDescrip, Inventory roomItems, ArrayList<NPC> NPCsInRoom, ArrayList<Integer> exits) { //exits must be entered as four values <0,0,0,0> for n,s,w,e
 		this.roomID = roomID;
 		this.roomDescrip = roomDescrip;
 		this.roomItems = roomItems;
-		this.actorsInRoom = actorsInRoom;
+		this.NPCsInRoom = NPCsInRoom;
 		this.roomExits = exits;
 	}
 	
@@ -36,7 +37,7 @@ public class Room extends Map{
 		this.roomName = "starting";
 		this.roomDescrip = "This is the starting area.  You can go North(n)";  //"You awaken to sound of explosions and the rocking of the ship.  You shoot up out of bed and notice that your cabinmate is not in their bed.  There is a door leading out into the hall";
 		this.roomItems = null;	
-		this.actorsInRoom = null;
+		this.NPCsInRoom = null;
 		this.roomExits.add(2);
 		this.roomExits.add(0);
 		this.roomExits.add(3);
@@ -59,8 +60,26 @@ public class Room extends Map{
 		return roomItems;
 	}
 	
-	public ArrayList<Actor> getActorsInRoom() {
-		return actorsInRoom;
+	public ArrayList<NPC> getNPCsInRoom() {
+		return NPCsInRoom;
+	}
+	
+	public void addNPCInRoom(NPC npc) {
+		NPCsInRoom.add(npc);
+	}
+	
+	public void removeNPCInRoom(NPC npc) {
+		Iterator<NPC> itr = NPCsInRoom.iterator();
+	    while (itr.hasNext()) {
+	      NPC npcName = itr.next();
+	      if (npcName.equals(npc)) {
+	    	  NPCsInRoom.remove(npcName);
+	      }
+	    }
+	}
+	
+	public ArrayList<NPC> getNPCInRoom() {
+		return NPCsInRoom;
 	}
 	
 	public ArrayList<Integer> getRoomExits() {
