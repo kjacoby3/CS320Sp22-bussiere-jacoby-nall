@@ -11,6 +11,7 @@ public abstract class Actor {
 	ActorStats actorStats;
 	Weapon eqWeap;
 	Equipment equipped;
+	int currency;
 	
 	
 	public String getName() {
@@ -67,6 +68,14 @@ public abstract class Actor {
 	
 	public void setEquipped(Equipment equipped) {
 		this.equipped = equipped;
+	}
+	
+	public int getCurrency() {
+		return currency;
+	}
+	
+	public void setCurrency(int currency) {
+		this.currency = currency;
 	}
 	
 	public boolean isDead() {

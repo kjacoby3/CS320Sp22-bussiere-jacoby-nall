@@ -21,8 +21,8 @@ import cs320.TBAG.model.Weapon;
 public class CombatServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
-	Player player = new Player();
-	NPC npc1 = new NPC();
+	//Player player = new Player();
+	//NPC npc1 = new NPC();
 	Combat combatMod; // = new Combat(player, npc1);
 	HttpSession session;
 	@Override

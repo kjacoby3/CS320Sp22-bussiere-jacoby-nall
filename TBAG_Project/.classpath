@@ -7,5 +7,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/CS320_Jetty9"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="lib" path="C:/Users/kdjac/Downloads/jar_files.zip"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CS320_Derby"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -21,6 +21,13 @@ public class LevelUp{
 	int projDMG;
 	int projDEF;
 	int projSPD;
+	int projCurExp;
+	int projMaxExp;
+	
+	int hpIncrement = 25;
+	int dmgIncrement = 10;
+	int defIncrement = 10;
+	int spdIncrement = 10;
 	
 	
 	public LevelUp(Player player) {
@@ -36,11 +43,17 @@ public class LevelUp{
 		maxExp = stats.getMaxExp();
 		
 		projLvl = curLvl + 1;
-		projMaxHP = maxHP + 25;
-		projCurHP = curHP + 25;
-		projDMG = dmg + 10;
-		projDEF = def + 10;
-		projSPD = spd + 10;
+		projMaxHP = maxHP + hpIncrement;
+		projCurHP = curHP + hpIncrement;
+		projDMG = dmg + dmgIncrement;
+		projDEF = def + defIncrement;
+		projSPD = spd + spdIncrement;
+		projCurExp = curExp - maxExp;
+		projMaxExp = calcNewMaxExp();
+	}
+	
+	public int getProjLvl() {
+		return projLvl;
 	}
 	
 	public int getProjMaxHP() {
@@ -63,6 +76,30 @@ public class LevelUp{
 		return projSPD;
 	}
 	
+	public int getHPInc() {
+		return hpIncrement;
+	}
+	
+	public int getDMGInc() {
+		return dmgIncrement;
+	}
+	
+	public int getDEFInc() {
+		return defIncrement;
+	}
+	
+	public int getSPDInc() {
+		return spdIncrement;
+	}
+	
+	public int getProjCurExp() {
+		return projCurExp;
+	}
+	
+	public int getProjMaxExp() {
+		return projMaxExp;
+	}
+	
 	//Updates stats for multiple level ups at a time
 	public void updateStats() {
 		stats = player.getActorStats();
@@ -76,11 +113,11 @@ public class LevelUp{
 		maxExp = stats.getMaxExp();
 		
 		projLvl = curLvl + 1;
-		projMaxHP = maxHP + 25;
-		projCurHP = curHP + 25;
-		projDMG = dmg + 10;
-		projDEF = def + 10;
-		projSPD = spd + 10;
+		projMaxHP = maxHP + hpIncrement;
+		projCurHP = curHP + hpIncrement;
+		projDMG = dmg + dmgIncrement;
+		projDEF = def + defIncrement;
+		projSPD = spd + spdIncrement;
 	}
 	
 	public int calcNewMaxExp() {
@@ -95,7 +132,7 @@ public class LevelUp{
 		if(stats.checkLevelUp()) {
 			if(stat == "Health" || stat == "HP") {
 				result = "Your Health increased from " + maxHP + " to " + projMaxHP + ".";
-				stats.setCurExp(curExp - maxExp);
+				stats.setCurExp(projCurExp);
 				stats.setMaxHP(projMaxHP);
 				stats.setCurHP(projCurHP);
 				stats.setMaxExp(calcNewMaxExp());

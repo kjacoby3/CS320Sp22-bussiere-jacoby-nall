@@ -14,6 +14,7 @@ import cs320.TBAG.model.NPC;
 import cs320.TBAG.controller.GameController;
 import cs320.TBAG.model.Combat;
 import cs320.TBAG.model.Game;
+import cs320.TBAG.model.LevelUp;
 import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Weapon;
 
@@ -163,6 +164,46 @@ public class GameServlet extends HttpServlet{
 					// Return message asking for clarification of who should be attacked
 				//}
 				req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
+			}
+			else if(input.equalsIgnoreCase("level up") || input.equalsIgnoreCase("levelup") ||
+					input.equalsIgnoreCase("lvl up")) {
+				LevelUp levelUpModel = new LevelUp(player);
+				session.setAttribute("levelUpModel", levelUpModel);
+				
+				req.setAttribute("player", player.getName());
+				
+				req.setAttribute("level", player.getActorStats().getCurLvl());
+				req.setAttribute("projLvl", levelUpModel.getProjLvl());
+				
+				req.setAttribute("curXP", player.getActorStats().getCurExp());
+				req.setAttribute("maxXP", player.getActorStats().getMaxExp());
+				
+				req.setAttribute("curHP", player.getActorStats().getCurHP());
+				req.setAttribute("maxHP", player.getActorStats().getMaxHP());
+				
+				req.setAttribute("dmg", player.getActorStats().getDmg());
+				
+				req.setAttribute("def", player.getActorStats().getDef());
+				
+				req.setAttribute("spd", player.getActorStats().getSpd());
+				
+				req.setAttribute("projCurHP", levelUpModel.getProjCurHP());
+				req.setAttribute("projMaxHP", levelUpModel.getProjMaxHP());
+				req.setAttribute("hpInc", levelUpModel.getHPInc());
+				
+				req.setAttribute("projDMG", levelUpModel.getProjDMG());
+				req.setAttribute("dmgInc", levelUpModel.getDMGInc());
+				
+				req.setAttribute("projDEF", levelUpModel.getProjDEF());
+				req.setAttribute("defInc", levelUpModel.getDEFInc());
+				
+				req.setAttribute("projSPD", levelUpModel.getProjSPD());
+				req.setAttribute("spdInc", levelUpModel.getSPDInc());
+				
+				req.setAttribute("projCurXP", levelUpModel.getProjCurExp());
+				req.setAttribute("projMaxXP", levelUpModel.getProjMaxExp());
+				
+				req.getRequestDispatcher("/_view/levelUp.jsp").forward(req, resp);
 			}
 			else {
 				error = "unsupported command";
