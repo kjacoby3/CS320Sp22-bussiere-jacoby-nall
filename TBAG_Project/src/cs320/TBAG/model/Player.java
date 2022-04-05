@@ -86,7 +86,7 @@ public class Player extends Actor implements ActionsInterface{
 	}
 	
 	@Override
-	public void unequipWeapon(Weapon weapon) {
+	public void unequipWeapon() {
 		Weapon curWeapon = getEqWeap();
 		inventory.addItem(curWeapon);
 		setEqWeap(new Weapon("Fists", 10, 100));
@@ -107,7 +107,7 @@ public class Player extends Actor implements ActionsInterface{
 	}
 	
 	@Override
-	public void unequipEquipment(Equipment equipment) {
+	public void unequipEquipment() {
 		Equipment curEquipment = getEquipped();
 		inventory.addItem(curEquipment);
 		setEquipped(new Equipment("Bare", 100, 10, 0, 0));

@@ -27,6 +27,10 @@
   	<servlet-name>CreateAccountServlet</servlet-name>
   	<servlet-class>cs320.TBAG.servlet.CreateAccountServlet</servlet-class>
   </servlet>
+    <servlet>
+  	<servlet-name>LevelUpServlet</servlet-name>
+  	<servlet-class>cs320.TBAG.servlet.LevelUpServlet</servlet-class>
+  </servlet>
 
   <!-- Servlet mappings -->
   <servlet-mapping>
@@ -52,6 +56,11 @@
   <servlet-mapping>
   	<servlet-name>CreateAccountServlet</servlet-name>
   	<url-pattern>/createAccount</url-pattern>
+  </servlet-mapping>
+  
+    <servlet-mapping>
+  	<servlet-name>LevelUpServlet</servlet-name>
+  	<url-pattern>/levelUp</url-pattern>
   </servlet-mapping>
 </web-app>
 
