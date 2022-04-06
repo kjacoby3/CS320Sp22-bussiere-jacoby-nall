@@ -3,14 +3,16 @@ package cs320.TBAG.model;
 public class Treasure{
 	String name;
 	String type;
+	int price;
 	int hpMod;
 	int defMod;
 	int spdMod;
 	int dmgMod;
 	
-	public Treasure(String name, int hpMod, int defMod, int spdMod, int dmgMod) {
+	public Treasure(String name, int price, int hpMod, int defMod, int spdMod, int dmgMod) {
 		this.name = name;
 		type = "Treasure";
+		this.price = price;
 		this.hpMod = hpMod;
 		this.defMod = hpMod;
 		this.spdMod = spdMod;
