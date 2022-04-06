@@ -3,6 +3,7 @@ package cs320.TBAG.database;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import cs320.TBAG.database.IDatabase;
@@ -89,7 +90,45 @@ public class DerbyDatabase implements IDatabase {
 	
 	//Populates the tables (Look at lab06)
 	public void loadInitialData() {
-		
+			
+		executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					List<Room> roomList;
+					
+					try {
+						roomList = InitialData.getRooms();
+					} catch (IOException e) {
+						throw new SQLException("Couldn't read initial data", e);
+					}
+
+					PreparedStatement insertRoom = null; //PreparedStatement needs to be imported?
+
+					try {
+						// populate Rooms table 
+						insertRoom = conn.prepareStatement("insert into Rooms (Room Info) values (?...)");
+						for (Room room : roomList) {
+							//insertRoom.setInt(1, room.getRoomID());	// auto-generated primary key, don't insert this.  MAY NEED THIS WHEN LOADING MULTIPLE LEVELS
+							insertRoom.setString(1, room.getRoomName());
+							insertRoom.setString(2, room.getRoomDescripLong());
+							insertRoom.setString(3, room.getRoomDescripShort());
+							//insertRoom.setString(4, room.getRoomItems()); //This needs to be setList
+							//insertRoom.setString(5, room.getNPCsInRoom()); //This needs to be setList
+							//insertRoom.setString(6, room.getAvailableExits()); //This needs to be setList
+							//insertRoom.setString(7, room.getOtherExitOptions()); //This needs to be setList
+							
+							
+							insertRoom.addBatch();
+						}
+						insertRoom.executeBatch();
+						
+						
+						return true;
+					} finally {
+						DBUtil.closeQuietly(insertRoom);
+					}
+				}
+			});
 		
 	}
 	

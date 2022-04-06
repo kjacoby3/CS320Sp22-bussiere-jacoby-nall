@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import cs320.TBAG.model.Room;
+
 public class InitialData {
 	
-	public static List<Room> getRoom() throws IOException {
+	public static List<Room> getRooms() throws IOException {
 		List<Room> roomList = new ArrayList<Room>();
 		ReadCSV readRooms = new ReadCSV("Room Nodes.csv");
 		try {
@@ -21,11 +23,19 @@ public class InitialData {
 				Iterator<String> i = tuple.iterator();
 				Room room = new Room();
 				room.setRoomId(roomId++);
-				room.setAuthorId(Integer.parseInt(i.next()));
-				room.setTitle(i.next());
-				room.setIsbn(i.next());
-				room.setPublished(Integer.parseInt(i.next()));
-				roomList.add(book);
+				room.setRoomName(i.next());
+				room.setRoomDescripLong(i.next());
+				room.setRoomDescripShort(i.next());
+				
+				//These next two will not be in the room CSV. We need to figure out how to create these
+				room.setRoomItems(null);
+				room.setNPCsInRoom(null);
+				
+				//These next two will need to be Lists created from separate CSVs than the current Room CSVs
+				room.setAvailableExits(i.next());
+				room.setOtherExitOptions(i.next());
+				
+				roomList.add(room);
 			}
 			return roomList;
 		} finally {
