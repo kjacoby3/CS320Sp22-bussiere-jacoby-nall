@@ -6,9 +6,12 @@ public class Room extends Map{
 	int roomID;
 	int connectingID;
 	String roomName;
-	String roomDescrip;
+	String roomDescripLong;
+	String roomDescripShort;
 	Inventory roomItems;
 	ArrayList<NPC> NPCsInRoom = new ArrayList<NPC>();
+	ArrayList<Integer> availableExits = new Arraylist<Integer>();
+	ArrayList<String> otherExitOptions = new ArrayList<String>();
 	
 	static ArrayList<String> directionsForValidation = new ArrayList<>();
 	static {
@@ -18,15 +21,15 @@ public class Room extends Map{
 		directionsForValidation.add("e");
 	}
 	
-	ArrayList<Integer> roomExits = new ArrayList<Integer>();
+	ArrayList<Integer> roomExits = new ArrayList<Integer>(); //Will be replaced with availableExits and otherExitOptions
 	Boolean verifyExit;
 	int attemptedExit;
 	
 	
 	
-	public Room(int roomID, String roomName, String roomDescrip, Inventory roomItems, ArrayList<NPC> NPCsInRoom, ArrayList<Integer> exits) { //exits must be entered as four values <0,0,0,0> for n,s,w,e
+	public Room(int roomID, String roomName, String roomDescripLong, Inventory roomItems, ArrayList<NPC> NPCsInRoom, ArrayList<Integer> exits) { //exits must be entered as four values <0,0,0,0> for n,s,w,e
 		this.roomID = roomID;
-		this.roomDescrip = roomDescrip;
+		this.roomDescripLong = roomDescripLong;
 		this.roomItems = roomItems;
 		this.NPCsInRoom = NPCsInRoom;
 		this.roomExits = exits;
@@ -35,7 +38,7 @@ public class Room extends Map{
 	public Room() {
 		this.roomID = 1;
 		this.roomName = "starting";
-		this.roomDescrip = "This is the starting area.  You can go North(n)";  //"You awaken to sound of explosions and the rocking of the ship.  You shoot up out of bed and notice that your cabinmate is not in their bed.  There is a door leading out into the hall";
+		this.roomDescripLong = "This is the starting area.  You can go North(n)";  //"You awaken to sound of explosions and the rocking of the ship.  You shoot up out of bed and notice that your cabinmate is not in their bed.  There is a door leading out into the hall";
 		this.roomItems = null;	
 		this.NPCsInRoom = null;
 		this.roomExits.add(2);
@@ -44,20 +47,47 @@ public class Room extends Map{
 		this.roomExits.add(0);
 	}
 	
+	public void setRoomID(int ID) {
+		this.roomID = ID;
+	}
+	
 	public int getRoomID() {
 		return roomID;
 	}
 	
+	public void setRoomName(String name){
+		this.roomName = name;
+	}
 	public String getRoomName() {
 		return roomName;
 	}
 	
-	public String getRoomDescrip() {
-		return roomDescrip;
+	public void setRoomDescripLong(String longDescrip) {
+		this.roomDescripLong = longDescrip;
+	}
+	
+	public String getRoomDescripLong() {
+		return roomDescripLong;
+	}
+	
+	public void setRoomDescripShort(String shortDescrip) {
+		this.roomDescripShort = shortDescrip;
+	}
+	
+	public String getRoomDescripShort() {
+		return roomDescripShort;
+	}
+	
+	public void setRoomItems(Inventory items) {
+		this.roomItems = items;
 	}
 	
 	public Inventory getRoomItems() {
 		return roomItems;
+	}
+	
+	public void setNPCsInRoom(ArrayList<NPC> npc) {
+		this.NPCsInRoom = npc;
 	}
 	
 	public ArrayList<NPC> getNPCsInRoom() {
@@ -78,11 +108,23 @@ public class Room extends Map{
 	    }
 	}
 	
-	public ArrayList<NPC> getNPCInRoom() {
-		return NPCsInRoom;
+	public void setAvailableExits(ArrayList<Integer> exits) {
+		this.availableExits = exits;
 	}
 	
-	public ArrayList<Integer> getRoomExits() {
+	public ArrayList<Integer> getAvailableExits(){
+		return availableExits;
+	}
+	
+	public void setOtherExitOptions(ArrayList<String> others) {
+		this.otherExitOptions = others;
+	}
+	
+	public ArrayList<String> getOtherExitOptions(){
+		return otherExitOptions;
+	}
+	
+	public ArrayList<Integer> getRoomExits() { //this will be removed after exits moves over to availableExits
 		return roomExits;
 	}
 	

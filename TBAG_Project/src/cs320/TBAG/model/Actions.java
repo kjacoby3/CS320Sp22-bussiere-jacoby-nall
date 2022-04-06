@@ -11,6 +11,7 @@ public class Actions implements ActionsInterface {
 	public Item item;
 	public Inventory inventory;
 	int currRoom;
+	int currency;
 		
 	@Override
 	public void move(String direction) {
@@ -72,20 +73,20 @@ public class Actions implements ActionsInterface {
 	@Override 
 	public void buy(Item item) {
 		//TODO
-		//if (currency >= item.getCost()){
+		if (currency >= item.getCost()){
 		
 		inventory.addItem(item);
-		//currency = currency - item.getCost();
-		//npcInventory.removeItem(item);
-		//}
+		currency = currency - item.getCost();
+		npcInventory.removeItem(item);
+		}
 		
 	}
 	
 	@Override 
 	public void sell(Item item) {
 		inventory.removeItem(item);
-		//npcInventory.addItem(item);
-		//currency = currency - item.getCost()*0.7;
+		npcInventory.addItem(item);
+		currency = currency - item.getCost()*0.7;
 	}
 	
 	@Override 
