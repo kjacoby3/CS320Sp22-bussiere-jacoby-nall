@@ -2,6 +2,7 @@ package cs320.TBAG.servlet;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -107,11 +108,12 @@ public class GameServlet extends HttpServlet{
 			}
 			
 			else if(input.equalsIgnoreCase("inventory")) {
-				req.setAttribute("weapons", player.getInventory().getWeapons().keySet());
-				req.setAttribute("equipment", player.getInventory().getEquipment().keySet());
-				req.setAttribute("trophies", player.getInventory().getTrophies().keySet());
-				req.setAttribute("usables", player.getInventory().getUsables().keySet());
-				req.setAttribute("treasures", player.getInventory().getTreasures().keySet());
+				req.setAttribute("weapons", new ArrayList<>(player.getInventory().getWeapons().values()));
+				req.setAttribute("equipment", new ArrayList<>(player.getInventory().getEquipment().values()));
+				req.setAttribute("trophies", new ArrayList<>(player.getInventory().getTrophies().values()));
+				req.setAttribute("usables", new ArrayList<>(player.getInventory().getUsables().values()));
+				req.setAttribute("treasures", new ArrayList<>(player.getInventory().getTreasures().values()));
+				req.setAttribute("consumables", new ArrayList<>(player.getInventory().getConsumables().values()));
 				req.getRequestDispatcher("/_view/inventory.jsp").forward(req, resp);
 			}
 			

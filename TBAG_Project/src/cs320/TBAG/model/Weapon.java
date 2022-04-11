@@ -13,4 +13,8 @@ public class Weapon extends Item{
 		public int getDamage(){
 			return damage;
 		}
+		
+		public int getPrice() {
+			return price;
+		}
 }

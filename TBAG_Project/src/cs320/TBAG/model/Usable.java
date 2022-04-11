@@ -6,5 +6,8 @@ public class Usable extends Item{
 		this.price = price;
 		this.type = "Usable";
 	}
+	public int getPrice() {
+		return (int) (price *.7);
+	}
 	
 }
