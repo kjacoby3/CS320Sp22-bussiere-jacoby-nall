@@ -6,4 +6,8 @@ public class Trophy extends Item{
 		this.price = price;
 		type = "Trophy";
 	}
+	
+	public int getPrice() {
+		return (int) (price*.7);
+	}
 }
