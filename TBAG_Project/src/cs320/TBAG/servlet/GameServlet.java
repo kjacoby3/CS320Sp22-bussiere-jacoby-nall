@@ -207,6 +207,21 @@ public class GameServlet extends HttpServlet{
 				
 				req.getRequestDispatcher("/_view/levelUp.jsp").forward(req, resp);
 			}
+			else if (input.equalsIgnoreCase("equip")){
+				if(player.getInventory().getWeapons().size() > 1) {
+					//updateHistory("What weapon do you want to equip");
+					for(Weapon i : player.getInventory().getWeapons().values()) {
+						if (input.equalsIgnoreCase(i.getName())) {
+							player.equipWeapon(i);
+							//updateHistory(i.getName() + " was equipped.");
+							//req.setAttribute("roomMessage", map.getRoomDescription());
+							//req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+						}
+					}
+				}
+				req.setAttribute("roomMessage", map.getRoomDescription());
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+			}
 			else {
 				error = "unsupported command";
 				req.setAttribute("errorMessage", error);
