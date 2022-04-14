@@ -1,6 +1,7 @@
 package cs320.TBAG.model;
 
 import cs320.TBAG.model.Actions;
+import cs320.TBAG.model.Convo.Conversation;
 
 public class Player extends Actor implements ActionsInterface{
 	
@@ -113,5 +114,17 @@ public class Player extends Actor implements ActionsInterface{
 		setEquipped(new Equipment("Bare", 100, 10, 0));
 	}
 
+	public boolean talk(NPC npc) {
+		if(npc.getLocation() == location) {
+			if(npc.getAggression() != NPCAggression.Aggressive) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			System.out.println("There is no one to talk to");
+			return false;
+		}
+	}
 	
 }

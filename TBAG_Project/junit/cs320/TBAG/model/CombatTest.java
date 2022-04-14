@@ -21,7 +21,7 @@ public class CombatTest extends TestCase {
 		player1 = new Player();
 		npc1 = new NPC();
 		location = new Room();
-		chestArmor = new Equipment("Chest Armor", 800, 20, 0, 0);
+		chestArmor = new Equipment("Chest Armor", 20, 0, 0);
 		sword = new Weapon("Sword", 15, 450);
 		player1.setLocation(location);
 		npc1.setLocation(location);

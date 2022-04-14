@@ -1,11 +1,13 @@
 package cs320.TBAG.model;
 
 import cs320.TBAG.model.Actions;
+import cs320.TBAG.model.Convo.ConversationTree;
 
 public class NPC extends Actor{
 	
 	//private Actions action = new Actions();
 	NPCAggression aggression;
+	ConversationTree conversationTree;
 	
 	public NPC() {
 		name = "NPC 1";
@@ -17,11 +19,12 @@ public class NPC extends Actor{
 		equipped = new Equipment("Bare", 100, 10, 0);
 		aggression = NPCAggression.Neutral;
 		currency = 0;
+		conversationTree = new ConversationTree();
 	}
 	
 	public NPC(String name, Room location, Inventory inventory,
 			ActorStats actorStats, String type, Weapon eqWeap, 
-			Equipment equipped, NPCAggression aggression,int currency) {
+			Equipment equipped, NPCAggression aggression,int currency, ConversationTree conversationTree) {
 		this.name = name;
 		this.type = type;
 		this.location = location;
@@ -30,6 +33,7 @@ public class NPC extends Actor{
 		this.equipped = equipped;
 		this.aggression = aggression;
 		this.currency = currency;
+		this.conversationTree = conversationTree;
 	}
 	
 	public NPCAggression getAggression() {
@@ -38,6 +42,14 @@ public class NPC extends Actor{
 	
 	public void setAggression(NPCAggression aggression) {
 		this.aggression = aggression;
+	}
+	
+	public ConversationTree getConversationTree() {
+		return conversationTree;
+	}
+	
+	public void setConversationTree(ConversationTree conversationTree) {
+		this.conversationTree = conversationTree;
 	}
 
 }
