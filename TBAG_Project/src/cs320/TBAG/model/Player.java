@@ -78,9 +78,10 @@ public class Player extends Actor implements ActionsInterface{
 		if(inventory.getWeapons().containsValue(weapon)) {
 			setEqWeap(weapon);
 			if(!(curWeapon.getName() == "Fists")) {
-				if(!(inventory.addItem(curWeapon))){
-					
-				}
+				//if(!(inventory.addItem(curWeapon))){
+				inventory.addItem(curWeapon);
+				inventory.removeItem(weapon);
+				//}
 			}
 		}
 		
@@ -100,9 +101,8 @@ public class Player extends Actor implements ActionsInterface{
 		if(inventory.getEquipment().containsValue(equipment)) {
 			setEquipped(equipment);
 			if(!(curEquipment.getName() == "Bare")) {
-				if(!(inventory.addItem(curEquipment))){
-					
-				}
+				inventory.addItem(curEquipment);
+				inventory.removeItem(equipment);
 			}
 		}
 	}
