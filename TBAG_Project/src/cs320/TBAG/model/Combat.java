@@ -399,6 +399,8 @@ public class Combat{
 		result = "Congrats, you have defeated " + actor2.getName() +
 				"and have earned " + actor2Stats.getCurExp() + " XP!";
 		
+		actor2.getLocation().removeNPCInRoom((NPC) actor2);
+		
 		//Add dropped equipment to actor 1 inventory
 		for(Equipment i : actor2Inv.getEquipment().values()) {
 			if(!actor1.getInventory().checkFull("Equipment")) {
