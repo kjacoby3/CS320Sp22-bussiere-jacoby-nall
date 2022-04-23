@@ -14,8 +14,8 @@ public class Player extends Actor implements ActionsInterface{
 		inventory = new Inventory(100);
 		actorStats = new ActorStats();
 		inventory.addItem(new Equipment("Cloth Armor", 50, 50, 50));
-		eqWeap = new Weapon("Fists", 10, 100);
-		equipped = new Equipment("Bare", 100, 10, 0);
+		eqWeap = new Weapon("Fists", 10, 10);
+		equipped = new Equipment("Bare", 10, 10, 0);
 	}
 	
 	public Player(String name, Room location, Inventory inventory, ActorStats actorStats,

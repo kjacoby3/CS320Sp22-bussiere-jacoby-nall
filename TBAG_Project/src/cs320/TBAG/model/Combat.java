@@ -237,7 +237,10 @@ public class Combat{
 	//Calculates damage done by actor 1
 	public double actor1CalcAttackDMG() {
 		double dmgDone;
-		double z = actor1TotalDMG * (1 - ((2 * actor2TotalDEF) / (3 * actor1TotalDMG)));
+		double z = actor1TotalDMG * (1 - ((actor2TotalDEF) / (3 * actor1TotalDMG)));
+		if (z <= 0) {
+			return 0;
+		}
 		double lowerBound = z * 0.9;
 		double upperBound = z * 1.1;
 		dmgDone = intDiceRoll((int) lowerBound, (int) upperBound);
@@ -247,7 +250,10 @@ public class Combat{
 	//Calculates damage done by actor 2
 	public double actor2CalcAttackDMG() {
 		double dmgDone;
-		double z = actor2TotalDMG * (1 - ((2 * actor1TotalDEF) / (3 * actor2TotalDMG)));
+		double z = actor2TotalDMG * (1 - (actor1TotalDEF / (3 * actor2TotalDMG)));
+		if (z <= 0) {
+			return 0;
+		}
 		double lowerBound = z * 0.9;
 		double upperBound = z * 1.1;
 		dmgDone = intDiceRoll((int) lowerBound, (int) upperBound);
@@ -258,7 +264,23 @@ public class Combat{
 	public int intDiceRoll(int lowerBound, int upperBound) {
 		int value = (int) (Math.random() * 100);
 		while (value < lowerBound || value > upperBound) {
-			value = (int) (Math.random() * 100);
+			if(lowerBound < 100 && upperBound < 100) {
+				value = (int) (Math.random() * 100);
+			} else if (upperBound >= 100 && upperBound < 1000) {
+				value = (int) (Math.random() * 1000);
+			} else if (upperBound >= 1000 && upperBound < 10000) {
+				value = (int) (Math.random() * 10000);
+			} else if (upperBound >= 10000 && upperBound < 100000) {
+				value = (int) (Math.random() * 100000);
+			} else if (upperBound >= 100000 && upperBound < 1000000) {
+				value = (int) (Math.random() * 1000000);
+			} else if (upperBound >= 1000000 && upperBound < 10000000) {
+				value = (int) (Math.random() * 10000000);
+			} else if (upperBound >= 10000000 && upperBound < 100000000) {
+				value = (int) (Math.random() * 100000000);
+			} else if (upperBound >= 100000000 && upperBound < 1000000000) {
+				value = (int) (Math.random() * 1000000000);
+			}
 		}
 		return value;
 	}

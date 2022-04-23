@@ -120,7 +120,7 @@ public class GameServlet extends HttpServlet{
 			}
 			
 			else if(input.equalsIgnoreCase("pickup")) {
-				player.getInventory().addItem(new Weapon("banana", 100000000, 1000000));
+				player.getInventory().addItem(new Weapon("banana", 1000000, 1000000));
 				updateHistory(input);
 				req.setAttribute("roomMessage", map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req,resp);
