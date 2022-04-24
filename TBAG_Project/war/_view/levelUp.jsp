@@ -66,7 +66,7 @@
 </head>
 <body>
     <div class="title">Level Up</div>
-
+	<form action="${pageContext.servletContext.contextPath}/levelUp" method="post">
     <table style="width:100%">
         <th style="width:20%"> ${player}</th>
         <th style="width:35%"> Level: ${level}
@@ -101,11 +101,9 @@
 			<tr>
 				<td class="body">Defense: </td>
 				<td class="body">${def}
-                    <form action="${pageContext.servletContext.contextPath}/levelUp" method="post">
                         <input id="defPlus" style="height:30px; width:30px;" type="image" name="incDEF" src="plusIcon.jpg"
 					    action="${pageContext.servletContext.contextPath}/levelUp" method="post">
 					    <class id="defInc" class="projected" style="font-size:100%"></class>
-                    </form>
                 </td>
 				<td class="body">Defense: <class id="projDEF" class="projected" style="font-size:100%; color:black">${def} </class></td>
 			</tr>
@@ -120,8 +118,9 @@
 				<td class="body">Speed: <class id="projSPD" class="projected" style="font-size:100%; color:black">${spd} </class></td>
 			</tr>
     </table>
+	</form>
 
-    <div> ${result} </div>
+    <div> Result: ${result} </div>
 
 <script>
 document.getElementById("hpPlus").addEventListener("mouseover", projHPOn);

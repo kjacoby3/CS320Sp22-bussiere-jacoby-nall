@@ -63,7 +63,7 @@ public class LevelUpServlet extends HttpServlet{
 			result = levelUpModel.useLevelUp(stat);
 		}
 		
-		
+		req.setAttribute("result", result);
 		
 		Player player = model.getPlayer();
 		
@@ -99,8 +99,6 @@ public class LevelUpServlet extends HttpServlet{
 		
 		req.setAttribute("projCurXP", levelUpModel.getProjCurExp());
 		req.setAttribute("projMaxXP", levelUpModel.getProjMaxExp());
-		
-		req.setAttribute("result", result);
 		
 		req.getRequestDispatcher("/_view/levelUp.jsp").forward(req, resp);
 		

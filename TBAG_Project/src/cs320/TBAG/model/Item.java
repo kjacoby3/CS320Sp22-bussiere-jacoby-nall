@@ -3,6 +3,7 @@ package cs320.TBAG.model;
 public abstract class Item {
 	String name;
 	String type;
+	int price;
 	
 	
 	public String getName() {
@@ -17,5 +18,17 @@ public abstract class Item {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	public int getBuyPrice() {
+		return price;
+	}
+	
+	public int getSellPrice() {
+		return (int) (price*0.7);
+	}
+	
+	public void setPrice(int price) {
+		this.price = price;
 	}
 }

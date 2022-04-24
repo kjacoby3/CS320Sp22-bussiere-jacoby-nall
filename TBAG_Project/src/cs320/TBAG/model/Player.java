@@ -1,6 +1,7 @@
 package cs320.TBAG.model;
 
 import cs320.TBAG.model.Actions;
+import cs320.TBAG.model.Convo.Conversation;
 
 public class Player extends Actor implements ActionsInterface{
 	
@@ -12,9 +13,9 @@ public class Player extends Actor implements ActionsInterface{
 		location = new Room();
 		inventory = new Inventory(100);
 		actorStats = new ActorStats();
-		inventory.addItem(new Equipment("Cloth Armor", 50, 50,50, 50));
-		eqWeap = new Weapon("Fists", 10, 100);
-		equipped = new Equipment("Bare", 100, 10, 0, 0);
+		inventory.addItem(new Equipment("Cloth Armor", 50, 50, 50));
+		eqWeap = new Weapon("Fists", 10, 10);
+		equipped = new Equipment("Bare", 10, 10, 0);
 	}
 	
 	public Player(String name, Room location, Inventory inventory, ActorStats actorStats,
@@ -77,9 +78,10 @@ public class Player extends Actor implements ActionsInterface{
 		if(inventory.getWeapons().containsValue(weapon)) {
 			setEqWeap(weapon);
 			if(!(curWeapon.getName() == "Fists")) {
-				if(!(inventory.addItem(curWeapon))){
-					
-				}
+				//if(!(inventory.addItem(curWeapon))){
+				inventory.addItem(curWeapon);
+				inventory.removeItem(weapon);
+				//}
 			}
 		}
 		
@@ -99,9 +101,8 @@ public class Player extends Actor implements ActionsInterface{
 		if(inventory.getEquipment().containsValue(equipment)) {
 			setEquipped(equipment);
 			if(!(curEquipment.getName() == "Bare")) {
-				if(!(inventory.addItem(curEquipment))){
-					
-				}
+				inventory.addItem(curEquipment);
+				inventory.removeItem(equipment);
 			}
 		}
 	}
@@ -110,8 +111,20 @@ public class Player extends Actor implements ActionsInterface{
 	public void unequipEquipment() {
 		Equipment curEquipment = getEquipped();
 		inventory.addItem(curEquipment);
-		setEquipped(new Equipment("Bare", 100, 10, 0, 0));
+		setEquipped(new Equipment("Bare", 100, 10, 0));
 	}
 
+	public boolean talk(NPC npc) {
+		if(npc.getLocation() == location) {
+			if(npc.getAggression() != NPCAggression.Aggressive) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			System.out.println("There is no one to talk to");
+			return false;
+		}
+	}
 	
 }

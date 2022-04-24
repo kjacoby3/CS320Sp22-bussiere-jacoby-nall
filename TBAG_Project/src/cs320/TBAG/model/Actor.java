@@ -3,7 +3,7 @@ package cs320.TBAG.model;
 import cs320.TBAG.model.Game;
 import cs320.TBAG.model.Inventory;
 
-public abstract class Actor {
+public abstract class Actor{
 	String name;
 	String type;
 	Room location;

@@ -137,28 +137,28 @@ public class LevelUp{
 				stats.setCurHP(projCurHP);
 				stats.setMaxExp(calcNewMaxExp());
 				stats.setCurLvl(projLvl);
-				updateStats();
+				//updateStats();
 			} else if(stat == "Damage" || stat == "DMG" || stat == "dmg" || stat == "Dmg") {
 				result = "Your Damage increased from " + dmg + " to " + projDMG + ".";
 				stats.setCurExp(curExp - maxExp);
 				stats.setDmg(projDMG);
 				stats.setMaxExp(calcNewMaxExp());
 				stats.setCurLvl(projLvl);
-				updateStats();
+				//updateStats();
 			} else if(stat == "Defense" || stat == "DEF" || stat == "def" || stat == "Def") {
 				result = "Your Defense increased from " + def + " to " + projDEF + ".";
 				stats.setCurExp(curExp - maxExp);
 				stats.setDef(projDEF);
 				stats.setMaxExp(calcNewMaxExp());
 				stats.setCurLvl(projLvl);
-				updateStats();
+				//updateStats();
 			} else if(stat == "Speed" || stat == "SPD" || stat == "spd" || stat == "Spd") {
 				result = "Your Speed increased from " + spd + " to " + projSPD + ".";
 				stats.setCurExp(curExp - maxExp);
 				stats.setSpd(projSPD);
 				stats.setMaxExp(calcNewMaxExp());
 				stats.setCurLvl(projLvl);
-				updateStats();
+				//updateStats();
 			} else {
 				result = "That is not a valid stat.";
 			}

@@ -2,6 +2,7 @@ package cs320.TBAG.servlet;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +14,9 @@ import cs320.TBAG.model.Map;
 import cs320.TBAG.model.NPC;
 import cs320.TBAG.controller.GameController;
 import cs320.TBAG.model.Combat;
+import cs320.TBAG.model.Equipment;
 import cs320.TBAG.model.Game;
+import cs320.TBAG.model.Item;
 import cs320.TBAG.model.LevelUp;
 import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Weapon;
@@ -107,16 +110,17 @@ public class GameServlet extends HttpServlet{
 			}
 			
 			else if(input.equalsIgnoreCase("inventory")) {
-				req.setAttribute("weapons", player.getInventory().getWeapons().keySet());
-				req.setAttribute("equipment", player.getInventory().getEquipment().keySet());
-				req.setAttribute("trophies", player.getInventory().getTrophies().keySet());
-				req.setAttribute("usables", player.getInventory().getUsables().keySet());
-				req.setAttribute("treasures", player.getInventory().getTreasures().keySet());
+				req.setAttribute("weapons", new ArrayList<>(player.getInventory().getWeapons().values()));
+				req.setAttribute("equipment", new ArrayList<>(player.getInventory().getEquipment().values()));
+				req.setAttribute("trophies", new ArrayList<>(player.getInventory().getTrophies().values()));
+				req.setAttribute("usables", new ArrayList<>(player.getInventory().getUsables().values()));
+				req.setAttribute("treasures", new ArrayList<>(player.getInventory().getTreasures().values()));
+				req.setAttribute("consumables", new ArrayList<>(player.getInventory().getConsumables().values()));
 				req.getRequestDispatcher("/_view/inventory.jsp").forward(req, resp);
 			}
 			
 			else if(input.equalsIgnoreCase("pickup")) {
-				player.getInventory().addItem(new Weapon("banana", 100000000, 1000000));
+				player.getInventory().addItem(new Weapon("banana", 1000000, 1000000));
 				updateHistory(input);
 				req.setAttribute("roomMessage", map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req,resp);
@@ -142,6 +146,9 @@ public class GameServlet extends HttpServlet{
 					Combat combatMod = new Combat(player, enemy);
 					session.setAttribute("combatMod", combatMod);
 					//Sets initial attributes for CombatServlet
+					req.setAttribute("player", combatMod.getActor1().getName());
+					req.setAttribute("enemy", combatMod.getActor2().getName());
+					
 					req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
 					req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
 					
@@ -204,6 +211,85 @@ public class GameServlet extends HttpServlet{
 				req.setAttribute("projMaxXP", levelUpModel.getProjMaxExp());
 				
 				req.getRequestDispatcher("/_view/levelUp.jsp").forward(req, resp);
+			}
+			else if (input.startsWith("equip")){
+				if (input.equalsIgnoreCase("equip")) {
+					updateHistory("What do you want to equip?");
+				} else {
+					String[] splitStr = input.split(" ", 2);
+					String equipName = splitStr[1];
+					Boolean itemWasEquipped = false;
+					Item equippedItem;
+					if(player.getInventory().getWeapons().size() > 0) {
+						for(Weapon i : player.getInventory().getWeapons().values()) {
+							if (equipName.equalsIgnoreCase(i.getName())) {
+								player.equipWeapon(i);
+								itemWasEquipped = true;
+								equippedItem = i;
+								//updateHistory(i.getName() + " was equipped.");
+								//req.setAttribute("roomMessage", map.getRoomDescription());
+								//req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+							} 
+						}
+					}
+					if(player.getInventory().getEquipment().size() > 0) {
+						for(Equipment i : player.getInventory().getEquipment().values()) {
+							if (equipName.equalsIgnoreCase(i.getName())) {
+								player.equipEquipment(i);
+								itemWasEquipped = true;
+								equippedItem = i;
+							}
+						}
+					}
+					if(itemWasEquipped == false) {
+						updateHistory("An item of " + equipName + " could not be found in your inventory. "
+								+ "Try checking that the name of the item is correct.");
+					} else {
+						updateHistory(equipName + " was equipped");
+					}
+				}
+				req.setAttribute("roomMessage", map.getRoomDescription());
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+			}
+			else if (input.startsWith("unequip")) {
+				Weapon eqWeap = player.getEqWeap();
+				Equipment equipped = player.getEquipped();
+				if(input.equalsIgnoreCase("unequip")) {
+					if (eqWeap.getName() == "Fists" && equipped.getName() == "Bare") {
+						updateHistory("You cannot unequip Fists or Bare.");
+					} else if (eqWeap.getName() == "Fists" && equipped.getName() != "Bare") {
+						player.unequipEquipment();
+						updateHistory(equipped.getName() + " was unequipped.");
+					} else if (eqWeap.getName() != "Fists" && equipped.getName() == "Bare") {
+						player.unequipWeapon();
+						updateHistory(eqWeap.getName() + " was unequipped.");
+					} else {
+						updateHistory("What do you want to unequip?");
+					}
+				}
+				else {
+					String[] splitStr = input.split(" ", 2);
+					String str = splitStr[1];
+					if(str.equalsIgnoreCase("weapon") || str.equalsIgnoreCase(eqWeap.getName())) {
+						if (eqWeap.getName() != "Fists") {
+							player.unequipWeapon();
+							updateHistory(eqWeap.getName() + " was unequipped");
+						} else {
+							updateHistory("You cannot unequip Fists");
+						}
+					} else if(str.equalsIgnoreCase("equipment") || str.equalsIgnoreCase(equipped.getName())) {
+						if (equipped.getName() != "Bare") {
+							player.unequipEquipment();
+							updateHistory(equipped.getName() + " was unequipped.");
+						} else {
+							updateHistory("You cannot unequip Bare.");
+						}
+					} else {
+						updateHistory("The item of " + str + " is not equipped. Try checking your spelling.");
+					}
+				}
+				req.setAttribute("roomMessage", map.getRoomDescription());
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 			else {
 				error = "unsupported command";
