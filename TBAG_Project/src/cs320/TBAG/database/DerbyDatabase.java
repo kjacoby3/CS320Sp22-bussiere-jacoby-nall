@@ -3,12 +3,15 @@ package cs320.TBAG.database;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 import cs320.TBAG.database.IDatabase;
 import cs320.TBAG.database.DBUtil;
 import cs320.TBAG.database.DerbyDatabase;
 import cs320.TBAG.database.PersistenceException;
+import cs320.TBAG.model.Room;
 
 public class DerbyDatabase implements IDatabase {
 	static {
@@ -89,7 +92,48 @@ public class DerbyDatabase implements IDatabase {
 	
 	//Populates the tables (Look at lab06)
 	public void loadInitialData() {
-		
+			
+		executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					List<Room> roomList;
+					
+					try {
+						roomList = InitialData.getRooms();
+					} catch (IOException e) {
+						throw new SQLException("Couldn't read initial data", e);
+					}
+
+					PreparedStatement insertRoom = null; //PreparedStatement needs to be imported?
+
+					try {
+						// populate Rooms table 
+						insertRoom = conn.prepareStatement("insert into Rooms (Room Info) values (?...)");
+						for (Room room : roomList) {
+							//insertRoom.setInt(1, room.getRoomID());	// auto-generated primary key, don't insert this.  MAY NEED THIS WHEN LOADING MULTIPLE LEVELS
+							insertRoom.setString(1, room.getRoomName());
+							insertRoom.setString(2, room.getRoomDescripLong());
+							insertRoom.setString(3, room.getRoomDescripShort());
+							insertRoom.setInt(4, room.getRoomConnections());
+							insertRoom.setInt(5, room.getRoomUseable());
+							insertRoom.setInt(6, room.getRoomTreasure());
+							insertRoom.setInt(7, room.getRoomTrophy());
+							insertRoom.setInt(8, room.getRoomEquipment());
+							insertRoom.setInt(9, room.getRoomWeapon());
+							insertRoom.setInt(10, room.getRoomActor());
+							insertRoom.setInt(11, room.getRoomLevel());
+							
+							insertRoom.addBatch();
+						}
+						insertRoom.executeBatch();
+						
+						
+						return true;
+					} finally {
+						DBUtil.closeQuietly(insertRoom);
+					}
+				}
+			});
 		
 	}
 	
