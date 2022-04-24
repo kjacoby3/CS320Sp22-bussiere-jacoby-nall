@@ -8,6 +8,16 @@ public class Room extends Map{
 	String roomName;
 	String roomDescripLong;
 	String roomDescripShort;
+	int roomConnections;
+	int roomUseable;
+	int roomTreasure;
+	int roomTrophy;
+	int roomEquipment;
+	int roomWeapon;
+	int roomActor;
+	int roomLevel;
+	
+	
 	Inventory roomItems;
 	ArrayList<NPC> NPCsInRoom = new ArrayList<NPC>();
 	ArrayList<Integer> availableExits = new Arraylist<Integer>();
@@ -27,12 +37,23 @@ public class Room extends Map{
 	
 	
 	
-	public Room(int roomID, String roomName, String roomDescripLong, Inventory roomItems, ArrayList<NPC> NPCsInRoom, ArrayList<Integer> exits) { //exits must be entered as four values <0,0,0,0> for n,s,w,e
-		this.roomID = roomID;
-		this.roomDescripLong = roomDescripLong;
-		this.roomItems = roomItems;
-		this.NPCsInRoom = NPCsInRoom;
-		this.roomExits = exits;
+	public Room(int ID, String name, String longDescrip, String shortDescrip, int connections, int useable, int treasure, int trophy, int equipment, int weapon, int actor, int level) { //exits must be entered as four values <0,0,0,0> for n,s,w,e
+		this.roomID = ID;
+		this.roomName = name;
+		this.roomDescripLong = longDescrip;
+		this.roomDescripShort = shortDescrip;
+		this.roomConnections = connections;
+		this.roomUseable = useable;
+		this.roomTreasure = treasure;
+		this.roomTrophy = trophy;
+		this.roomEquipment = equipment;
+		this.roomWeapon = weapon;
+		this.roomActor = actor;
+		this.roomLevel = level;
+		
+		//this.roomItems = roomItems;
+		//this.NPCsInRoom = NPCsInRoom;
+		//this.roomExits = exits;
 	}
 	
 	public Room() {
@@ -77,6 +98,75 @@ public class Room extends Map{
 	public String getRoomDescripShort() {
 		return roomDescripShort;
 	}
+	
+	public void setRoomConnections(int connections) {
+		this.roomConnections = connections;
+	}
+	
+	public int getRoomConnections() {
+		return roomConnections;
+	}
+	
+	public void setRoomUseable(int use) {
+		this.roomUseable = use;
+	}
+	
+	public int getRoomUseable() {
+		return roomUseable;
+	}
+	
+	public void setRoomTreasure(int treasure) {
+		this.roomTreasure = treasure;
+	}
+	
+	public int getRoomTreasure() {
+		return roomTreasure;
+	}
+	
+	public void setRoomTrophy(int trophy) {
+		this.roomTrophy = trophy;
+	}
+	
+	public int getRoomTrophy() {
+		return roomTrophy;
+	}
+	
+	public void setRoomEquipment(int equipment) {
+		this.roomEquipment = equipment;
+	}
+	
+	public int getRoomEquipment() {
+		return roomEquipment;
+	}
+	
+	public void setRoomWeapon(int weapon) {
+		this.roomWeapon = weapon;
+	}
+	
+	public int getRoomWeapon() {
+		return roomWeapon;
+	}
+	
+	public void setRoomActor(int actor) {
+		this.roomActor = actor;
+	}
+	
+	public int getRoomActor() {
+		return roomActor;
+	}
+	
+	public void setRoomLevel(int level) {
+		this.roomLevel = level;
+	}
+	
+	public int getRoomLevel() {
+		return roomLevel;
+	}
+	
+	
+	
+	
+	
 	
 	public void setRoomItems(Inventory items) {
 		this.roomItems = items;

@@ -5,11 +5,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 import cs320.TBAG.database.IDatabase;
 import cs320.TBAG.database.DBUtil;
 import cs320.TBAG.database.DerbyDatabase;
 import cs320.TBAG.database.PersistenceException;
+import cs320.TBAG.model.Room;
 
 public class DerbyDatabase implements IDatabase {
 	static {
@@ -112,11 +114,14 @@ public class DerbyDatabase implements IDatabase {
 							insertRoom.setString(1, room.getRoomName());
 							insertRoom.setString(2, room.getRoomDescripLong());
 							insertRoom.setString(3, room.getRoomDescripShort());
-							//insertRoom.setString(4, room.getRoomItems()); //This needs to be setList
-							//insertRoom.setString(5, room.getNPCsInRoom()); //This needs to be setList
-							//insertRoom.setString(6, room.getAvailableExits()); //This needs to be setList
-							//insertRoom.setString(7, room.getOtherExitOptions()); //This needs to be setList
-							
+							insertRoom.setInt(4, room.getRoomConnections());
+							insertRoom.setInt(5, room.getRoomUseable());
+							insertRoom.setInt(6, room.getRoomTreasure());
+							insertRoom.setInt(7, room.getRoomTrophy());
+							insertRoom.setInt(8, room.getRoomEquipment());
+							insertRoom.setInt(9, room.getRoomWeapon());
+							insertRoom.setInt(10, room.getRoomActor());
+							insertRoom.setInt(11, room.getRoomLevel());
 							
 							insertRoom.addBatch();
 						}
