@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet{
 				System.out.println("if");
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
-			if(req.getParameter("username").equals(session.getAttribute("saveUsername").toString()) && req.getParameter("password").equals(session.getAttribute("savePassword").toString())) {
+			else if(req.getParameter("username").equals(session.getAttribute("saveUsername").toString()) && req.getParameter("password").equals(session.getAttribute("savePassword").toString())) {
 				System.out.println("else if");
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
