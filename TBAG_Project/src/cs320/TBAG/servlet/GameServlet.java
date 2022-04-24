@@ -2,7 +2,9 @@ package cs320.TBAG.servlet;
 
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -35,19 +37,22 @@ public class GameServlet extends HttpServlet{
 		session = req.getSession();
 		
 		session.setAttribute("commandHistory", "");
+		session.setAttribute("history", new ArrayList<String>());
 		
 		String roomDesc = map.getRoomDescription();
 		req.setAttribute("roomMessage", roomDesc);
 		req.getRequestDispatcher("/_view/Game.jsp").forward(req,resp);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
 		System.out.println("doPost");
 		GameController controller = new GameController();
+		session = req.getSession();
 		
-		
+		PrintWriter terminalWriter = resp.getWriter();
 		
 		
 		controller.setModel(model);
@@ -59,6 +64,7 @@ public class GameServlet extends HttpServlet{
 		Map map = model.getMap();
 		String error = null;
 		
+		
 		req.setAttribute("game", model);
 		
 		if(input != null) {
@@ -67,9 +73,12 @@ public class GameServlet extends HttpServlet{
 			if(input.equalsIgnoreCase("north")) {
 				if(map.checkMove("n")){
 					map.setNewRoom(map.getNewRoomID());
-					updateHistory(input);
+					updateHistory(input, map.getRoomDescription());
 					req.setAttribute("roomMessage", map.getRoomDescription());
 					req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+					//resp.getWriter().write(map.getRoomDescription());
+					//terminalWriter.write(map.getRoomDescription());
+					
 				}
 				
 			}
@@ -77,10 +86,13 @@ public class GameServlet extends HttpServlet{
 			else if(input.equalsIgnoreCase("south")) {
 				if(input.equalsIgnoreCase("south")) {
 					if(map.checkMove("s")){
-						updateHistory(input);
+						
 						map.setNewRoom(map.getNewRoomID());
 						req.setAttribute("roomMessage", map.getRoomDescription());
+						updateHistory(input, map.getRoomDescription());
 						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+						/*resp.getWriter().write(map.getRoomDescription());
+						terminalWriter.write(map.getRoomDescription());*/
 					}
 				}
 			}
@@ -88,10 +100,13 @@ public class GameServlet extends HttpServlet{
 			else if(input.equalsIgnoreCase("west")) {
 				if(input.equalsIgnoreCase("west")) {
 					if(map.checkMove("w")){
-						updateHistory(input);
+						
 						map.setNewRoom(map.getNewRoomID());
 						req.setAttribute("roomMessage", map.getRoomDescription());
+						updateHistory(input, map.getRoomDescription());
 						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+						//resp.getWriter().write(map.getRoomDescription());
+						//terminalWriter.write(map.getRoomDescription());
 					}
 					
 				}
@@ -100,10 +115,13 @@ public class GameServlet extends HttpServlet{
 			else if(input.equalsIgnoreCase("east")) {
 				if(input.equalsIgnoreCase("east")) {
 					if(map.checkMove("e")){
-						updateHistory(input);
+						//updateHistory(input);
 						map.setNewRoom(map.getNewRoomID());
 						req.setAttribute("roomMessage", map.getRoomDescription());
+						updateHistory(input, map.getRoomDescription());
 						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+						//resp.getWriter().write(map.getRoomDescription());
+						//terminalWriter.write(map.getRoomDescription());
 					}
 					
 				}
@@ -117,6 +135,8 @@ public class GameServlet extends HttpServlet{
 				req.setAttribute("treasures", new ArrayList<>(player.getInventory().getTreasures().values()));
 				req.setAttribute("consumables", new ArrayList<>(player.getInventory().getConsumables().values()));
 				req.getRequestDispatcher("/_view/inventory.jsp").forward(req, resp);
+				//req.getRequestDispatcher("/_view/inventory.jsp").forward(req,resp);
+				//terminalWriter.write("inventory");
 			}
 			
 			else if(input.equalsIgnoreCase("pickup")) {
@@ -127,9 +147,10 @@ public class GameServlet extends HttpServlet{
 			}
 			else if(input.equalsIgnoreCase("start")) {
 				map.setCurrRoom(1);
-				updateHistory(input);
+				updateHistory(input, map.getRoomDescription());
 				req.setAttribute("roomMessage",map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+				//terminalWriter.write(map.getRoomDescription());
 			}
 			else if(input.equalsIgnoreCase("attack")) {
 				updateHistory(input);
@@ -296,20 +317,72 @@ public class GameServlet extends HttpServlet{
 				req.setAttribute("errorMessage", error);
 				req.setAttribute("roomMessage",map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+				//resp.getWriter().write("Nothing Happens");
 			}
 		}
 		else {
 			System.out.println("else");
 			req.setAttribute("roomMessage", map.getRoomDescription());
 			req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+			//resp.getWriter().write("Nothing Happens");
 		}
 		
 	}
 	
+	/*public void updateHistory(String input, String output) {
+		if(session.getAttribute("history")!=null) {
+			ArrayList<String> history = (ArrayList<String>) session.getAttribute("script");
+			history.add(input);
+			history.add(output);
+			session.setAttribute("commandHistory", history);
+		}
+		else {
+			ArrayList<String> history = new ArrayList<String>();
+			history.add(input);
+			history.add(output);
+		}
+		
+	}
 	public void updateHistory(String input) {
-		String history = "" + session.getAttribute("commandHistory").toString() + input + ", ";
+		if(session.getAttribute("history")!=null) {
+			ArrayList<String> history = (ArrayList<String>) session.getAttribute("history");
+			history.add(input);
+			session.setAttribute("commandHistory", history);
+		}
+		else {
+			ArrayList<String> history = new ArrayList<String>();
+			history.add(input);
+		}
+		
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public void updateHistory(String input) {
+		ArrayList<String> hist = (ArrayList<String>) session.getAttribute("history");
+		Collections.reverse(hist);
+		hist.add(input);
+		Collections.reverse(hist);
+		session.setAttribute("history", hist);
+		
+		String history = "" + session.getAttribute("commandHistory").toString() + input + "\n ";
 		
 		session.setAttribute("commandHistory", history);
+	}
+	
+	public void updateHistory(String input, String output) {
+		//String history = "" + session.getAttribute("commandHistory").toString() + input + "\n " + output + "\n";
+		
+		ArrayList<String> hist = (ArrayList<String>) session.getAttribute("history");
+		if(hist==null) {
+			hist = new ArrayList<String>();
+		}
+		Collections.reverse(hist);
+		hist.add(input);
+		hist.add(output);
+		Collections.reverse(hist);
+		session.setAttribute("history", hist);
+		
+		//session.setAttribute("commandHistory", history);
 	}
 		
 }
