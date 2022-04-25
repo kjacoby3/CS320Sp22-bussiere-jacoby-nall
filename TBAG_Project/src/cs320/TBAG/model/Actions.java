@@ -5,6 +5,8 @@ import cs320.TBAG.model.Item;
 import java.util.ArrayList;
 import java.util.HashMap;
 import cs320.TBAG.model.Player;
+import cs320.TBAG.model.Consumable;
+import cs320.TBAG.model.Usable;
 
 public class Actions implements ActionsInterface {
 	public String direction;
@@ -65,18 +67,11 @@ public class Actions implements ActionsInterface {
 	}
 	
 	@Override 
-	public void talk(NPC npc) {
-		//TODO conversation()
-	}
-	
-	
-	@Override 
 	public void buy(Item item) {
-		//TODO
-		if (currency >= item.getCost()){
+		if (currency >= item.getBuyPrice()){
 		
 		inventory.addItem(item);
-		currency = currency - item.getCost();
+		currency = currency - item.getBuyPrice();
 		npcInventory.removeItem(item);
 		}
 		
@@ -86,18 +81,23 @@ public class Actions implements ActionsInterface {
 	public void sell(Item item) {
 		inventory.removeItem(item);
 		npcInventory.addItem(item);
-		currency = currency - item.getCost()*0.7;
+		currency = currency - item.getSellPrice();
 	}
 	
 	@Override 
 	public void use(Item item) {
 		//TODO
-		if (item instanceof consumable) {
+		if (item instanceof Consumable) {
 			inventory.removeItem(item);
 		}
 		
-		else if (item instanceof useable) {
+		else if (item instanceof Usable) {
 			//item.checkIfUseable();
+		}
+		
+		else if (item instanceof Interactable) {
+			//set player room id
+			//check it can be used
 		}
 		
 		else {
