@@ -26,7 +26,7 @@ import cs320.TBAG.model.Trophy;
 import cs320.TBAG.model.Usable;
 import cs320.TBAG.model.Weapon;
 
-import edu.ycp.cs320.booksdb.persist.DerbyDatabase.Transaction;
+//import edu.ycp.cs320.booksdb.persist.DerbyDatabase.Transaction;
 
 import cs320.TBAG.model.Convo.ConversationNode;
 import cs320.TBAG.model.Convo.ConversationTree;
@@ -90,7 +90,7 @@ public class DerbyDatabase implements IDatabase {
 						int playerID = weaponSet.getInt(index++);
 						int roomID = weaponSet.getInt(index++);
 						int npcID = weaponSet.getInt(index++);
-						boolean equipped = weaponSet.getBoolean(index++)
+						boolean equipped = weaponSet.getBoolean(index++);
 						
 						Weapon weapon = new Weapon(name, damage, price, playerID, roomID, npcID, equipped);
 						inventory.addItem(weapon);
@@ -675,6 +675,7 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement players = null;
 				PreparedStatement rooms = null;
 				PreparedStatement npcs = null;
+				PreparedStatement connections = null;
 				
 				
 				try {
@@ -697,10 +698,16 @@ public class DerbyDatabase implements IDatabase {
 						"create table rooms ("
 						+ " roomID integer primary key generated always as identity (start with 0, increment by 1),"
 						+ "name varchar(40), short varchar (400), long varchar(800),"
-						+ "npcID integer constraint npcID references npcs, level integer)"
+						+ " level integer)"
 						);
 					rooms.executeUpdate();
 					
+					connections = conn.prepareStatement(
+							"create table connections ("
+							+ "roomID integer constraint roomID references rooms,"
+							+ "eorth integer, east integer, south integer, west integer, exit integer, teleport integer)"
+							);
+					connections.executeUpdate();
 					
 							
 							
@@ -791,7 +798,7 @@ public class DerbyDatabase implements IDatabase {
 						treasureList = InitialData.getTreasures();
 						trophyList = InitialData.getTrophies();
 						
-
+						
 						roomList = InitialData.getRooms();
 						roomConnectionList = InitialData.getRoomConnections();
 
@@ -810,8 +817,20 @@ public class DerbyDatabase implements IDatabase {
 					
 					
 					try {
-						/*// populate Rooms table 
-						insertRoomConnections = conn.prepareStatement("insert into rooms (roomID, North, East, South, West, exit) values (?,?,?,?,?,?)");
+						// populate Rooms table 
+						insertRoom = conn.prepareStatement("insert into rooms (name, short, long, level) values(?,?,?,?)");
+						for(Room room : roomList) {
+							insertRoom.setString(1, room.getRoomName());
+							insertRoom.setString(2, room.getRoomDescripShort());
+							insertRoom.setString(3, room.getRoomDescripLong());
+							insertRoom.setInt(4, room.getRoomLevel());
+							
+							insertRoom.addBatch();
+						}
+						
+						insertRoom.executeBatch();
+						
+						insertRoomConnections = conn.prepareStatement("insert into connections (roomID, North, East, South, West, exit) values (?,?,?,?,?,?)");
 						for (RoomConnection roomConnection : roomConnectionList) {
 							
 							insertRoomConnections.setInt(1, roomConnection.getRoomID());
@@ -823,7 +842,7 @@ public class DerbyDatabase implements IDatabase {
 							
 							insertRoomConnections.addBatch();
 						}
-						insertRoomConnections.executeBatch();*/
+						insertRoomConnections.executeBatch();
 						
 						insertWeapon = conn.prepareStatement("insert into weapons (name, price, damage, playerID, roomID, npcID, equipped) values (?,?,?,?,?,?,?)");
 						for( Weapon weapon : weaponList) {
@@ -909,6 +928,8 @@ public class DerbyDatabase implements IDatabase {
 							insertTrophy.addBatch();
 						}
 						insertTrophy.executeBatch();
+						
+						
 						
 						
 					} finally {
@@ -1036,15 +1057,177 @@ public class DerbyDatabase implements IDatabase {
 
 	@Override
 	public Room getRoomByID(int roomID) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return executeTransaction(new Transaction<Room>() {
+			@Override
+			public Room execute(Connection conn) throws SQLException {
+				PreparedStatement roomstmt = null;
+				ResultSet roomSet = null;
+				Room room = new Room();
+				
+				try {
+					roomstmt = conn.prepareStatement(
+							"select room.*"
+							+ "from room"
+							+ "where room.roomID = ?"
+							);	
+				
+					roomstmt.setInt(1, roomID);
+					
+					roomSet = roomstmt.executeQuery();
+					
+					while(roomSet.next()) {
+						
+						room.setRoomName(roomSet.getString(2));
+						room.setRoomDescripLong(roomSet.getString(4));
+					
+					}
+					
+						return room;
+				} 
+					
+					finally {
+					//DBUtil.closeQuietly(resultSet);
+					//DBUtil.closeQuietly(stmt);
+						DBUtil.closeQuietly(roomstmt);
+						DBUtil.closeQuietly(roomSet);
+				}
+				
+			}
+		});
+	}
+	
+	public ArrayList<Room> getRooms(){
+		return executeTransaction(new Transaction<ArrayList<Room>>() {
+			@Override
+			public ArrayList<Room> execute(Connection conn) throws SQLException {
+				PreparedStatement roomstmt = null;
+				ResultSet roomSet = null;
+				ArrayList<Room> roomList = new ArrayList<Room>();
+				
+				
+				try {
+					roomstmt = conn.prepareStatement(
+							"select rooms.* from rooms");
+							
+					
+					roomSet = roomstmt.executeQuery();
+					
+					while(roomSet.next()) {
+						Room room = new Room();
+						room.setRoomID(roomSet.getInt(1));
+						room.setRoomName(roomSet.getString(2));
+						room.setRoomDescripShort(roomSet.getString(3));
+						room.setRoomDescripLong(roomSet.getString(4));
+						room.setRoomLevel(roomSet.getInt(5));
+						
+						roomList.add(room);
+						
+					}
+					
+						return roomList;
+				} 
+					
+					finally {
+					//DBUtil.closeQuietly(resultSet);
+					//DBUtil.closeQuietly(stmt);
+						DBUtil.closeQuietly(roomstmt);
+						DBUtil.closeQuietly(roomSet);
+				}
+				
+			}
+		});
 	}
 
 	@Override
 	public RoomConnection getRoomConnectionByID(int roomID) {
-		// TODO Auto-generated method stub
-		return null;
+		return executeTransaction(new Transaction<RoomConnection>() {
+			@Override
+			public RoomConnection execute(Connection conn) throws SQLException {
+				PreparedStatement roomCon = null;
+				ResultSet roomConSet = null;
+				RoomConnection connection = new RoomConnection();
+				connection.setRoomID(roomID);
+				
+					
+				
+				try {
+					roomCon = conn.prepareStatement(
+							"select connections.*"
+							+ "from connections"
+							+ "where connections.roomID = ?"
+							);	
+				
+					roomCon.setInt(1, roomID);
+					
+					roomConSet = roomCon.executeQuery();
+					
+					while(roomConSet.next()) {
+						int index=1;
+						connection.setRoomID(roomConSet.getInt(index++));
+						connection.setNorth(roomConSet.getInt(index++));
+						connection.setEast(roomConSet.getInt(index++));
+						connection.setSouth(roomConSet.getInt(index++));
+						connection.setWest(roomConSet.getInt(index++));
+						connection.setExit(roomConSet.getInt(index++));
+					
+					}
+					return connection;
+				} 
+					
+					finally {
+					//DBUtil.closeQuietly(resultSet);
+					//DBUtil.closeQuietly(stmt);
+						DBUtil.closeQuietly(roomCon);
+						DBUtil.closeQuietly(roomConSet);
+				}
+				
+			}
+		});
 	}
+	public ArrayList<RoomConnection> getConnections(){
+		return executeTransaction(new Transaction<ArrayList<RoomConnection>>() {
+			@Override
+			public ArrayList<RoomConnection> execute(Connection conn) throws SQLException {
+				PreparedStatement roomstmt = null;
+				ResultSet roomSet = null;
+				ArrayList<RoomConnection> connectionList = new ArrayList<RoomConnection>();
+				
+				
+				try {
+					roomstmt = conn.prepareStatement(
+							"select connections.* from connections");
+							
+					
+					roomSet = roomstmt.executeQuery();
+					int i=1;
+					while(roomSet.next()) {
+						RoomConnection connection = new RoomConnection();
+						connection.setRoomID(roomSet.getInt(1));
+						connection.setNorth(roomSet.getInt(2));
+						connection.setEast(roomSet.getInt(3));
+						connection.setSouth(roomSet.getInt(4));
+						connection.setWest(roomSet.getInt(5));
+						connection.setExit(roomSet.getInt(6));
+						
+						connectionList.add(connection);
+						
+					}
+					
+						return connectionList;
+				} 
+					
+					finally {
+					//DBUtil.closeQuietly(resultSet);
+					//DBUtil.closeQuietly(stmt);
+						DBUtil.closeQuietly(roomstmt);
+						DBUtil.closeQuietly(roomSet);
+				}
+				
+			}
+		});
+	}
+}
 	
 	/*--------------------- IDatabase Methods ------------------------*/
 	
@@ -1059,4 +1242,3 @@ public class DerbyDatabase implements IDatabase {
 	
 	
 	/*----------------------------------------------------------------*/
-}

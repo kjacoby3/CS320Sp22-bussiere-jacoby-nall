@@ -12,12 +12,12 @@ public class Player extends Actor implements ActionsInterface{
 	public Player() {
 		name = "Player 1";
 		type = "player";
-		location = new Room();
+		//location = new Room();
 		inventory = new Inventory(100);
 		actorStats = new ActorStats();
-		inventory.addItem(new Equipment("Cloth Armor", 10, 50, 50, 50));
-		eqWeap = new Weapon("Fists", 10, 10, 0, 0, 0);
-		equipped = new Equipment("Bare",0, 10, 10, 0);
+		inventory.addItem(new Equipment("Cloth Armor", 10, 50, 50, 50,1,0,0,true));
+		eqWeap = new Weapon("Fists", 10, 10, 0, 0, 0,true);
+		equipped = new Equipment("Bare",0, 10, 10, 0,1,0,0,true);
 	}
 	
 	public Player(String name, Room location, Inventory inventory, ActorStats actorStats,

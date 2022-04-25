@@ -41,6 +41,7 @@ public class Room extends Map{
 		this.roomName = name;
 		this.roomDescription = descrip;
 		this.availableExits = exits;
+		roomLevel = 1;
 	}
 	
 	
@@ -65,7 +66,7 @@ public class Room extends Map{
 	}
 	
 	public Room() {
-		this.roomID = 1;
+		/*this.roomID = 1;
 		this.roomName = "starting";
 		this.roomDescripLong = "This is the starting area.  You can go North(n)";  //"You awaken to sound of explosions and the rocking of the ship.  You shoot up out of bed and notice that your cabinmate is not in their bed.  There is a door leading out into the hall";
 		this.roomItems = null;	
@@ -73,7 +74,7 @@ public class Room extends Map{
 		this.roomExits.add(2);
 		this.roomExits.add(0);
 		this.roomExits.add(3);
-		this.roomExits.add(0);
+		this.roomExits.add(0);*/
 	}
 	
 	public void setRoomID(int ID) {

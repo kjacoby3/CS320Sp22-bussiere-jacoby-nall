@@ -1,8 +1,10 @@
 package cs320.TBAG.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import cs320.TBAG.database.DatabaseProvider;
+import cs320.TBAG.database.DerbyDatabase;
 import cs320.TBAG.database.IDatabase;
 import cs320.TBAG.dbclass.InitDatabase;
 
@@ -19,6 +21,8 @@ public class Map{
 	ArrayList<Integer> validExits = new ArrayList<Integer>();
 	//ArrayList<Room> trialRooms = new ArrayList<Room>();
 	ArrayList<Integer> startRoom = new ArrayList<Integer>();
+	
+	ArrayList<Room> level1Rooms;
 	
 	
 	ArrayList<Actor> actors = null;
@@ -74,12 +78,14 @@ public class Map{
 	
 	
 	public Map() {
-		InitDatabase.init(1);
-		ArrayList<Room> level1Rooms = new ArrayList<Room>();
-		ArrayList<Integer> exits = new ArrayList<Integer>();
-		IDatabase db = DatabaseProvider.getInstance();
+		//InitDatabase.init(1);
+		level1Rooms = new ArrayList<Room>();
+		//ArrayList<Integer> exits = new ArrayList<Integer>();
+		//IDatabase db = DatabaseProvider.getInstance();
 		
-		for (int i = 1; i<21; i++) {
+		DerbyDatabase db = new DerbyDatabase();
+		
+		/*for (int i = 1; i<21; i++) {
 			Room room = db.getRoomByID(i);
 			RoomConnection roomConnection = db.getRoomConnectionByID(i);
 			
@@ -110,6 +116,23 @@ public class Map{
 			//}
 			
 			
+			
+		}*/
+		ArrayList<Room> rooms = db.getRooms();
+		ArrayList<RoomConnection> connections= db.getConnections();
+		
+		Iterator<RoomConnection> i = connections.iterator();
+		
+		for (Room room : rooms) {
+			ArrayList<Integer> exit = new ArrayList<Integer>();
+			RoomConnection conn = i.next();
+			exit.add(conn.getNorth());
+			exit.add(conn.getEast());
+			exit.add(conn.getSouth());
+			exit.add(conn.getWest());
+			room.setAvailableExits(exit);
+			
+			level1Rooms.add(room);
 			
 		}
 		

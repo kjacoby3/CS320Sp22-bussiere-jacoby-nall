@@ -1,7 +1,5 @@
 package cs320.TBAG.model;
 
-import cs320.TBAG.model.Map;
-
 import java.util.ArrayList;
 
 import cs320.TBAG.model.Actor;

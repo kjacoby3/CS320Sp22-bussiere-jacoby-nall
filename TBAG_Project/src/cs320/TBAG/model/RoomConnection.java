@@ -9,6 +9,10 @@ public class RoomConnection {
 	private int west;
 	private int exit;
 	
+	public RoomConnection() {
+		
+	}
+	
 	public void setRoomID(int ID) {
 		this.roomID = ID;
 	}

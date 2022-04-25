@@ -51,7 +51,7 @@ public class Actions implements ActionsInterface {
 	public void unequipWeapon() {
 		Weapon curWeapon = getEqWeap();
 		inventory.addItem(curWeapon);
-		setEqWeap(new Weapon("Fists", 10, 100));
+		setEqWeap(new Weapon("Fists", 10, 100,1,0,0,true));
 	}
 	
 	@Override
@@ -63,7 +63,7 @@ public class Actions implements ActionsInterface {
 	public void unequipEquipment() {
 		Equipment curEquipment = getEquipped();
 		inventory.addItem(curEquipment);
-		setEquipped(new Equipment("Bare", 100, 10, 0, 0));
+		setEquipped(new Equipment("Bare", 100, 10, 0, 0,1,0,0,true));
 	}
 	
 	@Override 
