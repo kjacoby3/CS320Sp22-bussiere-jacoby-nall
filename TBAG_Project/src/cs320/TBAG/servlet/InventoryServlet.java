@@ -46,21 +46,21 @@ public class InventoryServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException{
 		Inventory inventory = new Inventory(5);
-		inventory.addItem(new Weapon("Sword", 5, 5));
-		inventory.addItem(new Weapon("Axe", 10, 15));
-		inventory.addItem(new Weapon("Blaster", 25, 400));
-		inventory.addItem(new Weapon("Ice Spike", 400, 200));
-		inventory.addItem(new Weapon("Sniper Rifle", 600, 1000));
-		inventory.addItem(new Equipment("Chest", 10, 10, 35, 40));
-		inventory.addItem(new Equipment("Leg", 25, 25, 45, 50));
-		inventory.addItem(new Trophy("Raptor Claw", 25));
-		inventory.addItem(new Trophy("Raptor Mandible", 53));
-		inventory.addItem(new Usable("Red Key", 421));
-		inventory.addItem(new Usable("Purple Key", 322));
-		inventory.addItem(new Treasure("King's Crown", 322, 10, 25, 35, 20));
-		inventory.addItem(new Treasure("Worm Necklace", 10 , 20, 30, 40, 50));
-		inventory.addItem(new Consumable("Health Potion", 10, 400, 0, 0, 0, 0));
-		inventory.addItem(new Consumable("Damage Potion", 400, 0,0,10,0,0));
+		inventory.addItem(new Weapon("Sword", 5, 5,0,0,0,false));
+		inventory.addItem(new Weapon("Axe", 10, 15,0,0,0,false));
+		inventory.addItem(new Weapon("Blaster", 25, 400,0,0,0,false));
+		inventory.addItem(new Weapon("Ice Spike", 400, 200,0,0,0,false));
+		inventory.addItem(new Weapon("Sniper Rifle", 600, 1000,0,0,0,false));
+		inventory.addItem(new Equipment("Chest", 10, 10, 35, 40,0,0,0,false));
+		inventory.addItem(new Equipment("Leg", 25, 25, 45, 50,0,0,0,false));
+		inventory.addItem(new Trophy("Raptor Claw", 25,0,0,0));
+		inventory.addItem(new Trophy("Raptor Mandible", 53,0,0,0));
+		inventory.addItem(new Usable("Red Key", 421,0,0,0));
+		inventory.addItem(new Usable("Purple Key", 322,0,0,0));
+		inventory.addItem(new Treasure("King's Crown", 322,0,0,0));
+		inventory.addItem(new Treasure("Worm Necklace", 10 , 0,0,0));
+		inventory.addItem(new Consumable("Health Potion", 10, 400, 0, 0, 0, 0,0,0,0));
+		inventory.addItem(new Consumable("Damage Potion", 400, 0,0,10,0,0,0,0,0));
 		
 		List<Weapon> weapons = new ArrayList<>(inventory.getWeapons().values());
 		List<Equipment> equipment = new ArrayList<>(inventory.getEquipment().values());

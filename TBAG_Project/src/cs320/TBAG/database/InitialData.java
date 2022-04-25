@@ -7,10 +7,16 @@ import java.util.List;
 
 import cs320.TBAG.model.Actor;
 import cs320.TBAG.model.ActorStats;
+import cs320.TBAG.model.Consumable;
+import cs320.TBAG.model.Equipment;
 import cs320.TBAG.model.NPC;
 import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Room;
 import cs320.TBAG.model.RoomConnection;
+import cs320.TBAG.model.Treasure;
+import cs320.TBAG.model.Trophy;
+import cs320.TBAG.model.Usable;
+import cs320.TBAG.model.Weapon;
 import cs320.TBAG.model.Convo.ConversationNode;
 import cs320.TBAG.model.Convo.ConversationTree;
 import cs320.TBAG.model.Convo.DefaultResponse;
@@ -407,6 +413,176 @@ public class InitialData {
 			readDoors.close();
 		}
 	}
+	
+	public static List<Weapon> getWeapons() throws IOException {
+		List<Weapon> weaponList = new ArrayList<Weapon>();
+		ReadCSV readWeapons = new ReadCSV("Weapons.csv");
+		try {
+			while(true) {
+				List<String> tuple = readWeapons.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				
+				//Integer.parseInt(i.next());
+				
+				String name = i.next();
+				int price = Integer.parseInt(i.next());
+				int damage = Integer.parseInt(i.next());
+				int playerID = Integer.parseInt(i.next());
+				int roomID = Integer.parseInt(i.next());
+				int npcID = Integer.parseInt(i.next());
+				boolean equipped = Boolean.parseBoolean(i.next());
+				
+				weaponList.add(new Weapon(name, price, damage, playerID, roomID, npcID, equipped));
+			}
+			return weaponList;
+		} finally {
+			readWeapons.close();
+		}
+	}
+	public static List<Equipment> getEquipment() throws IOException {
+		List<Equipment> equipmentList = new ArrayList<Equipment>();
+		ReadCSV readEquipment = new ReadCSV("Equipment.csv");
+		try {
+			while(true) {
+				List<String> tuple = readEquipment.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				
+				//Integer.parseInt(i.next());
+				
+				String name = i.next();
+				int price = Integer.parseInt(i.next());
+				int defenseMod = Integer.parseInt(i.next());
+				int hpMod = Integer.parseInt(i.next());
+				int speedMod = Integer.parseInt(i.next());
+				int playerID = Integer.parseInt(i.next());
+				int roomID = Integer.parseInt(i.next());
+				int npcID = Integer.parseInt(i.next());
+				boolean equipped = Boolean.parseBoolean(i.next());
+				
+				equipmentList.add(new Equipment(name, price, defenseMod,hpMod, speedMod, playerID, roomID, npcID, equipped));
+			}
+			return equipmentList;
+		} finally {
+			readEquipment.close();
+		}
+	}
+	public static List<Usable> getUsables() throws IOException {
+		List<Usable> usableList = new ArrayList<Usable>();
+		ReadCSV readUsables = new ReadCSV("Usables.csv");
+		try {
+			while(true) {
+				List<String> tuple = readUsables.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				
+				//Integer.parseInt(i.next());
+				
+				String name = i.next();
+				int price = Integer.parseInt(i.next());
+				int playerID = Integer.parseInt(i.next());
+				int roomID = Integer.parseInt(i.next());
+				int npcID = Integer.parseInt(i.next());
+				
+				usableList.add(new Usable(name, price, playerID, roomID, npcID));
+			}
+			return usableList;
+		} finally {
+			readUsables.close();
+		}
+	}
+	public static List<Consumable> getConsumables() throws IOException {
+		List<Consumable> consumableList = new ArrayList<Consumable>();
+		ReadCSV readConsumables = new ReadCSV("Consumables.csv");
+		try {
+			while(true) {
+				List<String> tuple = readConsumables.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				
+				//Integer.parseInt(i.next());
+				
+				String name = i.next();
+				int price = Integer.parseInt(i.next());
+				int curHPMod = Integer.parseInt(i.next());
+				int maxHPMod = Integer.parseInt(i.next());
+				int dmgMod = Integer.parseInt(i.next());
+				int defMod = Integer.parseInt(i.next());
+				int spdMod = Integer.parseInt(i.next());
+				int playerID = Integer.parseInt(i.next());
+				int roomID = Integer.parseInt(i.next());
+				int npcID = Integer.parseInt(i.next());
+				
+				consumableList.add(new Consumable(name, price, curHPMod, maxHPMod, dmgMod, defMod, spdMod, playerID, roomID, npcID));
+			}
+			return consumableList;
+		} finally {
+			readConsumables.close();
+		}
+	}
+	public static List<Treasure> getTreasures() throws IOException {
+		List<Treasure> treasureList = new ArrayList<Treasure>();
+		ReadCSV readTreasures = new ReadCSV("Treasures.csv");
+		try {
+			while(true) {
+				List<String> tuple = readTreasures.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				
+				//Integer.parseInt(i.next());
+				
+				String name = i.next();
+				int price = Integer.parseInt(i.next());
+				int playerID = Integer.parseInt(i.next());
+				int roomID = Integer.parseInt(i.next());
+				int npcID = Integer.parseInt(i.next());
+				
+				treasureList.add(new Treasure(name, price, playerID, roomID, npcID));
+			}
+			return treasureList;
+		} finally {
+			readTreasures.close();
+		}
+	}
+	public static List<Trophy> getTrophies() throws IOException {
+		List<Trophy> trophyList = new ArrayList<Trophy>();
+		ReadCSV readTrophies = new ReadCSV("Trophies.csv");
+		try {
+			while(true) {
+				List<String> tuple = readTrophies.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				
+				//Integer.parseInt(i.next());
+				
+				String name = i.next();
+				int price = Integer.parseInt(i.next());
+				int playerID = Integer.parseInt(i.next());
+				int roomID = Integer.parseInt(i.next());
+				int npcID = Integer.parseInt(i.next());
+				
+				trophyList.add(new Trophy(name, price, playerID, roomID, npcID));
+			}
+			return trophyList;
+		} finally {
+			readTrophies.close();
+		}
+	}
+	
+	
 
 	
 }

@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import cs320.TBAG.database.IDatabase;
@@ -21,6 +22,7 @@ import cs320.TBAG.model.Treasure;
 import cs320.TBAG.model.Trophy;
 import cs320.TBAG.model.Usable;
 import cs320.TBAG.model.Weapon;
+import edu.ycp.cs320.booksdb.persist.DerbyDatabase.Transaction;
 
 public class DerbyDatabase implements IDatabase {
 	static {
@@ -69,10 +71,16 @@ public class DerbyDatabase implements IDatabase {
 					
 					
 					while(weaponSet.next()) {
-						String name = weaponSet.getString(1);
-						int damage = weaponSet.getInt(2);
-						int price = weaponSet.getInt(3);
-						Weapon weapon = new Weapon(name, damage, price);
+						int index =1;
+						String name = weaponSet.getString(index++);
+						int damage = weaponSet.getInt(index++);
+						int price = weaponSet.getInt(index++);
+						int playerID = weaponSet.getInt(index++);
+						int roomID = weaponSet.getInt(index++);
+						int npcID = weaponSet.getInt(index++);
+						boolean equipped = weaponSet.getBoolean(index++)
+						
+						Weapon weapon = new Weapon(name, damage, price, playerID, roomID, npcID, equipped);
 						inventory.addItem(weapon);
 					}
 					
@@ -93,7 +101,11 @@ public class DerbyDatabase implements IDatabase {
 						int defMod = equipmentSet.getInt(index++);
 						int HPMod = equipmentSet.getInt(index++);
 						int spdMod = equipmentSet.getInt(index++);
-						Equipment equipment = new Equipment(name, price, defMod, HPMod, spdMod);
+						int playerID = equipmentSet.getInt(index++);
+						int roomID = equipmentSet.getInt(index++);
+						int npcID = equipmentSet.getInt(index++);
+						boolean equipped = equipmentSet.getBoolean(index++);
+						Equipment equipment = new Equipment(name, price, defMod, HPMod, spdMod, playerID, roomID, npcID, equipped);
 						inventory.addItem(equipment);
 					}
 					
@@ -111,7 +123,10 @@ public class DerbyDatabase implements IDatabase {
 						int index=1;
 						String name = usableSet.getString(index++);
 						int price = usableSet.getInt(index++);
-						Usable usable = new Usable(name, price);
+						int playerID = usableSet.getInt(index++);
+						int roomID = usableSet.getInt(index++);
+						int npcID = usableSet.getInt(index++);
+						Usable usable = new Usable(name, price, playerID, roomID,npcID);
 						inventory.addItem(usable);
 					}
 					
@@ -133,8 +148,11 @@ public class DerbyDatabase implements IDatabase {
 						int dmgMod = consumableSet.getInt(index++);
 						int defMod = consumableSet.getInt(index++);
 						int spdMod = consumableSet.getInt(index++);
+						int playerID = consumableSet.getInt(index++);
+						int roomID = consumableSet.getInt(index++);
+						int npcID = consumableSet.getInt(index++);
 						
-						Consumable consumable = new Consumable(name, price, curHPMod, maxHPMod, dmgMod, defMod, spdMod);
+						Consumable consumable = new Consumable(name, price, curHPMod, maxHPMod, dmgMod, defMod, spdMod, playerID, roomID, npcID);
 						inventory.addItem(consumable);
 					}
 					
@@ -152,12 +170,11 @@ public class DerbyDatabase implements IDatabase {
 						int index =1;
 						String name = treasureSet.getString(index++);
 						int price = treasureSet.getInt(index++);
-						int hpMod = treasureSet.getInt(index++);
-						int defMod = treasureSet.getInt(index++);
-						int spdMod = treasureSet.getInt(index++);
-						int dmgMod = treasureSet.getInt(index++);
+						int playerID = treasureSet.getInt(index++);
+						int roomID = treasureSet.getInt(index++);
+						int npcID = treasureSet.getInt(index++);
 						
-						Treasure treasure = new Treasure(name, price, hpMod, defMod, spdMod, dmgMod);
+						Treasure treasure = new Treasure(name, price, playerID, roomID, npcID);
 						inventory.addItem(treasure);
 					}
 					
@@ -172,9 +189,13 @@ public class DerbyDatabase implements IDatabase {
 					
 					
 					while(trophySet.next()) {
-						String name = trophySet.getString(1);
-						int price = trophySet.getInt(2);
-						Trophy trophy = new Trophy(name, price);
+						int index =1;
+						String name = trophySet.getString(index++);
+						int price = trophySet.getInt(index++);
+						int playerID = trophySet.getInt(index++);
+						int roomID = trophySet.getInt(index++);
+						int npcID = trophySet.getInt(index++);
+						Trophy trophy = new Trophy(name, price, playerID, roomID, npcID);
 						inventory.addItem(trophy);
 					}
 					
@@ -234,10 +255,15 @@ public class DerbyDatabase implements IDatabase {
 						
 						
 						while(weaponSet.next()) {
-							String name = weaponSet.getString(1);
-							int damage = weaponSet.getInt(2);
-							int price = weaponSet.getInt(3);
-							Weapon weapon = new Weapon(name, damage, price);
+							int index =1;
+							String name = weaponSet.getString(index++);
+							int damage = weaponSet.getInt(index++);
+							int price = weaponSet.getInt(index++);
+							int playerID = weaponSet.getInt(index++);
+							int roomID = weaponSet.getInt(index++);
+							int npcID = weaponSet.getInt(index++);
+							boolean equipped = weaponSet.getBoolean(index++);
+							Weapon weapon = new Weapon(name, damage, price, playerID, roomID, npcID, equipped);
 							inventory.addItem(weapon);
 						}
 						
@@ -258,7 +284,11 @@ public class DerbyDatabase implements IDatabase {
 							int defMod = equipmentSet.getInt(index++);
 							int HPMod = equipmentSet.getInt(index++);
 							int spdMod = equipmentSet.getInt(index++);
-							Equipment equipment = new Equipment(name, price, defMod, HPMod, spdMod);
+							int playerID = equipmentSet.getInt(index++);
+							int roomID = equipmentSet.getInt(index++);
+							int npcID = equipmentSet.getInt(index++);
+							boolean equipped = equipmentSet.getBoolean(index++);
+							Equipment equipment = new Equipment(name, price, defMod, HPMod, spdMod, playerID, roomID, npcID, equipped);
 							inventory.addItem(equipment);
 						}
 						
@@ -276,7 +306,10 @@ public class DerbyDatabase implements IDatabase {
 							int index=1;
 							String name = usableSet.getString(index++);
 							int price = usableSet.getInt(index++);
-							Usable usable = new Usable(name, price);
+							int playerID = usableSet.getInt(index++);
+							int roomID = usableSet.getInt(index++);
+							int npcID = usableSet.getInt(index++);
+							Usable usable = new Usable(name, price, playerID, roomID,npcID);
 							inventory.addItem(usable);
 						}
 						
@@ -298,8 +331,11 @@ public class DerbyDatabase implements IDatabase {
 							int dmgMod = consumableSet.getInt(index++);
 							int defMod = consumableSet.getInt(index++);
 							int spdMod = consumableSet.getInt(index++);
+							int playerID = consumableSet.getInt(index++);
+							int roomID = consumableSet.getInt(index++);
+							int npcID = consumableSet.getInt(index++);
 							
-							Consumable consumable = new Consumable(name, price, curHPMod, maxHPMod, dmgMod, defMod, spdMod);
+							Consumable consumable = new Consumable(name, price, curHPMod, maxHPMod, dmgMod, defMod, spdMod, playerID, roomID, npcID);
 							inventory.addItem(consumable);
 						}
 						
@@ -317,12 +353,11 @@ public class DerbyDatabase implements IDatabase {
 							int index =1;
 							String name = treasureSet.getString(index++);
 							int price = treasureSet.getInt(index++);
-							int hpMod = treasureSet.getInt(index++);
-							int defMod = treasureSet.getInt(index++);
-							int spdMod = treasureSet.getInt(index++);
-							int dmgMod = treasureSet.getInt(index++);
+							int playerID = treasureSet.getInt(index++);
+							int roomID = treasureSet.getInt(index++);
+							int npcID = treasureSet.getInt(index++);
 							
-							Treasure treasure = new Treasure(name, price, hpMod, defMod, spdMod, dmgMod);
+							Treasure treasure = new Treasure(name, price, playerID, roomID, npcID);
 							inventory.addItem(treasure);
 						}
 						
@@ -337,9 +372,13 @@ public class DerbyDatabase implements IDatabase {
 						
 						
 						while(trophySet.next()) {
-							String name = trophySet.getString(1);
-							int price = trophySet.getInt(2);
-							Trophy trophy = new Trophy(name, price);
+							int index =1;
+							String name = trophySet.getString(index++);
+							int price = trophySet.getInt(index++);
+							int playerID = trophySet.getInt(index++);
+							int roomID = trophySet.getInt(index++);
+							int npcID = trophySet.getInt(index++);
+							Trophy trophy = new Trophy(name, price, playerID, roomID, npcID);
 							inventory.addItem(trophy);
 						}
 						
@@ -366,170 +405,189 @@ public class DerbyDatabase implements IDatabase {
 				}
 			});
 		}
-			public Inventory constructInventoryByRoomID(int roomID) {
-				return executeTransaction(new Transaction<Inventory>() {
-					@Override
-					public Inventory execute(Connection conn) throws SQLException {
-						PreparedStatement weaponstmt = null;
-						PreparedStatement equipmentstmt = null;
-						PreparedStatement usablestmt = null;
-						PreparedStatement consumablestmt = null;
-						PreparedStatement trophystmt = null;
-						PreparedStatement treasurestmt = null;
-						Inventory inventory = new Inventory(100);
+		public Inventory constructInventoryByRoomID(int roomID) {
+			return executeTransaction(new Transaction<Inventory>() {
+				@Override
+				public Inventory execute(Connection conn) throws SQLException {
+					PreparedStatement weaponstmt = null;
+					PreparedStatement equipmentstmt = null;
+					PreparedStatement usablestmt = null;
+					PreparedStatement consumablestmt = null;
+					PreparedStatement trophystmt = null;
+					PreparedStatement treasurestmt = null;
+					Inventory inventory = new Inventory(100);
+					
+					
+					ResultSet weaponSet = null;
+					ResultSet equipmentSet = null;
+					ResultSet usableSet = null;
+					ResultSet consumableSet = null;
+					ResultSet trophySet = null;
+					ResultSet treasureSet = null;
+					
+					try {
+						weaponstmt = conn.prepareStatement(
+								"select weapons.*" +
+								"  from  weapons " +
+								"  where weapons.roomID = ? "
+						);
+						
+						weaponstmt.setInt(1, roomID);
+						weaponSet = weaponstmt.executeQuery();
 						
 						
-						ResultSet weaponSet = null;
-						ResultSet equipmentSet = null;
-						ResultSet usableSet = null;
-						ResultSet consumableSet = null;
-						ResultSet trophySet = null;
-						ResultSet treasureSet = null;
-						
-						try {
-							weaponstmt = conn.prepareStatement(
-									"select weapons.*" +
-									"  from  weapons " +
-									"  where weapons.roomID = ? "
-							);
+						while(weaponSet.next()) {
+							int index =1;
+							String name = weaponSet.getString(index++);
+							int damage = weaponSet.getInt(index++);
+							int price = weaponSet.getInt(index++);
+							int playerID = weaponSet.getInt(index++);
+							int roomID = weaponSet.getInt(index++);
+							int npcID = weaponSet.getInt(index++);
+							boolean equipped = weaponSet.getBoolean(index++);
 							
-							weaponstmt.setInt(1, roomID);
-							weaponSet = weaponstmt.executeQuery();
-							
-							
-							while(weaponSet.next()) {
-								String name = weaponSet.getString(1);
-								int damage = weaponSet.getInt(2);
-								int price = weaponSet.getInt(3);
-								Weapon weapon = new Weapon(name, damage, price);
-								inventory.addItem(weapon);
-							}
-							
-							equipmentstmt = conn.prepareStatement(
-									"select equipment.*" +
-									"  from  equipment " +
-									"  where equipments.roomID = ? "
-							);
-							
-							equipmentstmt.setInt(1, roomID);
-							equipmentSet = equipmentstmt.executeQuery();
-							
-							
-							while(equipmentSet.next()) {
-								int index=1;
-								String name = equipmentSet.getString(index++);
-								int price = equipmentSet.getInt(index++);
-								int defMod = equipmentSet.getInt(index++);
-								int HPMod = equipmentSet.getInt(index++);
-								int spdMod = equipmentSet.getInt(index++);
-								Equipment equipment = new Equipment(name, price, defMod, HPMod, spdMod);
-								inventory.addItem(equipment);
-							}
-							
-							usablestmt = conn.prepareStatement(
-									"select usables.*" +
-									"  from  usables " +
-									"  where usables.roomID = ? "
-							);
-							
-							usablestmt.setInt(1, roomID);
-							usableSet = usablestmt.executeQuery();
-							
-							
-							while(usableSet.next()) {
-								int index=1;
-								String name = usableSet.getString(index++);
-								int price = usableSet.getInt(index++);
-								Usable usable = new Usable(name, price);
-								inventory.addItem(usable);
-							}
-							
-							consumablestmt = conn.prepareStatement(
-									"select consumables.*" +
-									"  from  consumables " +
-									"  where consumables.roomID = ? "
-							);
-							
-							consumablestmt.setInt(1, roomID);
-							consumableSet = consumablestmt.executeQuery();
-							
-							while(consumableSet.next()) {
-								int index =1;
-								String name = consumableSet.getString(index++);
-								int price = consumableSet.getInt(index++);
-								int curHPMod = consumableSet.getInt(index++);
-								int maxHPMod = consumableSet.getInt(index++);
-								int dmgMod = consumableSet.getInt(index++);
-								int defMod = consumableSet.getInt(index++);
-								int spdMod = consumableSet.getInt(index++);
-								
-								Consumable consumable = new Consumable(name, price, curHPMod, maxHPMod, dmgMod, defMod, spdMod);
-								inventory.addItem(consumable);
-							}
-							
-							treasurestmt = conn.prepareStatement(
-									"select treasures.*" +
-									"  from  treasures " +
-									"  where treasures.roomID = ? "
-							);
-							
-							treasurestmt.setInt(1, roomID);
-							treasureSet = treasurestmt.executeQuery();
-							
-							
-							while(treasureSet.next()) {
-								int index =1;
-								String name = treasureSet.getString(index++);
-								int price = treasureSet.getInt(index++);
-								int hpMod = treasureSet.getInt(index++);
-								int defMod = treasureSet.getInt(index++);
-								int spdMod = treasureSet.getInt(index++);
-								int dmgMod = treasureSet.getInt(index++);
-								
-								Treasure treasure = new Treasure(name, price, hpMod, defMod, spdMod, dmgMod);
-								inventory.addItem(treasure);
-							}
-							
-							trophystmt = conn.prepareStatement(
-									"select trophies.*" +
-									"  from  trophies " +
-									"  where trophies.roomID = ? "
-							);
-							
-							trophystmt.setInt(1, roomID);
-							trophySet = trophystmt.executeQuery();
-							
-							
-							while(trophySet.next()) {
-								String name = trophySet.getString(1);
-								int price = trophySet.getInt(2);
-								Trophy trophy = new Trophy(name, price);
-								inventory.addItem(trophy);
-							}
-							
-							
-							return inventory;
-							
-							
-							
-							
-						} finally {
-							DBUtil.closeQuietly(weaponSet);
-							DBUtil.closeQuietly(equipmentSet);
-							DBUtil.closeQuietly(usableSet);
-							DBUtil.closeQuietly(consumableSet);
-							DBUtil.closeQuietly(trophySet);
-							DBUtil.closeQuietly(treasureSet);
-							DBUtil.closeQuietly(weaponstmt);
-							DBUtil.closeQuietly(equipmentstmt);
-							DBUtil.closeQuietly(usablestmt);
-							DBUtil.closeQuietly(consumablestmt);
-							DBUtil.closeQuietly(trophystmt);
-							DBUtil.closeQuietly(treasurestmt);
+							Weapon weapon = new Weapon(name, damage, price, playerID, roomID, npcID, equipped);
+							inventory.addItem(weapon);
 						}
+						
+						equipmentstmt = conn.prepareStatement(
+								"select equipment.*" +
+								"  from  equipment " +
+								"  where equipments.roomID = ? "
+						);
+						
+						equipmentstmt.setInt(1, roomID);
+						equipmentSet = equipmentstmt.executeQuery();
+						
+						
+						while(equipmentSet.next()) {
+							int index=1;
+							String name = equipmentSet.getString(index++);
+							int price = equipmentSet.getInt(index++);
+							int defMod = equipmentSet.getInt(index++);
+							int HPMod = equipmentSet.getInt(index++);
+							int spdMod = equipmentSet.getInt(index++);
+							int playerID = equipmentSet.getInt(index++);
+							int roomID = equipmentSet.getInt(index++);
+							int npcID = equipmentSet.getInt(index++);
+							boolean equipped = equipmentSet.getBoolean(index++);
+							Equipment equipment = new Equipment(name, price, defMod, HPMod, spdMod, playerID, roomID, npcID, equipped);
+							inventory.addItem(equipment);
+						}
+						
+						usablestmt = conn.prepareStatement(
+								"select usables.*" +
+								"  from  usables " +
+								"  where usables.roomID = ? "
+						);
+						
+						usablestmt.setInt(1, roomID);
+						usableSet = usablestmt.executeQuery();
+						
+						
+						while(usableSet.next()) {
+							int index=1;
+							String name = usableSet.getString(index++);
+							int price = usableSet.getInt(index++);
+							int playerID = usableSet.getInt(index++);
+							int roomID = usableSet.getInt(index++);
+							int npcID = usableSet.getInt(index++);
+							Usable usable = new Usable(name, price, playerID, roomID,npcID);
+							inventory.addItem(usable);
+						}
+						
+						consumablestmt = conn.prepareStatement(
+								"select consumables.*" +
+								"  from  consumables " +
+								"  where consumables.roomID = ? "
+						);
+						
+						consumablestmt.setInt(1, roomID);
+						consumableSet = consumablestmt.executeQuery();
+						
+						while(consumableSet.next()) {
+							int index =1;
+							String name = consumableSet.getString(index++);
+							int price = consumableSet.getInt(index++);
+							int curHPMod = consumableSet.getInt(index++);
+							int maxHPMod = consumableSet.getInt(index++);
+							int dmgMod = consumableSet.getInt(index++);
+							int defMod = consumableSet.getInt(index++);
+							int spdMod = consumableSet.getInt(index++);
+							int playerID = consumableSet.getInt(index++);
+							int roomID = consumableSet.getInt(index++);
+							int npcID = consumableSet.getInt(index++);
+							
+							Consumable consumable = new Consumable(name, price, curHPMod, maxHPMod, dmgMod, defMod, spdMod, playerID, roomID, npcID);
+							inventory.addItem(consumable);
+						}
+						
+						treasurestmt = conn.prepareStatement(
+								"select treasures.*" +
+								"  from  treasures " +
+								"  where treasures.roomID = ? "
+						);
+						
+						treasurestmt.setInt(1, roomID);
+						treasureSet = treasurestmt.executeQuery();
+						
+						
+						while(treasureSet.next()) {
+							int index =1;
+							String name = treasureSet.getString(index++);
+							int price = treasureSet.getInt(index++);
+							int playerID = treasureSet.getInt(index++);
+							int roomID = treasureSet.getInt(index++);
+							int npcID = treasureSet.getInt(index++);
+							
+							Treasure treasure = new Treasure(name, price, playerID, roomID, npcID);
+							inventory.addItem(treasure);
+						}
+						
+						trophystmt = conn.prepareStatement(
+								"select trophies.*" +
+								"  from  trophies " +
+								"  where trophies.roomID = ? "
+						);
+						
+						trophystmt.setInt(1, roomID);
+						trophySet = trophystmt.executeQuery();
+						
+						
+						while(trophySet.next()) {
+							int index =1;
+							String name = treasureSet.getString(index++);
+							int price = treasureSet.getInt(index++);
+							int playerID = treasureSet.getInt(index++);
+							int roomID = treasureSet.getInt(index++);
+							int npcID = treasureSet.getInt(index++);
+							Trophy trophy = new Trophy(name, price, playerID, roomID, npcID);
+							inventory.addItem(trophy);
+						}
+						
+						
+						return inventory;
+						
+						
+						
+						
+					} finally {
+						DBUtil.closeQuietly(weaponSet);
+						DBUtil.closeQuietly(equipmentSet);
+						DBUtil.closeQuietly(usableSet);
+						DBUtil.closeQuietly(consumableSet);
+						DBUtil.closeQuietly(trophySet);
+						DBUtil.closeQuietly(treasureSet);
+						DBUtil.closeQuietly(weaponstmt);
+						DBUtil.closeQuietly(equipmentstmt);
+						DBUtil.closeQuietly(usablestmt);
+						DBUtil.closeQuietly(consumablestmt);
+						DBUtil.closeQuietly(trophystmt);
+						DBUtil.closeQuietly(treasurestmt);
 					}
-				});
-			}
+				}
+			});
+		}
 		
 		
 		
@@ -592,7 +650,106 @@ public class DerbyDatabase implements IDatabase {
 	
 	//Create the tables for the data to be loaded into (Look at lab06)
 	public void createTables() {
-		
+		executeTransaction(new Transaction<Boolean>() {
+			@SuppressWarnings("resource")
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement equipment = null;
+				PreparedStatement weapons = null;
+				PreparedStatement usables = null;
+				PreparedStatement consumables = null;
+				PreparedStatement treasures = null;
+				PreparedStatement trophies = null;
+				PreparedStatement players = null;
+				PreparedStatement rooms = null;
+				PreparedStatement npcs = null;
+				
+				
+				try {
+					players = conn.prepareStatement(
+						"create table players ("
+						+ " playerID integer primary key generated always as identity (start with 0, increment by 1),"
+						+ "currency integer, level integer)"
+						);
+					players.executeUpdate();
+					
+					npcs = conn.prepareStatement(
+							"create table npcs ("
+							+ "npcID integer primary key generated always as identity (start with 0, increment by 1),"
+							+ "name varchar(40), type varchar(40),"
+							+ "roomID integer, currency integer, stats integer, aggression integer)"
+							);
+						npcs.executeUpdate();
+					
+					rooms = conn.prepareStatement(
+						"create table rooms ("
+						+ " roomID integer primary key generated always as identity (start with 0, increment by 1),"
+						+ "name varchar(40), short varchar (400), long varchar(800),"
+						+ "npcID integer constraint npcID references npcs, level integer)"
+						);
+					rooms.executeUpdate();
+					
+					
+							
+							
+					equipment = conn.prepareStatement(
+						"create table equipment (" +
+						"	name varchar(40), price integer, defMod integer, hpMod integer, spdMod integer, " +									
+						"	playerID integer," +
+						"	roomID integer," +
+						"	npcID integer," +
+						"	equipped boolean)"
+					);	
+					equipment.executeUpdate();
+					
+					weapons = conn.prepareStatement(
+							"create table weapons ("
+							+ "name varchar(40), price integer, damage integer, playerID integer ,"
+							+ "roomID integer, "
+							+ "npcID integer , equipped boolean)"
+					);
+					weapons.executeUpdate();
+					
+					usables = conn.prepareStatement(
+							"create table usables ("
+							+ "name varchar(40), price integer, playerID integer ,"
+							+ "roomID integer, "
+							+ "npcID integer )"
+					);
+					usables.executeUpdate();
+					
+					consumables = conn.prepareStatement(
+							"create table consumables ("
+							+ "name varchar(40), price integer, curHPMod integer, maxHPMod integer, dmgMod integer, defMod integer, spdMod integer,"
+							+ "playerID integer,"
+							+ "roomID integer,"
+							+ "npcID integer)"
+					);
+					consumables.executeUpdate();
+					
+					treasures = conn.prepareStatement(
+							"create table treasures ("
+							+ "name varchar(40), price integer, playerID integer,"
+							+ "roomID integer,"
+							+ "npcID integer)"
+					);
+					treasures.executeUpdate();
+					
+					trophies = conn.prepareStatement(
+							"create table trophies ("
+							+ "name varchar(40), price integer,playerID integer,"
+							+ "roomID integer, "
+							+ "npcID integer )"
+					);
+					trophies.executeUpdate();
+					
+					return true;
+				} finally {
+					//DBUtil.closeQuietly(stmt1);
+					//DBUtil.closeQuietly(stmt2);
+				}
+			}
+		});
 		
 	}
 	
@@ -603,19 +760,40 @@ public class DerbyDatabase implements IDatabase {
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Room> roomList;
-					List<RoomConnection> roomConnectionList;
+					List<RoomConnection> roomConnectionList = new ArrayList<RoomConnection>();
+					List<Weapon> weaponList;
+					List<Equipment> equipmentList;
+					List<Usable> usableList;
+					List<Consumable> consumableList;
+					List<Treasure> treasureList;
+					List<Trophy> trophyList;
 					
 					try {
-						roomList = InitialData.getRooms();
+						
+						//roomList = InitialData.getRooms();
+						weaponList = InitialData.getWeapons();
+						equipmentList = InitialData.getEquipment();
+						usableList = InitialData.getUsables();
+						consumableList = InitialData.getConsumables();
+						treasureList = InitialData.getTreasures();
+						trophyList = InitialData.getTrophies();
+						
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
 					}
 
 					PreparedStatement insertRoom = null; //PreparedStatement needs to be imported?
 					PreparedStatement insertRoomConnections = null;
+					PreparedStatement insertWeapon;
+					PreparedStatement insertEquipment;
+					PreparedStatement insertUsable;
+					PreparedStatement insertConsumable;
+					PreparedStatement insertTreasure;
+					PreparedStatement insertTrophy;
+					
 					
 					try {
-						// populate Rooms table 
+						/*// populate Rooms table 
 						insertRoomConnections = conn.prepareStatement("insert into rooms (roomID, North, East, South, West, exit) values (?,?,?,?,?,?)");
 						for (RoomConnection roomConnection : roomConnectionList) {
 							
@@ -628,15 +806,99 @@ public class DerbyDatabase implements IDatabase {
 							
 							insertRoomConnections.addBatch();
 						}
-						insertRoomConnections.executeBatch();
+						insertRoomConnections.executeBatch();*/
 						
+						insertWeapon = conn.prepareStatement("insert into weapons (name, price, damage, playerID, roomID, npcID, equipped) values (?,?,?,?,?,?,?)");
+						for( Weapon weapon : weaponList) {
+							insertWeapon.setString(1, weapon.getName());
+							insertWeapon.setInt(2, weapon.getPrice());
+							insertWeapon.setInt(3, weapon.getDamage());
+							insertWeapon.setInt(4, weapon.getPlayerID());
+							insertWeapon.setInt(5, weapon.getRoomID());
+							insertWeapon.setInt(6, weapon.getNPCID());
+							insertWeapon.setBoolean(7, weapon.getEquipped());
+							
+							insertWeapon.addBatch();
+						}
+						insertWeapon.executeBatch();
+						
+						System.out.println("Weapons table populated");
+						
+						insertEquipment = conn.prepareStatement("insert into equipment (name, price, defMod, hpMod, spdMod, playerId, roomID, npcID, equipped) values (?,?,?,?,?,?,?,?,?)");
+						for(Equipment equipment : equipmentList) {
+							insertEquipment.setString(1, equipment.getName());
+							insertEquipment.setInt(2, equipment.getPrice());
+							insertEquipment.setInt(3, equipment.getDefenseMod());
+							insertEquipment.setInt(4, equipment.getHPMod());
+							insertEquipment.setInt(5, equipment.getSpeedMod());
+							insertEquipment.setInt(6, equipment.getPlayerID());
+							insertEquipment.setInt(7, equipment.getRoomID());
+							insertEquipment.setInt(8, equipment.getNPCID());
+							insertEquipment.setBoolean(9, equipment.getEquipped());
+							
+							insertEquipment.addBatch();
+						}
+						insertEquipment.executeBatch();
+						
+						insertUsable = conn.prepareStatement("insert into usables (name, price, playerId, roomID, npcID) values (?,?,?,?,?)");
+						for(Usable usables : usableList) {
+							insertUsable.setString(1, usables.getName());
+							insertUsable.setInt(2, usables.getPrice());
+							insertUsable.setInt(3, usables.getPlayerID());
+							insertUsable.setInt(4, usables.getRoomID());
+							insertUsable.setInt(5, usables.getNPCID());
+							
+							insertUsable.addBatch();
+						}
+						insertUsable.executeBatch();
+						
+						insertConsumable = conn.prepareStatement("insert into Consumables (name, price, curhpMod, maxhpMod, dmgMod, defmod, spdmod, playerId, roomID, npcID) values (?,?,?,?,?,?,?,?,?,?)");
+						for(Consumable consumable : consumableList) {
+							insertConsumable.setString(1, consumable.getName());
+							insertConsumable.setInt(2, consumable.getBuyPrice());
+							insertConsumable.setInt(3, consumable.getCurHPMod());
+							insertConsumable.setInt(4, consumable.getMaxHPMod());
+							insertConsumable.setInt(5, consumable.getdmgMod());
+							insertConsumable.setInt(6, consumable.getdefMod());
+							insertConsumable.setInt(7, consumable.getspdMod());
+							insertConsumable.setInt(8, consumable.getPlayerID());
+							insertConsumable.setInt(9, consumable.getRoomID());
+							insertConsumable.setInt(10, consumable.getNPCID());
+							
+							insertConsumable.addBatch();
+						}
+						insertConsumable.executeBatch();
+						
+						insertTreasure = conn.prepareStatement("insert into Treasures (name, price, playerId, roomID, npcID) values (?,?,?,?,?)");
+						for(Treasure treasures : treasureList) {
+							insertTreasure.setString(1, treasures.getName());
+							insertTreasure.setInt(2, treasures.getBuyPrice());
+							insertTreasure.setInt(3, treasures.getPlayerID());
+							insertTreasure.setInt(4, treasures.getRoomID());
+							insertTreasure.setInt(5, treasures.getNPCID());
+							
+							insertTreasure.addBatch();
+						}
+						insertTreasure.executeBatch();
+						
+						insertTrophy = conn.prepareStatement("insert into Trophies (name, price, playerId, roomID, npcID) values (?,?,?,?,?)");
+						for(Trophy trophies : trophyList) {
+							insertTrophy.setString(1, trophies.getName());
+							insertTrophy.setInt(2, trophies.getBuyPrice());
+							insertTrophy.setInt(3, trophies.getPlayerID());
+							insertTrophy.setInt(4, trophies.getRoomID());
+							insertTrophy.setInt(5, trophies.getNPCID());
+							
+							insertTrophy.addBatch();
+						}
+						insertTrophy.executeBatch();
 						
 						
 					} finally {
-						DBUtil.closeQuietly(insertRoomConnections);
+						//DBUtil.closeQuietly(insertRoomConnections);
 					}
 
-					try {
+					/*try {
 						// populate Rooms table 
 						insertRoom = conn.prepareStatement("insert into rooms (roomID,roomName, roomDescripLong, roomDescripShort, roomConnections, roomUseable, roomTreasure, roomTrophy, roomEquipment, roomWeapon, roomActor, roomLevel) values (?,?,?,?,?,?,?,?,?,?,?,?)");
 						for (Room room : roomList) {
@@ -661,8 +923,12 @@ public class DerbyDatabase implements IDatabase {
 						return true;
 					} finally {
 						DBUtil.closeQuietly(insertRoom);
-					}
+					}*/
+					
+					return true;
+					
 				}
+					
 			});
 		
 	}

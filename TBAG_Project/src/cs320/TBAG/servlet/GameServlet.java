@@ -15,9 +15,11 @@ import javax.servlet.http.HttpSession;
 import cs320.TBAG.model.Map;
 import cs320.TBAG.model.NPC;
 import cs320.TBAG.controller.GameController;
+import cs320.TBAG.controller.InventoryController;
 import cs320.TBAG.model.Combat;
 import cs320.TBAG.model.Equipment;
 import cs320.TBAG.model.Game;
+import cs320.TBAG.model.Inventory;
 import cs320.TBAG.model.Item;
 import cs320.TBAG.model.LevelUp;
 import cs320.TBAG.model.Player;
@@ -82,6 +84,7 @@ public class GameServlet extends HttpServlet{
 				}
 				else {
 					updateHistory(input, map.getRoomDescription());
+					req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 				}
 				
 			}
@@ -98,6 +101,7 @@ public class GameServlet extends HttpServlet{
 						terminalWriter.write(map.getRoomDescription());*/
 					}
 					else {
+						System.out.println("Southelse");
 						updateHistory(input, map.getRoomDescription());
 						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 					}
@@ -143,19 +147,30 @@ public class GameServlet extends HttpServlet{
 			}
 			
 			else if(input.equalsIgnoreCase("inventory")) {
-				req.setAttribute("weapons", new ArrayList<>(player.getInventory().getWeapons().values()));
+				InventoryController ic = new InventoryController();
+				Inventory inventory = ic.getPlayerInventory(1);
+				
+				req.setAttribute("weapons", new ArrayList<>(inventory.getWeapons().values()));
+				req.setAttribute("equipment", new ArrayList<>(inventory.getEquipment().values()));
+				req.setAttribute("trophies", new ArrayList<>(inventory.getTrophies().values()));
+				req.setAttribute("usables", new ArrayList<>(inventory.getUsables().values()));
+				req.setAttribute("treasures", new ArrayList<>(inventory.getTreasures().values()));
+				req.setAttribute("consumables", new ArrayList<>(inventory.getConsumables().values()));
+				
+				
+				/*req.setAttribute("weapons", new ArrayList<>(player.getInventory().getWeapons().values()));
 				req.setAttribute("equipment", new ArrayList<>(player.getInventory().getEquipment().values()));
 				req.setAttribute("trophies", new ArrayList<>(player.getInventory().getTrophies().values()));
 				req.setAttribute("usables", new ArrayList<>(player.getInventory().getUsables().values()));
 				req.setAttribute("treasures", new ArrayList<>(player.getInventory().getTreasures().values()));
-				req.setAttribute("consumables", new ArrayList<>(player.getInventory().getConsumables().values()));
+				req.setAttribute("consumables", new ArrayList<>(player.getInventory().getConsumables().values()));*/
 				req.getRequestDispatcher("/_view/inventory.jsp").forward(req, resp);
 				//req.getRequestDispatcher("/_view/inventory.jsp").forward(req,resp);
 				//terminalWriter.write("inventory");
 			}
 			
 			else if(input.equalsIgnoreCase("pickup")) {
-				player.getInventory().addItem(new Weapon("banana", 1000000, 1000000));
+				player.getInventory().addItem(new Weapon("banana", 1000000, 1000000,1,0,0, true));
 				updateHistory(input);
 				req.setAttribute("roomMessage", map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req,resp);

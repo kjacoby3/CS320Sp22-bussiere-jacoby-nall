@@ -135,7 +135,7 @@ body {
 </div>
 
 <div id="Equipment" class="tabcontent">
-    <h3 style="text-align: center; color:white;">Weapons</h3>
+    <h3 style="text-align: center; color:white;">Equipment</h3>
     
     <p><c:forEach var="equip" items="${equipment}">
         <c:if test="${! empty equip}">

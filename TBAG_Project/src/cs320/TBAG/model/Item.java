@@ -4,6 +4,9 @@ public abstract class Item {
 	String name;
 	String type;
 	int price;
+	int playerID;
+	int roomID;
+	int npcID;
 	
 	
 	public String getName() {
@@ -30,5 +33,25 @@ public abstract class Item {
 	
 	public void setPrice(int price) {
 		this.price = price;
+	}
+	
+	public int getPlayerID(){
+		return playerID;
+	}
+	public int getRoomID() {
+		return roomID;
+	}
+	public int getNPCID() {
+		return npcID;
+	}
+	
+	public void setPlayerID(int playerID) {
+		this.playerID=playerID;
+	}
+	public void setRoomID(int roomID) {
+		this.roomID=roomID;
+	}
+	public void setNPCID(int npcID) {
+		this.npcID=npcID;
 	}
 }
