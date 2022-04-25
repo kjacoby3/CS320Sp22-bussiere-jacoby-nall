@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import cs320.TBAG.database.DerbyDatabase;
+
 public class LoginServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	HttpSession session;
@@ -28,8 +30,21 @@ public class LoginServlet extends HttpServlet{
 		System.out.println(session.getAttribute("saveUsername"));
 		System.out.println(session.getAttribute("savePassword"));
 		if(req.getParameter("username") != null && req.getParameter("password") != null) {
+			DerbyDatabase db = new DerbyDatabase();
+			String compare=db.selectAccountFromUsername(req.getParameter("username"));
 			
-			if(req.getParameter("username").equals("username") && req.getParameter("password").equals("password")) {
+			if(req.getParameter("password").equals(compare)) {
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+			}
+			else {
+				req.setAttribute("errorMessage", "Incorrect Username or Password");
+				req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
+			}
+			
+			
+			
+			
+			/*if(req.getParameter("username").equals("username") && req.getParameter("password").equals("password")) {
 				System.out.println("if");
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
@@ -41,7 +56,7 @@ public class LoginServlet extends HttpServlet{
 				System.out.println("else1");
 				req.setAttribute("errorMessage", "Incorrect Username or Password");
 				req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
-			}
+			}*/
 		}
 		
 		else {

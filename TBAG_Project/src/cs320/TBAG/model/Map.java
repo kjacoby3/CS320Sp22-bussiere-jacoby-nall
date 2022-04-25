@@ -78,12 +78,12 @@ public class Map{
 	
 	
 	public Map() {
-		//InitDatabase.init(1);
+		InitDatabase.init(1);
 		level1Rooms = new ArrayList<Room>();
-		//ArrayList<Integer> exits = new ArrayList<Integer>();
-		//IDatabase db = DatabaseProvider.getInstance();
+		ArrayList<Integer> exits = new ArrayList<Integer>();
+		IDatabase db = DatabaseProvider.getInstance();
 		
-		DerbyDatabase db = new DerbyDatabase();
+		//DerbyDatabase db = new DerbyDatabase();
 		
 		/*for (int i = 1; i<21; i++) {
 			Room room = db.getRoomByID(i);

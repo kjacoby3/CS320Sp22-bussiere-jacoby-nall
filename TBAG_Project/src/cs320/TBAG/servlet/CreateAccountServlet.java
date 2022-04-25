@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import cs320.TBAG.database.DerbyDatabase;
+
 public class CreateAccountServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	HttpSession session;
@@ -29,8 +31,12 @@ public class CreateAccountServlet extends HttpServlet{
 			
 			if(req.getParameter("password").equals(req.getParameter("confirmPassword"))) {
 				System.out.println("if");
-				session.setAttribute("saveUsername", req.getParameter("username"));
-				session.setAttribute("savePassword", req.getParameter("password"));
+				DerbyDatabase db = new DerbyDatabase();
+				db.insertAccount(req.getParameter("username"), req.getParameter("password"));
+				
+				
+				/*session.setAttribute("saveUsername", req.getParameter("username"));
+				session.setAttribute("savePassword", req.getParameter("password"));*/
 				req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
 			}
 			else {
