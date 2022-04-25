@@ -111,7 +111,7 @@ public class DerbyDatabase implements IDatabase {
 					
 					try {
 						// populate Rooms table 
-						insertRoomConnections = conn.prepareStatement("insert into rooms (roomName, roomDescripLong, roomDescripShort, roomConnections, roomUseable, roomTreasure, roomTrophy, roomEquipment, roomWeapon, roomActor, roomLevel) values (?,?,?,?,?,?,?,?,?,?,?)");
+						insertRoomConnections = conn.prepareStatement("insert into rooms (roomID, North, East, South, West, exit) values (?,?,?,?,?,?)");
 						for (RoomConnection roomConnection : roomConnectionList) {
 							
 							insertRoomConnections.setInt(1, roomConnection.getRoomID());
@@ -133,9 +133,9 @@ public class DerbyDatabase implements IDatabase {
 
 					try {
 						// populate Rooms table 
-						insertRoom = conn.prepareStatement("insert into rooms (roomName, roomDescripLong, roomDescripShort, roomConnections, roomUseable, roomTreasure, roomTrophy, roomEquipment, roomWeapon, roomActor, roomLevel) values (?,?,?,?,?,?,?,?,?,?,?)");
+						insertRoom = conn.prepareStatement("insert into rooms (roomID,roomName, roomDescripLong, roomDescripShort, roomConnections, roomUseable, roomTreasure, roomTrophy, roomEquipment, roomWeapon, roomActor, roomLevel) values (?,?,?,?,?,?,?,?,?,?,?,?)");
 						for (Room room : roomList) {
-							//insertRoom.setInt(1, room.getRoomID());	// auto-generated primary key, don't insert this.  MAY NEED THIS WHEN LOADING MULTIPLE LEVELS
+							insertRoom.setInt(1, room.getRoomID());	// auto-generated primary key, don't insert this.  MAY NEED THIS WHEN LOADING MULTIPLE LEVELS
 							insertRoom.setString(2, room.getRoomName());
 							insertRoom.setString(3, room.getRoomDescripLong());
 							insertRoom.setString(4, room.getRoomDescripShort());
