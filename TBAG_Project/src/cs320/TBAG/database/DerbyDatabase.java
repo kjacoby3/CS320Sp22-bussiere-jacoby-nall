@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import cs320.TBAG.database.IDatabase;
@@ -603,7 +604,7 @@ public class DerbyDatabase implements IDatabase {
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Room> roomList;
-					List<RoomConnection> roomConnectionList;
+					List<RoomConnection> roomConnectionList = new List<RoomConnection>();
 					
 					try {
 						roomList = InitialData.getRooms();

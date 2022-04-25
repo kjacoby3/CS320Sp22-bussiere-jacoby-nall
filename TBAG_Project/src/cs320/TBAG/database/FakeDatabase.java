@@ -29,7 +29,7 @@ public class FakeDatabase implements IDatabase {
 	private List<KeyPuzzle> keyPuzzleList;
 	private List<Door> doorList;
 	private List<Room> roomList;
-	private List<RoomConnection> roomConnectionList;
+	private List<RoomConnection> roomConnectionList = new ArrayList<RoomConnection>();
 	
 	public FakeDatabase() {
 		playerList = new ArrayList<Player>();
