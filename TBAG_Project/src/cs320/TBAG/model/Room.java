@@ -91,6 +91,11 @@ public class Room extends Map{
 		return roomName;
 	}
 	
+	public String getRoomDescrip() {
+		return roomDescription;
+	}
+	
+	
 	public void setRoomDescripLong(String longDescrip) {
 		this.roomDescripLong = longDescrip;
 	}
