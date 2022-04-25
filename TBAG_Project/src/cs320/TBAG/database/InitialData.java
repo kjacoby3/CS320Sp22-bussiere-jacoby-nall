@@ -20,7 +20,7 @@ import cs320.TBAG.model.PuzzleType.KeyPuzzle;
 
 public class InitialData {
 	
-	public static List<RoomConnection> getRoomConnection() throws IOException {
+	public static List<RoomConnection> getRoomConnections() throws IOException {
 		List<RoomConnection> roomConnectionList = new ArrayList<RoomConnection>();
 		ReadCSV readRoomConnection = new ReadCSV("roomConnections.csv");
 		try {
