@@ -23,4 +23,7 @@ public interface IDatabase {
 	public List<KeyPuzzle> findAllKeyPuzzles();
 	public List<Door> findAllDoors();
 	public List<Door> findDoorsByRoomId(int roomId);
+	
+	public ActorStats findActorStatsByPlayerId(int playerId);
+	public ActorStats findActorStatsByNPCId(int npcId);
 }
