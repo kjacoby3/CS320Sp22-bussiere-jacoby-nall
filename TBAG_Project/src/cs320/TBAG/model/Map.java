@@ -2,6 +2,9 @@ package cs320.TBAG.model;
 
 import java.util.ArrayList;
 
+import cs320.TBAG.database.DatabaseProvider;
+import cs320.TBAG.database.IDatabase;
+
 public class Map{
 	private int roomNode;
 	private int actorCurrRoom;
@@ -70,6 +73,48 @@ public class Map{
 	
 	
 	public Map() {
+		
+		ArrayList<Room> level1Rooms = new ArrayList<Room>();
+		ArrayList<Integer> exits = new ArrayList<Integer>();
+		IDatabase db = DatabaseProvider.getInstance();
+		
+		for (int i = 1; i<21; i++) {
+			Room room = db.getRoomByID(i);
+			RoomConnection roomConnection = db.getRoomConnectionByID(i);
+			
+			if (room.getRoomLevel() == 1) {
+				exits.add(roomConnection.getNorth());
+				exits.add(roomConnection.getEast());
+				exits.add(roomConnection.getSouth());
+				exits.add(roomConnection.getWest());
+				
+				Room addToMap = new Room(i, room.getRoomName(), room.getRoomDescripLong(),exits);
+				level1Rooms.add(addToMap);
+				
+				exits.clear();
+				
+			}
+			
+			//if (room.getRoomLevel() == 2) {
+			//	exits.add(roomConnection.getNorth());
+			//	exits.add(roomConnection.getEast());
+			//	exits.add(roomConnection.getSouth());
+			//	exits.add(roomConnection.getWest());
+			//	
+			//	Room addToMap = new Room(i, room.getRoomName(), room.getRoomDescripLong(),exits);
+			//	level1Rooms.add(addToMap);
+			//	
+			//	exits.clear();
+				
+			//}
+			
+			
+			
+		}
+		
+		
+		
+		
 		
 		this.actorCurrRoom = 1;
 		this.currRoomName = "starting";
@@ -157,4 +202,15 @@ public class Map{
 		this.mapLayout = layout;
 		this.mapDescrips = descrip;
 	}
+	
+	public void teleport(int ID) {
+		prevRoomID = actorCurrRoom;
+		actorCurrRoom = ID;
+		Room teleportRoom = trialRooms.get(actorCurrRoom-1);
+		currRoomName = teleportRoom.getRoomName();
+		currRoomDescrip = teleportRoom.getRoomDescrip();
+	}
+	
+	
+	
 }
