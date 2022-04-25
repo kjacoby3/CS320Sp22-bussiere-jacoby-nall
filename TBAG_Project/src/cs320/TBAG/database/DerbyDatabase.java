@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -11,8 +12,15 @@ import cs320.TBAG.database.IDatabase;
 import cs320.TBAG.database.DBUtil;
 import cs320.TBAG.database.DerbyDatabase;
 import cs320.TBAG.database.PersistenceException;
+import cs320.TBAG.model.Consumable;
+import cs320.TBAG.model.Equipment;
+import cs320.TBAG.model.Inventory;
 import cs320.TBAG.model.Room;
 import cs320.TBAG.model.RoomConnection;
+import cs320.TBAG.model.Treasure;
+import cs320.TBAG.model.Trophy;
+import cs320.TBAG.model.Usable;
+import cs320.TBAG.model.Weapon;
 
 public class DerbyDatabase implements IDatabase {
 	static {
@@ -29,6 +37,174 @@ public class DerbyDatabase implements IDatabase {
 
 	private static final int MAX_ATTEMPTS = 10;
 	
+	public Inventory constructInventoryByPlayerID(int playerID) {
+		return executeTransaction(new Transaction<Inventory>() {
+			@Override
+			public Inventory execute(Connection conn) throws SQLException {
+				PreparedStatement weaponstmt = null;
+				PreparedStatement equipmentstmt = null;
+				PreparedStatement usablestmt = null;
+				PreparedStatement consumablestmt = null;
+				PreparedStatement trophystmt = null;
+				PreparedStatement treasurestmt = null;
+				Inventory inventory = new Inventory(100);
+				
+				
+				ResultSet weaponSet = null;
+				ResultSet equipmentSet = null;
+				ResultSet usableSet = null;
+				ResultSet consumableSet = null;
+				ResultSet trophySet = null;
+				ResultSet treasureSet = null;
+				
+				try {
+					weaponstmt = conn.prepareStatement(
+							"select weapons.*" +
+							"  from  weapons " +
+							"  where weapons.playerID = ? "
+					);
+					
+					weaponstmt.setInt(1, playerID);
+					weaponSet = weaponstmt.executeQuery();
+					
+					
+					while(weaponSet.next()) {
+						String name = weaponSet.getString(1);
+						int damage = weaponSet.getInt(2);
+						int price = weaponSet.getInt(3);
+						Weapon weapon = new Weapon(name, damage, price);
+						inventory.addItem(weapon);
+					}
+					
+					equipmentstmt = conn.prepareStatement(
+							"select equipment.*" +
+							"  from  equipment " +
+							"  where equipments.playerID = ? "
+					);
+					
+					equipmentstmt.setInt(1, playerID);
+					equipmentSet = equipmentstmt.executeQuery();
+					
+					
+					while(equipmentSet.next()) {
+						int index=1;
+						String name = equipmentSet.getString(index++);
+						int price = equipmentSet.getInt(index++);
+						int defMod = equipmentSet.getInt(index++);
+						int HPMod = equipmentSet.getInt(index++);
+						int spdMod = equipmentSet.getInt(index++);
+						Equipment equipment = new Equipment(name, price, defMod, HPMod, spdMod);
+						inventory.addItem(equipment);
+					}
+					
+					usablestmt = conn.prepareStatement(
+							"select usables.*" +
+							"  from  usables " +
+							"  where usables.playerID = ? "
+					);
+					
+					usablestmt.setInt(1, playerID);
+					usableSet = usablestmt.executeQuery();
+					
+					
+					while(usableSet.next()) {
+						int index=1;
+						String name = usableSet.getString(index++);
+						int price = usableSet.getInt(index++);
+						Usable usable = new Usable(name, price);
+						inventory.addItem(usable);
+					}
+					
+					consumablestmt = conn.prepareStatement(
+							"select consumables.*" +
+							"  from  consumables " +
+							"  where consumables.playerID = ? "
+					);
+					
+					consumablestmt.setInt(1, playerID);
+					consumableSet = consumablestmt.executeQuery();
+					
+					while(consumableSet.next()) {
+						int index =1;
+						String name = consumableSet.getString(index++);
+						int price = consumableSet.getInt(index++);
+						int curHPMod = consumableSet.getInt(index++);
+						int maxHPMod = consumableSet.getInt(index++);
+						int dmgMod = consumableSet.getInt(index++);
+						int defMod = consumableSet.getInt(index++);
+						int spdMod = consumableSet.getInt(index++);
+						
+						Consumable consumable = new Consumable(name, price, curHPMod, maxHPMod, dmgMod, defMod, spdMod);
+						inventory.addItem(consumable);
+					}
+					
+					treasurestmt = conn.prepareStatement(
+							"select treasures.*" +
+							"  from  treasures " +
+							"  where treasures.playerID = ? "
+					);
+					
+					treasurestmt.setInt(1, playerID);
+					treasureSet = treasurestmt.executeQuery();
+					
+					
+					while(treasureSet.next()) {
+						int index =1;
+						String name = treasureSet.getString(index++);
+						int price = treasureSet.getInt(index++);
+						int hpMod = treasureSet.getInt(index++);
+						int defMod = treasureSet.getInt(index++);
+						int spdMod = treasureSet.getInt(index++);
+						int dmgMod = treasureSet.getInt(index++);
+						
+						Treasure treasure = new Treasure(name, price, hpMod, defMod, spdMod, dmgMod);
+						inventory.addItem(treasure);
+					}
+					
+					trophystmt = conn.prepareStatement(
+							"select trophies.*" +
+							"  from  trophies " +
+							"  where trophies.playerID = ? "
+					);
+					
+					trophystmt.setInt(1, playerID);
+					trophySet = trophystmt.executeQuery();
+					
+					
+					while(trophySet.next()) {
+						String name = trophySet.getString(1);
+						int price = trophySet.getInt(2);
+						Trophy trophy = new Trophy(name, price);
+						inventory.addItem(trophy);
+					}
+					
+					
+					return inventory;
+					
+					
+					
+					
+				} finally {
+					DBUtil.closeQuietly(weaponSet);
+					DBUtil.closeQuietly(equipmentSet);
+					DBUtil.closeQuietly(usableSet);
+					DBUtil.closeQuietly(consumableSet);
+					DBUtil.closeQuietly(trophySet);
+					DBUtil.closeQuietly(treasureSet);
+					DBUtil.closeQuietly(weaponstmt);
+					DBUtil.closeQuietly(equipmentstmt);
+					DBUtil.closeQuietly(usablestmt);
+					DBUtil.closeQuietly(consumablestmt);
+					DBUtil.closeQuietly(trophystmt);
+					DBUtil.closeQuietly(treasurestmt);
+				}
+			}
+		});
+		
+		
+		
+		
+	}
 	
 	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
 		try {
