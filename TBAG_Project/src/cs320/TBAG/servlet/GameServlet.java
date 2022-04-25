@@ -80,6 +80,9 @@ public class GameServlet extends HttpServlet{
 					//terminalWriter.write(map.getRoomDescription());
 					
 				}
+				else {
+					updateHistory(input, map.getRoomDescription());
+				}
 				
 			}
 			
@@ -93,6 +96,10 @@ public class GameServlet extends HttpServlet{
 						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 						/*resp.getWriter().write(map.getRoomDescription());
 						terminalWriter.write(map.getRoomDescription());*/
+					}
+					else {
+						updateHistory(input, map.getRoomDescription());
+						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 					}
 				}
 			}
@@ -108,6 +115,10 @@ public class GameServlet extends HttpServlet{
 						//resp.getWriter().write(map.getRoomDescription());
 						//terminalWriter.write(map.getRoomDescription());
 					}
+					else {
+						updateHistory(input, map.getRoomDescription());
+						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+					}
 					
 				}
 			}
@@ -122,6 +133,10 @@ public class GameServlet extends HttpServlet{
 						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 						//resp.getWriter().write(map.getRoomDescription());
 						//terminalWriter.write(map.getRoomDescription());
+					}
+					else {
+						updateHistory(input, map.getRoomDescription());
+						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 					}
 					
 				}

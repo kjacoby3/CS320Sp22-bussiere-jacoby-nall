@@ -47,7 +47,7 @@
             }
 
             input[type=text]{
-                width: 30vh;
+                width: auto;
                 padding-left: 40px;
             }
             

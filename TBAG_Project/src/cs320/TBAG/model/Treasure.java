@@ -14,7 +14,7 @@ public class Treasure{
 		type = "Treasure";
 		this.price = price;
 		this.hpMod = hpMod;
-		this.defMod = hpMod;
+		this.defMod = defMod;
 		this.spdMod = spdMod;
 		this.dmgMod = dmgMod;
 	}

@@ -20,7 +20,7 @@ public class Room extends Map{
 	
 	Inventory roomItems;
 	ArrayList<NPC> NPCsInRoom = new ArrayList<NPC>();
-	ArrayList<Integer> availableExits = new Arraylist<Integer>();
+	ArrayList<Integer> availableExits = new ArrayList<Integer>();
 	ArrayList<String> otherExitOptions = new ArrayList<String>();
 	
 	static ArrayList<String> directionsForValidation = new ArrayList<>();
