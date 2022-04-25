@@ -13,15 +13,24 @@ import cs320.TBAG.database.IDatabase;
 import cs320.TBAG.database.DBUtil;
 import cs320.TBAG.database.DerbyDatabase;
 import cs320.TBAG.database.PersistenceException;
+import cs320.TBAG.model.ActorStats;
 import cs320.TBAG.model.Consumable;
 import cs320.TBAG.model.Equipment;
 import cs320.TBAG.model.Inventory;
+import cs320.TBAG.model.NPC;
+import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Room;
 import cs320.TBAG.model.RoomConnection;
 import cs320.TBAG.model.Treasure;
 import cs320.TBAG.model.Trophy;
 import cs320.TBAG.model.Usable;
 import cs320.TBAG.model.Weapon;
+import cs320.TBAG.model.Convo.ConversationNode;
+import cs320.TBAG.model.Convo.ConversationTree;
+import cs320.TBAG.model.Convo.DefaultResponse;
+import cs320.TBAG.model.Convo.EndResponse;
+import cs320.TBAG.model.InteractableObj.Door;
+import cs320.TBAG.model.PuzzleType.KeyPuzzle;
 
 public class DerbyDatabase implements IDatabase {
 	static {
@@ -604,10 +613,11 @@ public class DerbyDatabase implements IDatabase {
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Room> roomList;
-					List<RoomConnection> roomConnectionList = new List<RoomConnection>();
+					List<RoomConnection> roomConnectionList;
 					
 					try {
 						roomList = InitialData.getRooms();
+						roomConnectionList = InitialData.getRoomConnections();
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
 					}
@@ -678,6 +688,90 @@ public class DerbyDatabase implements IDatabase {
 		db.loadInitialData();
 		
 		System.out.println("Success!");
+	}
+
+	@Override
+	public List<Player> findAllPlayers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<NPC> findAllNPCs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ActorStats> findAllActorStats() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ConversationTree findConvoTreeByNPCId(int NPCId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ConversationNode> findConvoNodesByConvoTreeId(int conversationTreeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<DefaultResponse> findDefaultResponsesByNodeIdAndConvoTreeId(int nodeId, int conversationTreeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<EndResponse> findEndResponsesByNodeIdAndConvoTreeId(int nodeId, int conversationTreeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<KeyPuzzle> findAllKeyPuzzles() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Door> findAllDoors() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Door> findDoorsByRoomId(int roomId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ActorStats findActorStatsByPlayerId(int playerId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ActorStats findActorStatsByNPCId(int npcId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Room getRoomByID(int roomID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public RoomConnection getRoomConnectionByID(int roomID) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	/*--------------------- IDatabase Methods ------------------------*/

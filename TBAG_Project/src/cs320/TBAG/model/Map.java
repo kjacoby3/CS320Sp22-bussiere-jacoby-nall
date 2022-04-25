@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import cs320.TBAG.database.DatabaseProvider;
 import cs320.TBAG.database.IDatabase;
+import cs320.TBAG.dbclass.InitDatabase;
 
 public class Map{
 	private int roomNode;
@@ -73,7 +74,7 @@ public class Map{
 	
 	
 	public Map() {
-		
+		InitDatabase.init(1);
 		ArrayList<Room> level1Rooms = new ArrayList<Room>();
 		ArrayList<Integer> exits = new ArrayList<Integer>();
 		IDatabase db = DatabaseProvider.getInstance();

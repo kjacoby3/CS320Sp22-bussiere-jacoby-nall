@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import cs320.TBAG.model.ActorStats;
+import cs320.TBAG.model.Inventory;
 import cs320.TBAG.model.NPC;
 import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Room;
@@ -217,6 +218,36 @@ public class FakeDatabase implements IDatabase {
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public Inventory constructInventoryByPlayerID(int playerID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Inventory constructInventoryByRoomID(int roomID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Inventory constructInventoryByNPCID(int npcID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Room getRoomByID(int roomID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public RoomConnection getRoomConnectionByID(int roomID) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	/*----------------------------------------------------------------*/
