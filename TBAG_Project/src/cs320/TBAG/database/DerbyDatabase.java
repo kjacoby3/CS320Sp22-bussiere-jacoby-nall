@@ -12,6 +12,7 @@ import cs320.TBAG.database.DBUtil;
 import cs320.TBAG.database.DerbyDatabase;
 import cs320.TBAG.database.PersistenceException;
 import cs320.TBAG.model.Room;
+import cs320.TBAG.model.RoomConnection;
 
 public class DerbyDatabase implements IDatabase {
 	static {
@@ -97,6 +98,7 @@ public class DerbyDatabase implements IDatabase {
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Room> roomList;
+					List<RoomConnection> roomConnectionList;
 					
 					try {
 						roomList = InitialData.getRooms();
@@ -105,23 +107,46 @@ public class DerbyDatabase implements IDatabase {
 					}
 
 					PreparedStatement insertRoom = null; //PreparedStatement needs to be imported?
+					PreparedStatement insertRoomConnections = null;
+					
+					try {
+						// populate Rooms table 
+						insertRoomConnections = conn.prepareStatement("insert into rooms (roomName, roomDescripLong, roomDescripShort, roomConnections, roomUseable, roomTreasure, roomTrophy, roomEquipment, roomWeapon, roomActor, roomLevel) values (?,?,?,?,?,?,?,?,?,?,?)");
+						for (RoomConnection roomConnection : roomConnectionList) {
+							
+							insertRoomConnections.setInt(1, roomConnection.getRoomID());
+							insertRoomConnections.setInt(2, roomConnection.getNorth());
+							insertRoomConnections.setInt(3, roomConnection.getEast());
+							insertRoomConnections.setInt(4, roomConnection.getSouth());
+							insertRoomConnections.setInt(5, roomConnection.getWest());
+							insertRoomConnections.setInt(6, roomConnection.getExit());
+							
+							insertRoomConnections.addBatch();
+						}
+						insertRoomConnections.executeBatch();
+						
+						
+						
+					} finally {
+						DBUtil.closeQuietly(insertRoomConnections);
+					}
 
 					try {
 						// populate Rooms table 
-						insertRoom = conn.prepareStatement("insert into Rooms (Room Info) values (?...)");
+						insertRoom = conn.prepareStatement("insert into rooms (roomName, roomDescripLong, roomDescripShort, roomConnections, roomUseable, roomTreasure, roomTrophy, roomEquipment, roomWeapon, roomActor, roomLevel) values (?,?,?,?,?,?,?,?,?,?,?)");
 						for (Room room : roomList) {
 							//insertRoom.setInt(1, room.getRoomID());	// auto-generated primary key, don't insert this.  MAY NEED THIS WHEN LOADING MULTIPLE LEVELS
-							insertRoom.setString(1, room.getRoomName());
-							insertRoom.setString(2, room.getRoomDescripLong());
-							insertRoom.setString(3, room.getRoomDescripShort());
-							insertRoom.setInt(4, room.getRoomConnections());
-							insertRoom.setInt(5, room.getRoomUseable());
-							insertRoom.setInt(6, room.getRoomTreasure());
-							insertRoom.setInt(7, room.getRoomTrophy());
-							insertRoom.setInt(8, room.getRoomEquipment());
-							insertRoom.setInt(9, room.getRoomWeapon());
-							insertRoom.setInt(10, room.getRoomActor());
-							insertRoom.setInt(11, room.getRoomLevel());
+							insertRoom.setString(2, room.getRoomName());
+							insertRoom.setString(3, room.getRoomDescripLong());
+							insertRoom.setString(4, room.getRoomDescripShort());
+							insertRoom.setInt(5, room.getRoomConnections());
+							insertRoom.setInt(6, room.getRoomUseable());
+							insertRoom.setInt(7, room.getRoomTreasure());
+							insertRoom.setInt(8, room.getRoomTrophy());
+							insertRoom.setInt(9, room.getRoomEquipment());
+							insertRoom.setInt(10, room.getRoomWeapon());
+							insertRoom.setInt(11, room.getRoomActor());
+							insertRoom.setInt(12, room.getRoomLevel());
 							
 							insertRoom.addBatch();
 						}

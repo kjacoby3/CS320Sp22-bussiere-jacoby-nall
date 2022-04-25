@@ -10,6 +10,7 @@ import cs320.TBAG.model.ActorStats;
 import cs320.TBAG.model.NPC;
 import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Room;
+import cs320.TBAG.model.RoomConnection;
 import cs320.TBAG.model.Convo.ConversationNode;
 import cs320.TBAG.model.Convo.ConversationTree;
 import cs320.TBAG.model.Convo.DefaultResponse;
@@ -19,12 +20,48 @@ import cs320.TBAG.model.PuzzleType.KeyPuzzle;
 
 public class InitialData {
 	
+	public static List<RoomConnection> getRoomConnection() throws IOException {
+		List<RoomConnection> roomConnectionList = new ArrayList<RoomConnection>();
+		ReadCSV readRoomConnection = new ReadCSV("roomConnections.csv");
+		try {
+			// auto-generated primary key for rooms table
+			//Integer roomId = 1;
+			while (true) {
+				List<String> tuple = readRoomConnection.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				RoomConnection roomConnection = new RoomConnection();
+				roomConnection.setRoomID(Integer.parseInt(i.next()));
+				roomConnection.setNorth(Integer.parseInt(i.next()));
+				roomConnection.setEast(Integer.parseInt(i.next()));
+				roomConnection.setSouth(Integer.parseInt(i.next()));
+				roomConnection.setWest(Integer.parseInt(i.next()));
+				roomConnection.setExit(Integer.parseInt(i.next()));
+					
+				//These next two will not be in the room CSV. We need to figure out how to create these
+				//room.setRoomItems(null);
+				//room.setNPCsInRoom(null);
+				
+				//These next two will need to be Lists created from separate CSVs than the current Room CSVs
+				//room.setAvailableExits(i.next());
+				//room.setOtherExitOptions(i.next());
+				
+				roomConnectionList.add(roomConnection);
+			}
+			return roomConnectionList;
+		} finally {
+			readRoomConnection.close();
+		}
+	}
+	
 	public static List<Room> getRooms() throws IOException {
 		List<Room> roomList = new ArrayList<Room>();
 		ReadCSV readRooms = new ReadCSV("Room Nodes.csv");
 		try {
 			// auto-generated primary key for rooms table
-			Integer roomId = 1;
+			//Integer roomId = 1;
 			while (true) {
 				List<String> tuple = readRooms.next();
 				if (tuple == null) {
@@ -32,7 +69,7 @@ public class InitialData {
 				}
 				Iterator<String> i = tuple.iterator();
 				Room room = new Room();
-				room.setRoomID(roomId++);
+				room.setRoomID(Integer.parseInt(i.next()));
 				room.setRoomName(i.next());
 				room.setRoomDescripLong(i.next());
 				room.setRoomDescripShort(i.next());
