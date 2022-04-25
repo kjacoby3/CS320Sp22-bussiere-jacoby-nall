@@ -26,4 +26,6 @@ public interface IDatabase {
 	
 	public ActorStats findActorStatsByPlayerId(int playerId);
 	public ActorStats findActorStatsByNPCId(int npcId);
+	
+	
 }
