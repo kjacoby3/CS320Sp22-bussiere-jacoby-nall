@@ -15,9 +15,9 @@ public class Player extends Actor implements ActionsInterface{
 		location = new Room();
 		inventory = new Inventory(100);
 		actorStats = new ActorStats();
-		inventory.addItem(new Equipment("Cloth Armor", 50, 50, 50));
+		inventory.addItem(new Equipment("Cloth Armor", 10, 50, 50, 50));
 		eqWeap = new Weapon("Fists", 10, 10);
-		equipped = new Equipment("Bare", 10, 10, 0);
+		equipped = new Equipment("Bare",0, 10, 10, 0);
 	}
 	
 	public Player(String name, Room location, Inventory inventory, ActorStats actorStats,
@@ -121,7 +121,7 @@ public class Player extends Actor implements ActionsInterface{
 	public void unequipEquipment() {
 		Equipment curEquipment = getEquipped();
 		inventory.addItem(curEquipment);
-		setEquipped(new Equipment("Bare", 100, 10, 0));
+		setEquipped(new Equipment("Bare",0, 100, 10, 0));
 	}
 
 	@Override
