@@ -16,10 +16,10 @@ public interface IDatabase {
 	public List<Player> findAllPlayers();
 	public List<NPC> findAllNPCs();
 	public List<ActorStats> findAllActorStats();
-	public ConversationTree findConvoTreeByNPC(int NPCId);
+	public ConversationTree findConvoTreeByNPCId(int NPCId);
 	public List<ConversationNode> findConvoNodesByConvoTreeId(int conversationTreeId);
-	public List<DefaultResponse> findDefaultResponsesByNodeKeyAndConvoTreeId(int key, int conversationTreeId);
-	public List<EndResponse> findEndResponsesByNodeKeyAndConvoTreeId(int key, int conversationTreeId);
+	public List<DefaultResponse> findDefaultResponsesByNodeIdAndConvoTreeId(int nodeId, int conversationTreeId);
+	public List<EndResponse> findEndResponsesByNodeIdAndConvoTreeId(int nodeId, int conversationTreeId);
 	public List<KeyPuzzle> findAllKeyPuzzles();
 	public List<Door> findAllDoors();
 	public List<Door> findDoorsByRoomId(int roomId);
