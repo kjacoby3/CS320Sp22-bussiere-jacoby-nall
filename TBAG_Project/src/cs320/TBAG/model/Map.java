@@ -178,6 +178,98 @@ public class Map{
 		return false;
 	}
 	
+	
+	public boolean canMove(int ID, String direction) {
+		
+		IDatabase db = DatabaseProvider.getInstance();
+		Room room = db.getRoomByID(ID);
+		RoomConnection roomConnection = db.getRoomConnectionByID(ID);
+		
+		if (direction == "north") {
+			if (roomConnection.getNorth() > 0){
+				
+				prevRoomID = actorCurrRoom;
+				actorCurrRoom = roomConnection.getNorth();
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				currRoomName = connectedRoom.getRoomName();
+				currRoomDescrip = connectedRoom.getRoomDescrip();
+				return true;
+			}
+			else {
+				return false;
+			}
+		
+		}
+		
+		if (direction == "east") {
+			if (roomConnection.getEast() > 0){
+				
+				prevRoomID = actorCurrRoom;
+				actorCurrRoom = roomConnection.getEast();
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				currRoomName = connectedRoom.getRoomName();
+				currRoomDescrip = connectedRoom.getRoomDescrip();
+				return true;
+			}
+			else {
+				return false;
+			}
+		
+		}
+		
+		if (direction == "south") {
+			if (roomConnection.getSouth() > 0){
+				
+				prevRoomID = actorCurrRoom;
+				actorCurrRoom = roomConnection.getSouth();
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				currRoomName = connectedRoom.getRoomName();
+				currRoomDescrip = connectedRoom.getRoomDescrip();
+				return true;
+			}
+			else {
+				return false;
+			}
+		
+		}
+		
+		if (direction == "west") {
+			if (roomConnection.getWest() > 0){
+				
+				prevRoomID = actorCurrRoom;
+				actorCurrRoom = roomConnection.getWest();
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				currRoomName = connectedRoom.getRoomName();
+				currRoomDescrip = connectedRoom.getRoomDescrip();
+				return true;
+			}
+			else {
+				return false;
+			}
+		
+		}
+		
+		if (direction == "exit") {
+			if (roomConnection.getExit() > 0){
+				
+				prevRoomID = actorCurrRoom;
+				actorCurrRoom = roomConnection.getExit();
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				currRoomName = connectedRoom.getRoomName();
+				currRoomDescrip = connectedRoom.getRoomDescrip();
+				return true;
+			}
+			else {
+				return false;
+			}
+		
+		}
+		
+		
+		return false;
+		
+	}
+	
 	public void setPrevRoomID(int actorCurrRoom) {
 		this.prevRoomID = actorCurrRoom;
 		}
