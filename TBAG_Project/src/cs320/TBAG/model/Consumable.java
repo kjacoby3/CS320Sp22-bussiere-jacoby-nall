@@ -7,7 +7,7 @@ public class Consumable extends Item{
 	private int defMod;
 	private int spdMod;
 	
-	public Consumable(String name, int price, int curHPMod, int maxHPMod, int dmgMod, int defMod, int spdMod) {
+	public Consumable(String name, int price, int curHPMod, int maxHPMod, int dmgMod, int defMod, int spdMod, int playerID, int roomID, int npcID) {
 		this.name = name;
 		this.price = price;
 		this.type = "Consumable";
@@ -16,6 +16,9 @@ public class Consumable extends Item{
 		this.dmgMod=dmgMod;
 		this.defMod = spdMod;
 		this.spdMod = spdMod;
+		this.playerID = playerID;
+		this.roomID=roomID;
+		this.npcID=npcID;
 	}
 	
 	public int getCurHPMod() {

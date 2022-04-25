@@ -1,22 +1,23 @@
 package cs320.TBAG.model;
 
-public class Treasure{
-	String name;
-	String type;
-	int price;
-	int hpMod;
+public class Treasure extends Item{
+	/*int hpMod;
 	int defMod;
 	int spdMod;
-	int dmgMod;
+	int dmgMod;*/
 	
-	public Treasure(String name, int price, int hpMod, int defMod, int spdMod, int dmgMod) {
+	public Treasure(String name, int price, int playerID, int roomID, int npcID) {
 		this.name = name;
 		type = "Treasure";
 		this.price = price;
-		this.hpMod = hpMod;
+		this.playerID =playerID;
+		this.roomID=roomID;
+		this.npcID = npcID;
+		
+		/*this.hpMod = hpMod;
 		this.defMod = defMod;
 		this.spdMod = spdMod;
-		this.dmgMod = dmgMod;
+		this.dmgMod = dmgMod;*/
 	}
 	
 	public String getName() {
@@ -27,7 +28,7 @@ public class Treasure{
 		return type;
 	}
 	
-	public int getHPMod() {
+	/*public int getHPMod() {
 		return hpMod;
 	}
 	
@@ -42,5 +43,5 @@ public class Treasure{
 	public int getDmgMod() {
 		return dmgMod;
 	}
-	
+	*/
 }

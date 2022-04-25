@@ -17,8 +17,8 @@ public class NPC extends Actor{
 		location = new Room();
 		inventory = new Inventory(100);
 		actorStats = new ActorStats(100, 10, 10, 10);
-		eqWeap = new Weapon("Fists", 10, 10);
-		equipped = new Equipment("Bare",0, 10, 10, 0);
+		eqWeap = new Weapon("Fists", 10, 10,0,0,0,true);
+		equipped = new Equipment("Bare",0, 10, 10, 0,0,0,0,true);
 		aggression = 0;
 		currency = 0;
 		conversationTree = new ConversationTree();
