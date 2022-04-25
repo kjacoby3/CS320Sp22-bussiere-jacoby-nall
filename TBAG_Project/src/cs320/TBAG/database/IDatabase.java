@@ -24,6 +24,8 @@ public interface IDatabase {
 	public List<KeyPuzzle> findAllKeyPuzzles();
 	public List<Door> findAllDoors();
 	public List<Door> findDoorsByRoomId(int roomId);
+	public ActorStats findActorStatsByPlayerId(int playerId);
+	public ActorStats findActorStatsByNPCId(int npcId);
 	public Inventory constructInventoryByPlayerID(int playerID);
 	public Inventory constructInventoryByRoomID(int roomID);
 	public Inventory constructInventoryByNPCID(int npcID);
