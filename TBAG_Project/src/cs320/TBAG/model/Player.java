@@ -127,7 +127,7 @@ public class Player extends Actor implements ActionsInterface{
 	@Override
 	public void talk(NPC npc) {
 		if(npc.getLocation() == location) {
-			if(npc.getAggression() != NPCAggression.Aggressive) {
+			if(npc.getAggression() > 0) {
 				//return true;
 			} else {
 				//return false;

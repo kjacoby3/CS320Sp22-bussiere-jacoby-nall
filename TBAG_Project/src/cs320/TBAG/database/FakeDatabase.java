@@ -6,8 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import cs320.TBAG.model.ActorStats;
+import cs320.TBAG.model.Inventory;
 import cs320.TBAG.model.NPC;
 import cs320.TBAG.model.Player;
+import cs320.TBAG.model.Room;
+import cs320.TBAG.model.RoomConnection;
 import cs320.TBAG.model.Convo.ConversationNode;
 import cs320.TBAG.model.Convo.ConversationTree;
 import cs320.TBAG.model.Convo.DefaultResponse;
@@ -26,6 +29,8 @@ public class FakeDatabase implements IDatabase {
 	private List<EndResponse> endResponseList;
 	private List<KeyPuzzle> keyPuzzleList;
 	private List<Door> doorList;
+	private List<Room> roomList;
+	private List<RoomConnection> roomConnectionList = new ArrayList<RoomConnection>();
 	
 	public FakeDatabase() {
 		playerList = new ArrayList<Player>();
@@ -37,6 +42,8 @@ public class FakeDatabase implements IDatabase {
 		endResponseList = new ArrayList<EndResponse>();
 		keyPuzzleList = new ArrayList<KeyPuzzle>();
 		doorList = new ArrayList<Door>();
+		roomList = new ArrayList<Room>();
+		roomConnectionList = new ArrayList<RoomConnection>();
 		
 		readInitialData();
 		
@@ -50,6 +57,8 @@ public class FakeDatabase implements IDatabase {
 			convoNodeList.addAll(InitialData.getConversationNodes());
 			defaultResponseList.addAll(InitialData.getDefaultResponses());
 			endResponseList.addAll(InitialData.getEndResponses());
+			roomList.addAll(InitialData.getRooms());
+			roomConnectionList.addAll(InitialData.getRoomConnections());
 		}
 		catch (IOException e) {
 			throw new IllegalStateException("Couldn't read initial data", e);
@@ -180,6 +189,66 @@ public class FakeDatabase implements IDatabase {
 		return result;
 	}
 	
+	@Override
+	public ActorStats findActorStatsByPlayerId(int playerId) {
+		ActorStats result = new ActorStats();
+		
+		for (Player player : playerList) {
+			if(player.getPlayerId() == playerId) {
+				for(ActorStats actorStats : actorStatsList) {
+					if(player.getStatsId() == actorStats.getStatsId()) {
+						result = actorStats;
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	public ActorStats findActorStatsByNPCId(int npcId) {
+		ActorStats result = new ActorStats();
+		
+		for (NPC npc : npcList) {
+			if(npc.getNPCId() == npcId) {
+				for(ActorStats actorStats : actorStatsList) {
+					if(npc.getStatsId() == actorStats.getStatsId()) {
+						result = actorStats;
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public Inventory constructInventoryByPlayerID(int playerID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Inventory constructInventoryByRoomID(int roomID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Inventory constructInventoryByNPCID(int npcID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Room getRoomByID(int roomID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public RoomConnection getRoomConnectionByID(int roomID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	/*----------------------------------------------------------------*/
 }

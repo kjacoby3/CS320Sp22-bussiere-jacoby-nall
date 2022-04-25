@@ -26,7 +26,7 @@ import cs320.TBAG.model.PuzzleType.KeyPuzzle;
 
 public class InitialData {
 	
-	public static List<RoomConnection> getRoomConnection() throws IOException {
+	public static List<RoomConnection> getRoomConnections() throws IOException {
 		List<RoomConnection> roomConnectionList = new ArrayList<RoomConnection>();
 		ReadCSV readRoomConnection = new ReadCSV("roomConnections.csv");
 		try {
@@ -64,7 +64,7 @@ public class InitialData {
 	
 	public static List<Room> getRooms() throws IOException {
 		List<Room> roomList = new ArrayList<Room>();
-		ReadCSV readRooms = new ReadCSV("Room Nodes.csv");
+		ReadCSV readRooms = new ReadCSV("rooms.csv");
 		try {
 			// auto-generated primary key for rooms table
 			//Integer roomId = 1;

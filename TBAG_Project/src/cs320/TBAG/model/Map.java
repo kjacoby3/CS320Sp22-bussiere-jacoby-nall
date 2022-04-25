@@ -2,6 +2,10 @@ package cs320.TBAG.model;
 
 import java.util.ArrayList;
 
+import cs320.TBAG.database.DatabaseProvider;
+import cs320.TBAG.database.IDatabase;
+import cs320.TBAG.dbclass.InitDatabase;
+
 public class Map{
 	private int roomNode;
 	private int actorCurrRoom;
@@ -70,6 +74,48 @@ public class Map{
 	
 	
 	public Map() {
+		InitDatabase.init(1);
+		ArrayList<Room> level1Rooms = new ArrayList<Room>();
+		ArrayList<Integer> exits = new ArrayList<Integer>();
+		IDatabase db = DatabaseProvider.getInstance();
+		
+		for (int i = 1; i<21; i++) {
+			Room room = db.getRoomByID(i);
+			RoomConnection roomConnection = db.getRoomConnectionByID(i);
+			
+			if (room.getRoomLevel() == 1) {
+				exits.add(roomConnection.getNorth());
+				exits.add(roomConnection.getEast());
+				exits.add(roomConnection.getSouth());
+				exits.add(roomConnection.getWest());
+				
+				Room addToMap = new Room(i, room.getRoomName(), room.getRoomDescripLong(),exits);
+				level1Rooms.add(addToMap);
+				
+				exits.clear();
+				
+			}
+			
+			//if (room.getRoomLevel() == 2) {
+			//	exits.add(roomConnection.getNorth());
+			//	exits.add(roomConnection.getEast());
+			//	exits.add(roomConnection.getSouth());
+			//	exits.add(roomConnection.getWest());
+			//	
+			//	Room addToMap = new Room(i, room.getRoomName(), room.getRoomDescripLong(),exits);
+			//	level1Rooms.add(addToMap);
+			//	
+			//	exits.clear();
+				
+			//}
+			
+			
+			
+		}
+		
+		
+		
+		
 		
 		this.actorCurrRoom = 1;
 		this.currRoomName = "starting";
@@ -133,6 +179,98 @@ public class Map{
 		return false;
 	}
 	
+	
+	public boolean canMove(int ID, String direction) {
+		
+		IDatabase db = DatabaseProvider.getInstance();
+		Room room = db.getRoomByID(ID);
+		RoomConnection roomConnection = db.getRoomConnectionByID(ID);
+		
+		if (direction == "north") {
+			if (roomConnection.getNorth() > 0){
+				
+				prevRoomID = actorCurrRoom;
+				actorCurrRoom = roomConnection.getNorth();
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				currRoomName = connectedRoom.getRoomName();
+				currRoomDescrip = connectedRoom.getRoomDescrip();
+				return true;
+			}
+			else {
+				return false;
+			}
+		
+		}
+		
+		if (direction == "east") {
+			if (roomConnection.getEast() > 0){
+				
+				prevRoomID = actorCurrRoom;
+				actorCurrRoom = roomConnection.getEast();
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				currRoomName = connectedRoom.getRoomName();
+				currRoomDescrip = connectedRoom.getRoomDescrip();
+				return true;
+			}
+			else {
+				return false;
+			}
+		
+		}
+		
+		if (direction == "south") {
+			if (roomConnection.getSouth() > 0){
+				
+				prevRoomID = actorCurrRoom;
+				actorCurrRoom = roomConnection.getSouth();
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				currRoomName = connectedRoom.getRoomName();
+				currRoomDescrip = connectedRoom.getRoomDescrip();
+				return true;
+			}
+			else {
+				return false;
+			}
+		
+		}
+		
+		if (direction == "west") {
+			if (roomConnection.getWest() > 0){
+				
+				prevRoomID = actorCurrRoom;
+				actorCurrRoom = roomConnection.getWest();
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				currRoomName = connectedRoom.getRoomName();
+				currRoomDescrip = connectedRoom.getRoomDescrip();
+				return true;
+			}
+			else {
+				return false;
+			}
+		
+		}
+		
+		if (direction == "exit") {
+			if (roomConnection.getExit() > 0){
+				
+				prevRoomID = actorCurrRoom;
+				actorCurrRoom = roomConnection.getExit();
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				currRoomName = connectedRoom.getRoomName();
+				currRoomDescrip = connectedRoom.getRoomDescrip();
+				return true;
+			}
+			else {
+				return false;
+			}
+		
+		}
+		
+		
+		return false;
+		
+	}
+	
 	public void setPrevRoomID(int actorCurrRoom) {
 		this.prevRoomID = actorCurrRoom;
 		}
@@ -157,4 +295,15 @@ public class Map{
 		this.mapLayout = layout;
 		this.mapDescrips = descrip;
 	}
+	
+	public void teleport(int ID) {
+		prevRoomID = actorCurrRoom;
+		actorCurrRoom = ID;
+		Room teleportRoom = trialRooms.get(actorCurrRoom-1);
+		currRoomName = teleportRoom.getRoomName();
+		currRoomDescrip = teleportRoom.getRoomDescrip();
+	}
+	
+	
+	
 }
