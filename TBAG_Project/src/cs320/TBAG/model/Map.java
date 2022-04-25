@@ -2,6 +2,9 @@ package cs320.TBAG.model;
 
 import java.util.ArrayList;
 
+import cs320.TBAG.database.DatabaseProvider;
+import cs320.TBAG.database.IDatabase;
+
 public class Map{
 	private int roomNode;
 	private int actorCurrRoom;
@@ -36,40 +39,82 @@ public class Map{
 		startRoom.add(0);
 		startRoom.add(0);
 		startRoom.add(0);
-		Room starting = new Room(1, "starting", "This is the starting area.  You can go North(n)", null, null, startRoom);
+		Room starting = new Room(1, "starting", "This is the starting area.  You can go North(n)", startRoom);
 		trialRooms.add(starting);
 		ArrayList<Integer> Room2 = new ArrayList<Integer>();
 		Room2.add(0);
 		Room2.add(1);
 		Room2.add(0);
 		Room2.add(4);
-		Room second = new Room(2, "second", "North Area. You can go South to Start or East", null, null, Room2);
+		Room second = new Room(2, "second", "North Area. You can go South to Start or East", Room2);
 		trialRooms.add(second);
 		ArrayList<Integer> Room3 = new ArrayList<Integer>();
 		Room3.add(0);
 		Room3.add(5);
 		Room3.add(0);
 		Room3.add(1);
-		Room third = new Room(3, "third" ,"West Area. You can go East to Start or South", null, null, Room3);
+		Room third = new Room(3, "third" ,"West Area. You can go East to Start or South", Room3);
 		trialRooms.add(third);
 		ArrayList<Integer> Room4 = new ArrayList<Integer>();
 		Room4.add(0);
 		Room4.add(0);
 		Room4.add(2);
 		Room4.add(0);
-		Room fourth = new Room(4, "fourth", "North East Area. You can only go back West to the previous room", null, null, Room4);
+		Room fourth = new Room(4, "fourth", "North East Area. You can only go back West to the previous room", Room4);
 		trialRooms.add(fourth);
 		ArrayList<Integer> Room5 = new ArrayList<Integer>();
 		Room5.add(3);
 		Room5.add(0);
 		Room5.add(0);
 		Room5.add(0);
-		Room fifth = new Room(5, "fifth",  "West South Area. You can only go back North to the previous room", null, null, Room5);
+		Room fifth = new Room(5, "fifth",  "West South Area. You can only go back North to the previous room", Room5);
 		trialRooms.add(fifth);
 	}
 	
 	
 	public Map() {
+		
+		ArrayList<Room> level1Rooms = new ArrayList<Room>();
+		ArrayList<Integer> exits = new ArrayList<Integer>();
+		IDatabase db = DatabaseProvider.getInstance();
+		
+		for (int i = 1; i<21; i++) {
+			Room room = db.getRoomByID(i);
+			RoomConnection roomConnection = db.getRoomConnectionByID(i);
+			
+			if (room.getRoomLevel() == 1) {
+				exits.add(roomConnection.getNorth());
+				exits.add(roomConnection.getEast());
+				exits.add(roomConnection.getSouth());
+				exits.add(roomConnection.getWest());
+				
+				Room addToMap = new Room(i, room.getRoomName(), room.getRoomDescripLong(),exits);
+				level1Rooms.add(addToMap);
+				
+				exits.clear();
+				
+			}
+			
+			//if (room.getRoomLevel() == 2) {
+			//	exits.add(roomConnection.getNorth());
+			//	exits.add(roomConnection.getEast());
+			//	exits.add(roomConnection.getSouth());
+			//	exits.add(roomConnection.getWest());
+			//	
+			//	Room addToMap = new Room(i, room.getRoomName(), room.getRoomDescripLong(),exits);
+			//	level1Rooms.add(addToMap);
+			//	
+			//	exits.clear();
+				
+			//}
+			
+			
+			
+		}
+		
+		
+		
+		
 		
 		this.actorCurrRoom = 1;
 		this.currRoomName = "starting";
@@ -133,6 +178,98 @@ public class Map{
 		return false;
 	}
 	
+	
+	public boolean canMove(int ID, String direction) {
+		
+		IDatabase db = DatabaseProvider.getInstance();
+		Room room = db.getRoomByID(ID);
+		RoomConnection roomConnection = db.getRoomConnectionByID(ID);
+		
+		if (direction == "north") {
+			if (roomConnection.getNorth() > 0){
+				
+				prevRoomID = actorCurrRoom;
+				actorCurrRoom = roomConnection.getNorth();
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				currRoomName = connectedRoom.getRoomName();
+				currRoomDescrip = connectedRoom.getRoomDescrip();
+				return true;
+			}
+			else {
+				return false;
+			}
+		
+		}
+		
+		if (direction == "east") {
+			if (roomConnection.getEast() > 0){
+				
+				prevRoomID = actorCurrRoom;
+				actorCurrRoom = roomConnection.getEast();
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				currRoomName = connectedRoom.getRoomName();
+				currRoomDescrip = connectedRoom.getRoomDescrip();
+				return true;
+			}
+			else {
+				return false;
+			}
+		
+		}
+		
+		if (direction == "south") {
+			if (roomConnection.getSouth() > 0){
+				
+				prevRoomID = actorCurrRoom;
+				actorCurrRoom = roomConnection.getSouth();
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				currRoomName = connectedRoom.getRoomName();
+				currRoomDescrip = connectedRoom.getRoomDescrip();
+				return true;
+			}
+			else {
+				return false;
+			}
+		
+		}
+		
+		if (direction == "west") {
+			if (roomConnection.getWest() > 0){
+				
+				prevRoomID = actorCurrRoom;
+				actorCurrRoom = roomConnection.getWest();
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				currRoomName = connectedRoom.getRoomName();
+				currRoomDescrip = connectedRoom.getRoomDescrip();
+				return true;
+			}
+			else {
+				return false;
+			}
+		
+		}
+		
+		if (direction == "exit") {
+			if (roomConnection.getExit() > 0){
+				
+				prevRoomID = actorCurrRoom;
+				actorCurrRoom = roomConnection.getExit();
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				currRoomName = connectedRoom.getRoomName();
+				currRoomDescrip = connectedRoom.getRoomDescrip();
+				return true;
+			}
+			else {
+				return false;
+			}
+		
+		}
+		
+		
+		return false;
+		
+	}
+	
 	public void setPrevRoomID(int actorCurrRoom) {
 		this.prevRoomID = actorCurrRoom;
 		}
@@ -157,4 +294,15 @@ public class Map{
 		this.mapLayout = layout;
 		this.mapDescrips = descrip;
 	}
+	
+	public void teleport(int ID) {
+		prevRoomID = actorCurrRoom;
+		actorCurrRoom = ID;
+		Room teleportRoom = trialRooms.get(actorCurrRoom-1);
+		currRoomName = teleportRoom.getRoomName();
+		currRoomDescrip = teleportRoom.getRoomDescrip();
+	}
+	
+	
+	
 }

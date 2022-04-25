@@ -6,6 +6,7 @@ public class Room extends Map{
 	int roomID;
 	int connectingID;
 	String roomName;
+	String roomDescription;
 	String roomDescripLong;
 	String roomDescripShort;
 	int roomConnections;
@@ -34,6 +35,13 @@ public class Room extends Map{
 	ArrayList<Integer> roomExits = new ArrayList<Integer>(); //Will be replaced with availableExits and otherExitOptions
 	Boolean verifyExit;
 	int attemptedExit;
+	
+	public Room(int ID, String name, String descrip, ArrayList<Integer> exits) {
+		this.roomID = ID;
+		this.roomName = name;
+		this.roomDescription = descrip;
+		this.availableExits = exits;
+	}
 	
 	
 	
@@ -82,6 +90,11 @@ public class Room extends Map{
 	public String getRoomName() {
 		return roomName;
 	}
+	
+	public String getRoomDescrip() {
+		return roomDescription;
+	}
+	
 	
 	public void setRoomDescripLong(String longDescrip) {
 		this.roomDescripLong = longDescrip;

@@ -8,27 +8,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 * {box-sizing: border-box}
-body {font-family: "Lato", sans-serif;}
+body {
+    background-color: hsl(257, 95%, 8%);
+    font-family: "Lato", sans-serif;
+    min-height:600px;
+}
 
 /* Style the tab */
 .tab {
   float: left;
   border: 1px solid #ccc;
-  background-color: #f1f1f1;
+  background-color: hsl(0, 0%, 2%);
   width: 30%;
-  height: 390px;
+  height: 80vh;
+  min-height:400px;
 }
 .header{
     text-align: center;
     font-weight:bold;
     font-size: 300%;
+    color:white;
 }
 
 /* Style the buttons inside the tab */
 .tab button {
   display: block;
-  background-color: #ccc;
-  color: black;
+  background-color: hsl(0, 0%, 2%);
+  color: white;
   padding: 22px 16px;
   width: 100%;
   border: none;
@@ -42,7 +48,7 @@ body {font-family: "Lato", sans-serif;}
 .submit{
   display: block;
   background-color: inherit;
-  color: black;
+  color: white;
   padding: 22px 16px;
   width: 100%;
   border: none;
@@ -54,27 +60,29 @@ body {font-family: "Lato", sans-serif;}
 }
 
 .submit button:hover{
-    background-color: #ddd;
+    background-color: hsl(0, 0%, 20%);
 }
 
 /* Change background color of buttons on hover */
 .tab button:hover {
-  background-color: #ddd;
+  background-color: hsl(0, 0%, 20%);
 }
 
 /* Create an active/current "tab button" class */
 .tab button.active {
-  background-color: #ccc;
+  background-color: hsl(0, 0%, 40%);
 }
 
 /* Style the tab content */
 .tabcontent {
-  float: left;
-  padding: 0px 12px;
-  border: 1px solid #ccc;
-  width: 70%;
-  border-left: none;
-  height: 390px;
+    background-color: black;
+    display:grid;
+    grid-template-columns: auto, auto;
+    padding: 0px 12px;
+    border: 1px solid #ccc;
+    min-height:400px;
+    overflow-y:scroll;
+    height: 80vh;
 }
 .hide{
     display: none;
@@ -83,7 +91,7 @@ body {font-family: "Lato", sans-serif;}
 
 .weapon:hover + .hide{
     display: block;
-    color: red;
+    color: white;
     font-weight: bold;
     font-size: 100%;
     text-align: center;
@@ -91,8 +99,8 @@ body {font-family: "Lato", sans-serif;}
 
 .weapon{
     text-align: left;
-    background-color: white;
-    color:blue;
+    background-color: black;
+    color:white;
     font-style:oblique;
     font-weight:bolder;
     font-size: 200%;
@@ -113,7 +121,7 @@ body {font-family: "Lato", sans-serif;}
 </div>
 
 <div id="Weapons" class="tabcontent">
-    <h3 style="text-align: center;">Weapons</h3>
+    <h3 style="text-align: center; color:white;">Weapons</h3>
     
     <p><c:forEach var="weapon" items="${weapons}">
         <c:if test="${! empty weapons}">
@@ -127,12 +135,13 @@ body {font-family: "Lato", sans-serif;}
 </div>
 
 <div id="Equipment" class="tabcontent">
-    <h3 style="text-align: center;">Weapons</h3>
+    <h3 style="text-align: center; color:white;">Weapons</h3>
     
     <p><c:forEach var="equip" items="${equipment}">
         <c:if test="${! empty equip}">
             <div class="weapon">${equip.name}</div>
             <div class="hide" >
+                Price: ${equip.price}<br>
                 Defense Modifier: ${equip.defenseMod}<br>
                 HP Modifier: ${equip.HPMod}<br>
                 Speed Modifier: ${equip.speedMod}<br>
@@ -143,7 +152,7 @@ body {font-family: "Lato", sans-serif;}
   </div>
 
 <div id="Trophies" class="tabcontent">
-    <h3 style="text-align: center;">Trophies</h3>
+    <h3 style="text-align: center;color:white;">Trophies</h3>
     
     <p><c:forEach var="trophy" items="${trophies}">
         <c:if test="${! empty trophy}">
@@ -157,7 +166,7 @@ body {font-family: "Lato", sans-serif;}
 </div>
 
 <div id="Usables" class="tabcontent">
-    <h3 style="text-align: center;">Usables</h3>
+    <h3 style="text-align: center;color:white;">Usables</h3>
     
     <p><c:forEach var="usable" items="${usables}">
         <c:if test="${! empty usables}">
@@ -171,7 +180,7 @@ body {font-family: "Lato", sans-serif;}
 
 
 <div id="Treasures" class="tabcontent">
-    <h3 style="text-align: center;">Treasures</h3>
+    <h3 style="text-align: center;color: white;">Treasures</h3>
     <!--<c:if test="! empty treasures">-->
     <c:forEach var="treasure" items="${treasures}">
         <div class="weapon">${treasure.name}</div>
@@ -186,7 +195,7 @@ body {font-family: "Lato", sans-serif;}
 </div>
 
 <div id="Consumables" class="tabcontent">
-    <h3 style="text-align: center;">Consumables</h3>
+    <h3 style="text-align: center; color: white;">Consumables</h3>
     <c:if test="! empty consumables">
     <p><c:forEach var="consumable" items="${consumables}">
         <div class="weapon">${consumable.name}</div>

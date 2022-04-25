@@ -180,6 +180,36 @@ public class FakeDatabase implements IDatabase {
 		return result;
 	}
 	
+	@Override
+	public ActorStats findActorStatsByPlayerId(int playerId) {
+		ActorStats result = new ActorStats();
+		
+		for (Player player : playerList) {
+			if(player.getPlayerId() == playerId) {
+				for(ActorStats actorStats : actorStatsList) {
+					if(player.getStatsId() == actorStats.getStatsId()) {
+						result = actorStats;
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	public ActorStats findActorStatsByNPCId(int npcId) {
+		ActorStats result = new ActorStats();
+		
+		for (NPC npc : npcList) {
+			if(npc.getNPCId() == npcId) {
+				for(ActorStats actorStats : actorStatsList) {
+					if(npc.getStatsId() == actorStats.getStatsId()) {
+						result = actorStats;
+					}
+				}
+			}
+		}
+		return result;
+	}
 	
 	/*----------------------------------------------------------------*/
 }
