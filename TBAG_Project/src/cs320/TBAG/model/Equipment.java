@@ -5,12 +5,13 @@ public class Equipment extends Item{
 	int hpMod;
 	int speedMod;
 	
-	public Equipment(String name, int defenseMod, int hpMod, int speedMod) {
+	public Equipment(String name, int price, int defenseMod, int hpMod, int speedMod) {
 		this.name = name;
 		this.type = "Equipment";
 		this.defenseMod = defenseMod;
 		this.hpMod = hpMod;
 		this.speedMod = speedMod;
+		this.price = price;
 	}
 	
 	public int getDefenseMod() {
