@@ -8,6 +8,8 @@ import java.util.List;
 import cs320.TBAG.model.ActorStats;
 import cs320.TBAG.model.NPC;
 import cs320.TBAG.model.Player;
+import cs320.TBAG.model.Room;
+import cs320.TBAG.model.RoomConnection;
 import cs320.TBAG.model.Convo.ConversationNode;
 import cs320.TBAG.model.Convo.ConversationTree;
 import cs320.TBAG.model.Convo.DefaultResponse;
@@ -26,6 +28,8 @@ public class FakeDatabase implements IDatabase {
 	private List<EndResponse> endResponseList;
 	private List<KeyPuzzle> keyPuzzleList;
 	private List<Door> doorList;
+	private List<Room> roomList;
+	private List<RoomConnection> roomConnectionList;
 	
 	public FakeDatabase() {
 		playerList = new ArrayList<Player>();
@@ -37,6 +41,8 @@ public class FakeDatabase implements IDatabase {
 		endResponseList = new ArrayList<EndResponse>();
 		keyPuzzleList = new ArrayList<KeyPuzzle>();
 		doorList = new ArrayList<Door>();
+		roomList = new ArrayList<Room>();
+		roomConnectionList = new ArrayList<RoomConnection>();
 		
 		readInitialData();
 		
@@ -50,6 +56,8 @@ public class FakeDatabase implements IDatabase {
 			convoNodeList.addAll(InitialData.getConversationNodes());
 			defaultResponseList.addAll(InitialData.getDefaultResponses());
 			endResponseList.addAll(InitialData.getEndResponses());
+			roomList.addAll(InitialData.getRooms());
+			roomConnectionList.addAll(InitialData.getRoomConnections());
 		}
 		catch (IOException e) {
 			throw new IllegalStateException("Couldn't read initial data", e);
