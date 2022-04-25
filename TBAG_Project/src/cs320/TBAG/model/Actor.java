@@ -12,6 +12,10 @@ public abstract class Actor{
 	Weapon eqWeap;
 	Equipment equipped;
 	int currency;
+	int roomId;
+	int equippedId;
+	int eqWeapId;
+	int statsId;
 	
 	
 	public String getName() {
@@ -20,6 +24,38 @@ public abstract class Actor{
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
+	}
+	
+	public int getRoomId() {
+		return roomId;
+	}
+	
+	public void setEquippedId(int equippedId) {
+		this.equippedId = equippedId;
+	}
+	
+	public int getEquippedId() {
+		return equippedId;
+	}
+	
+	public void setEqWeapId(int eqWeapId) {
+		this.eqWeapId = eqWeapId;
+	}
+	
+	public int getEqWeapId() {
+		return eqWeapId;
+	}
+	
+	public void setStatsId(int statsId) {
+		this.statsId = statsId;
+	}
+	
+	public int getStatsId() {
+		return statsId;
 	}
 	
 	public Room getLocation() {

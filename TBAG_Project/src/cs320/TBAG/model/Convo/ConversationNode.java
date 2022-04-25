@@ -9,15 +9,18 @@ public class ConversationNode{
 	String stmt;
 	//TreeMap<Integer, ConversationResponse> responseMap;
 	ArrayList<ConversationResponse> responseList;
+	int convoTreeId;
+	int convoNodeId;
+	int convoNodeKey;
 	 
 	public ConversationNode() {
 		stmt = "Blank statement";
 		//responseMap = new TreeMap<Integer, ConversationResponse>();
 		responseList = new ArrayList<ConversationResponse>();
-		DefaultResponse response1 = new DefaultResponse();
-		DefaultResponse response2 = new DefaultResponse();
-		responseList.add(response1);
-		responseList.add(response2);
+		//DefaultResponse response1 = new DefaultResponse();
+		//DefaultResponse response2 = new DefaultResponse();
+		//responseList.add(response1);
+		//responseList.add(response2);
 		//responseMap.put(1, response1);
 		//responseMap.put(2, response2);
 	}
@@ -73,5 +76,29 @@ public class ConversationNode{
 	
 	public ArrayList<ConversationResponse> getResponseList() {
 		return responseList;
+	}
+	
+	public void setConvoTreeId(int convoTreeId) {
+		this.convoTreeId = convoTreeId;
+	}
+	
+	public int getConvoTreeId() {
+		return convoTreeId;
+	}
+	
+	public void setConvoNodeId(int convoNodeId) {
+		this.convoNodeId = convoNodeId;
+	}
+	
+	public int getConvoNodeId() {
+		return convoNodeId;
+	}
+	
+	public void setConvoNodeKey(int convoNodeKey) {
+		this.convoNodeKey = convoNodeKey;
+	}
+	
+	public int getConvoNodeKey() {
+		return convoNodeKey;
 	}
 }

@@ -9,6 +9,7 @@ public class ActorStats {
 	private int curExp;
 	private int maxExp;
 	private int curLvl;
+	private int statsId;
 	
 	// Default stats for a player
 	public ActorStats() {
@@ -112,6 +113,14 @@ public class ActorStats {
 	
 	public int getCurLvl() {
 		return curLvl;
+	}
+	
+	public void setStatsId(int statsId) {
+		this.statsId = statsId;
+	}
+	
+	public int getStatsId() {
+		return statsId;
 	}
 	
 	/*-------------------------------------------------*/

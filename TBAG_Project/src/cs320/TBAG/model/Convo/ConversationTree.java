@@ -5,15 +5,17 @@ import java.util.TreeMap;
 
 public class ConversationTree {
 	TreeMap<Integer, ConversationNode> conversationTreeMap;
+	int convoTreeId;
+	int NPCId;
 	
 	public ConversationTree() {
 		conversationTreeMap = new TreeMap<Integer, ConversationNode>();
-		ConversationNode node1 = new ConversationNode();
-		ConversationNode endNode = new ConversationNode();
-		endNode.getResponseList().clear();
-		endNode.setStatement("The conversation has ended");
-		conversationTreeMap.put(1, node1);
-		conversationTreeMap.put(0, endNode);
+		//ConversationNode node1 = new ConversationNode();
+		//ConversationNode endNode = new ConversationNode();
+		//endNode.getResponseList().clear();
+		//endNode.setStatement("The conversation has ended");
+		//conversationTreeMap.put(1, node1);
+		//conversationTreeMap.put(0, endNode);
 	}
 	
 	public ConversationTree(TreeMap<Integer, ConversationNode> conversationTreeMap) {
@@ -38,5 +40,21 @@ public class ConversationTree {
 	
 	public ConversationNode getEndNode() {
 		return conversationTreeMap.get(0);
+	}
+	
+	public void setConvoTreeId(int convoTreeId) {
+		this.convoTreeId = convoTreeId;
+	}
+	
+	public int getConvoTreeId() {
+		return convoTreeId;
+	}
+	
+	public void setNPCId(int NPCId) {
+		this.NPCId = NPCId;
+	}
+	
+	public int getNPCIdId() {
+		return NPCId;
 	}
 }

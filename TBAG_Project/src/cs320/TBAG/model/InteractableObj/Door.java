@@ -6,6 +6,7 @@ import cs320.TBAG.model.InteractableObj.Interactable;
 
 public class Door extends Interactable {
 	String direction;
+	int doorId;
 	
 	public Door() {
 		name = "Door";
@@ -47,5 +48,13 @@ public class Door extends Interactable {
 		
 		
 		return result;
+	}
+	
+	public void setDoorId(int doorId) {
+		this.doorId = doorId;
+	}
+	
+	public int getDoorId() {
+		return doorId;
 	}
 }

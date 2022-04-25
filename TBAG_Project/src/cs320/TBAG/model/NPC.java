@@ -6,8 +6,10 @@ import cs320.TBAG.model.Convo.ConversationTree;
 public class NPC extends Actor{
 	
 	//private Actions action = new Actions();
-	NPCAggression aggression;
+	int aggression;
 	ConversationTree conversationTree;
+	int NPCId;
+	int conversationTreeId;
 	
 	public NPC() {
 		name = "NPC 1";
@@ -17,14 +19,14 @@ public class NPC extends Actor{
 		actorStats = new ActorStats(100, 10, 10, 10);
 		eqWeap = new Weapon("Fists", 10, 10);
 		equipped = new Equipment("Bare", 10, 10, 0);
-		aggression = NPCAggression.Neutral;
+		aggression = 0;
 		currency = 0;
 		conversationTree = new ConversationTree();
 	}
 	
 	public NPC(String name, Room location, Inventory inventory,
 			ActorStats actorStats, String type, Weapon eqWeap, 
-			Equipment equipped, NPCAggression aggression,int currency, ConversationTree conversationTree) {
+			Equipment equipped, int aggression,int currency, ConversationTree conversationTree) {
 		this.name = name;
 		this.type = type;
 		this.location = location;
@@ -36,11 +38,11 @@ public class NPC extends Actor{
 		this.conversationTree = conversationTree;
 	}
 	
-	public NPCAggression getAggression() {
+	public int getAggression() {
 		return aggression;
 	}
 	
-	public void setAggression(NPCAggression aggression) {
+	public void setAggression(int aggression) {
 		this.aggression = aggression;
 	}
 	
@@ -50,6 +52,22 @@ public class NPC extends Actor{
 	
 	public void setConversationTree(ConversationTree conversationTree) {
 		this.conversationTree = conversationTree;
+	}
+	
+	public void setNPCId(int NPCId) {
+		this.NPCId = NPCId;
+	}
+	
+	public int getNPCId() {
+		return NPCId;
+	}
+	
+	public void setConversationTreeId(int conversationTreeId) {
+		this.conversationTreeId = conversationTreeId;
+	}
+	
+	public int getConversationTreeId() {
+		return conversationTreeId;
 	}
 
 }

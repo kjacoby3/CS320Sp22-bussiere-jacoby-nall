@@ -5,7 +5,9 @@ import cs320.TBAG.model.Convo.Conversation;
 
 public class Player extends Actor implements ActionsInterface{
 	
-	private Actions action = new Actions();
+	//private Actions action = new Actions();
+	private int playerId;
+	private int roomId;
 	
 	public Player() {
 		name = "Player 1";
@@ -21,6 +23,14 @@ public class Player extends Actor implements ActionsInterface{
 	public Player(String name, Room location, Inventory inventory, ActorStats actorStats,
 			Weapon eqWeap, Equipment equipped) {
 		type = "player";
+	}
+	
+	public void setPlayerId(int playerId) {
+		this.playerId = playerId;
+	}
+	
+	public int getPlayerId() {
+		return playerId;
 	}
 
 //	//Actions from Actions interface	
@@ -114,16 +124,17 @@ public class Player extends Actor implements ActionsInterface{
 		setEquipped(new Equipment("Bare", 100, 10, 0));
 	}
 
-	public boolean talk(NPC npc) {
+	@Override
+	public void talk(NPC npc) {
 		if(npc.getLocation() == location) {
 			if(npc.getAggression() != NPCAggression.Aggressive) {
-				return true;
+				//return true;
 			} else {
-				return false;
+				//return false;
 			}
 		} else {
 			System.out.println("There is no one to talk to");
-			return false;
+			//return false;
 		}
 	}
 	
