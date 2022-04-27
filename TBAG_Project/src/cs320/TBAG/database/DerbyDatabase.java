@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import cs320.TBAG.database.IDatabase;
@@ -99,7 +100,7 @@ public class DerbyDatabase implements IDatabase {
 					equipmentstmt = conn.prepareStatement(
 							"select equipment.*" +
 							"  from  equipment " +
-							"  where equipments.playerID = ? "
+							"  where equipment.playerID = ? "
 					);
 					
 					equipmentstmt.setInt(1, playerID);
@@ -601,6 +602,70 @@ public class DerbyDatabase implements IDatabase {
 			});
 		}
 		
+		public boolean insertAccount(String username, String password) {
+			return executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement account = null;
+					
+					
+					try {
+						account = conn.prepareStatement(
+								"insert into accounts (username, password) values (?,?)");
+						
+						account.setString(1, username);
+						account.setString(2, password);
+						
+						account.executeUpdate();
+						
+						return true;
+					} 
+						
+						finally {
+						//DBUtil.closeQuietly(resultSet);
+						//DBUtil.closeQuietly(stmt);
+							DBUtil.closeQuietly(account);
+					}
+					
+				}
+			});
+		}
+		
+		public String selectAccountFromUsername(String username) {
+			return executeTransaction(new Transaction<String>() {
+				@Override
+				public String execute(Connection conn) throws SQLException {
+					PreparedStatement account = null;
+					ResultSet pass = null;
+					String password;
+					
+					try {
+						account = conn.prepareStatement(
+								"select accounts.password from accounts where accounts.username = ?");
+						
+						account.setString(1, username);
+						
+						pass = account.executeQuery();
+						
+						pass.next();
+						password = pass.getString(1);
+						
+						return password;
+						
+						
+					} 
+						
+						finally {
+						//DBUtil.closeQuietly(resultSet);
+						//DBUtil.closeQuietly(stmt);
+							DBUtil.closeQuietly(account);
+					}
+					
+				}
+			});
+		}
+		
+		
 		
 		
 		
@@ -676,6 +741,7 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement rooms = null;
 				PreparedStatement npcs = null;
 				PreparedStatement connections = null;
+				PreparedStatement accounts = null;
 				
 				
 				try {
@@ -685,6 +751,15 @@ public class DerbyDatabase implements IDatabase {
 						+ "currency integer, level integer)"
 						);
 					players.executeUpdate();
+					
+					accounts = conn.prepareStatement(
+							"create table accounts ("
+							+ "playerID integer primary key generated always as identity (start with 0, increment by 1),"
+							+ "username varchar(30), password varchar(30))"
+							
+							);
+					accounts.executeUpdate();
+							
 					
 					npcs = conn.prepareStatement(
 							"create table npcs ("
@@ -799,8 +874,8 @@ public class DerbyDatabase implements IDatabase {
 						trophyList = InitialData.getTrophies();
 						
 						
-						roomList = InitialData.getRooms();
-						roomConnectionList = InitialData.getRoomConnections();
+						//roomList = InitialData.getRooms();
+						//roomConnectionList = InitialData.getRoomConnections();
 
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
@@ -814,11 +889,12 @@ public class DerbyDatabase implements IDatabase {
 					PreparedStatement insertConsumable;
 					PreparedStatement insertTreasure;
 					PreparedStatement insertTrophy;
+					PreparedStatement insertAccount;
 					
 					
 					try {
 						// populate Rooms table 
-						insertRoom = conn.prepareStatement("insert into rooms (name, short, long, level) values(?,?,?,?)");
+						/*insertRoom = conn.prepareStatement("insert into rooms (name, short, long, level) values(?,?,?,?)");
 						for(Room room : roomList) {
 							insertRoom.setString(1, room.getRoomName());
 							insertRoom.setString(2, room.getRoomDescripShort());
@@ -842,7 +918,11 @@ public class DerbyDatabase implements IDatabase {
 							
 							insertRoomConnections.addBatch();
 						}
-						insertRoomConnections.executeBatch();
+						insertRoomConnections.executeBatch();*/
+						
+						insertAccount = conn.prepareStatement("insert into accounts (username, password) values('username','password')");
+						insertAccount.executeUpdate();
+						
 						
 						insertWeapon = conn.prepareStatement("insert into weapons (name, price, damage, playerID, roomID, npcID, equipped) values (?,?,?,?,?,?,?)");
 						for( Weapon weapon : weaponList) {

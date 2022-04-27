@@ -1,5 +1,6 @@
 package cs320.TBAG.database;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cs320.TBAG.model.ActorStats;
@@ -33,4 +34,6 @@ public interface IDatabase {
 	public Inventory constructInventoryByNPCID(int npcID);
 	public Room getRoomByID(int roomID);
 	public RoomConnection getRoomConnectionByID(int roomID);
+	public ArrayList<Room> getRooms();
+	public ArrayList<RoomConnection> getConnections();
 }
