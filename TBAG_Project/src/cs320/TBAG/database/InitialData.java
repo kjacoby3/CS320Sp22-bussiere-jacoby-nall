@@ -28,7 +28,7 @@ public class InitialData {
 	
 	public static List<RoomConnection> getRoomConnections() throws IOException {
 		List<RoomConnection> roomConnectionList = new ArrayList<RoomConnection>();
-		ReadCSV readRoomConnection = new ReadCSV("roomConnections.csv");
+		ReadCSV readRoomConnection = new ReadCSV("roomConnections1.csv");
 		try {
 			// auto-generated primary key for rooms table
 			//Integer roomId = 1;
@@ -44,7 +44,7 @@ public class InitialData {
 				roomConnection.setEast(Integer.parseInt(i.next()));
 				roomConnection.setSouth(Integer.parseInt(i.next()));
 				roomConnection.setWest(Integer.parseInt(i.next()));
-				roomConnection.setExit(Integer.parseInt(i.next()));
+				//roomConnection.setExit(Integer.parseInt(i.next()));
 					
 				//These next two will not be in the room CSV. We need to figure out how to create these
 				//room.setRoomItems(null);
@@ -64,7 +64,7 @@ public class InitialData {
 	
 	public static List<Room> getRooms() throws IOException {
 		List<Room> roomList = new ArrayList<Room>();
-		ReadCSV readRooms = new ReadCSV("rooms.csv");
+		ReadCSV readRooms = new ReadCSV("rooms1.csv");
 		try {
 			// auto-generated primary key for rooms table
 			//Integer roomId = 1;
@@ -75,7 +75,12 @@ public class InitialData {
 				}
 				Iterator<String> i = tuple.iterator();
 				Room room = new Room();
-				room.setRoomID(Integer.parseInt(i.next()));
+				String id = i.next();
+				System.out.println(id);
+				Integer intID = Integer.parseInt(id);
+				System.out.println(intID);
+				room.setRoomID(intID);
+				//room.setRoomID(Integer.parseInt(i.next()));
 				room.setRoomName(i.next());
 				room.setRoomDescripLong(i.next());
 				room.setRoomDescripShort(i.next());
@@ -543,7 +548,12 @@ public class InitialData {
 				//Integer.parseInt(i.next());
 				
 				String name = i.next();
-				int price = Integer.parseInt(i.next());
+				String num = i.next();
+				System.out.println(num);
+				Integer numInt = Integer.parseInt(num);
+				System.out.println(numInt);
+				//int price = Integer.parseInt(i.next());
+				int price = numInt;
 				int playerID = Integer.parseInt(i.next());
 				int roomID = Integer.parseInt(i.next());
 				int npcID = Integer.parseInt(i.next());

@@ -771,16 +771,16 @@ public class DerbyDatabase implements IDatabase {
 					
 					rooms = conn.prepareStatement(
 						"create table rooms ("
-						+ " roomID integer primary key generated always as identity (start with 0, increment by 1),"
-						+ "name varchar(40), short varchar (400), long varchar(800),"
+						+ " roomID integer ,"
+						+ "roomname varchar(40), short varchar (400), long varchar(800),"
 						+ " level integer)"
 						);
 					rooms.executeUpdate();
 					
 					connections = conn.prepareStatement(
 							"create table connections ("
-							+ "roomID integer constraint roomID references rooms,"
-							+ "eorth integer, east integer, south integer, west integer, exit integer, teleport integer)"
+							+ "roomID integer,"
+							+ "north integer, east integer, south integer, west integer, exit integer)"
 							);
 					connections.executeUpdate();
 					
@@ -874,8 +874,8 @@ public class DerbyDatabase implements IDatabase {
 						trophyList = InitialData.getTrophies();
 						
 						
-						//roomList = InitialData.getRooms();
-						//roomConnectionList = InitialData.getRoomConnections();
+						roomList = InitialData.getRooms();
+						roomConnectionList = InitialData.getRoomConnections();
 
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
@@ -894,7 +894,7 @@ public class DerbyDatabase implements IDatabase {
 					
 					try {
 						// populate Rooms table 
-						/*insertRoom = conn.prepareStatement("insert into rooms (name, short, long, level) values(?,?,?,?)");
+						/*insertRoom = conn.prepareStatement("insert into rooms (roomname, short, long, level) values(?,?,?,?)");
 						for(Room room : roomList) {
 							insertRoom.setString(1, room.getRoomName());
 							insertRoom.setString(2, room.getRoomDescripShort());
@@ -904,7 +904,7 @@ public class DerbyDatabase implements IDatabase {
 							insertRoom.addBatch();
 						}
 						
-						insertRoom.executeBatch();
+						insertRoom.executeBatch();*/
 						
 						insertRoomConnections = conn.prepareStatement("insert into connections (roomID, North, East, South, West, exit) values (?,?,?,?,?,?)");
 						for (RoomConnection roomConnection : roomConnectionList) {
@@ -918,7 +918,7 @@ public class DerbyDatabase implements IDatabase {
 							
 							insertRoomConnections.addBatch();
 						}
-						insertRoomConnections.executeBatch();*/
+						insertRoomConnections.executeBatch();
 						
 						insertAccount = conn.prepareStatement("insert into accounts (username, password) values('username','password')");
 						insertAccount.executeUpdate();
@@ -1016,22 +1016,22 @@ public class DerbyDatabase implements IDatabase {
 						//DBUtil.closeQuietly(insertRoomConnections);
 					}
 
-					/*try {
+					try {
 						// populate Rooms table 
-						insertRoom = conn.prepareStatement("insert into rooms (roomID,roomName, roomDescripLong, roomDescripShort, roomConnections, roomUseable, roomTreasure, roomTrophy, roomEquipment, roomWeapon, roomActor, roomLevel) values (?,?,?,?,?,?,?,?,?,?,?,?)");
+						insertRoom = conn.prepareStatement("insert into rooms (roomID,roomName, short, long, Level) values (?,?,?,?,?)");
 						for (Room room : roomList) {
 							insertRoom.setInt(1, room.getRoomID());	// auto-generated primary key, don't insert this.  MAY NEED THIS WHEN LOADING MULTIPLE LEVELS
 							insertRoom.setString(2, room.getRoomName());
 							insertRoom.setString(3, room.getRoomDescripLong());
 							insertRoom.setString(4, room.getRoomDescripShort());
-							insertRoom.setInt(5, room.getRoomConnections());
+							/*insertRoom.setInt(5, room.getRoomConnections());
 							insertRoom.setInt(6, room.getRoomUseable());
 							insertRoom.setInt(7, room.getRoomTreasure());
 							insertRoom.setInt(8, room.getRoomTrophy());
 							insertRoom.setInt(9, room.getRoomEquipment());
 							insertRoom.setInt(10, room.getRoomWeapon());
-							insertRoom.setInt(11, room.getRoomActor());
-							insertRoom.setInt(12, room.getRoomLevel());
+							insertRoom.setInt(11, room.getRoomActor());*/
+							insertRoom.setInt(5, room.getRoomLevel());
 							
 							insertRoom.addBatch();
 						}
@@ -1041,11 +1041,11 @@ public class DerbyDatabase implements IDatabase {
 						return true;
 					} finally {
 						DBUtil.closeQuietly(insertRoom);
-					}*/
+					}
 					
-					return true;
+					//return true;
 					
-				}
+					}
 					
 			});
 		

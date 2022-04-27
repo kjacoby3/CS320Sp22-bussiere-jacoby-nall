@@ -394,9 +394,9 @@ public class GameServlet extends HttpServlet{
 		Collections.reverse(hist);
 		session.setAttribute("history", hist);
 		
-		String history = "" + session.getAttribute("commandHistory").toString() + input + "\n ";
+		//String history = "" + session.getAttribute("commandHistory").toString() + input + "\n ";
 		
-		session.setAttribute("commandHistory", history);
+		//session.setAttribute("commandHistory", history);
 	}
 	
 	public void updateHistory(String input, String output) {
