@@ -1,2 +1,4 @@
 test.db
 *.dat
+TBAG_Project/test.db/db.lck
+TBAG_Project/test.db
