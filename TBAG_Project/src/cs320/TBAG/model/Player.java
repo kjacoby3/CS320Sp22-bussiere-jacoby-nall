@@ -92,6 +92,8 @@ public class Player extends Actor implements ActionsInterface{
 				inventory.addItem(curWeapon);
 				inventory.removeItem(weapon);
 				//}
+			} else {
+				inventory.removeItem(weapon);
 			}
 		}
 		
@@ -112,6 +114,8 @@ public class Player extends Actor implements ActionsInterface{
 			setEquipped(equipment);
 			if(!(curEquipment.getName() == "Bare")) {
 				inventory.addItem(curEquipment);
+				inventory.removeItem(equipment);
+			} else {
 				inventory.removeItem(equipment);
 			}
 		}
@@ -136,6 +140,24 @@ public class Player extends Actor implements ActionsInterface{
 			System.out.println("There is no one to talk to");
 			//return false;
 		}
+	}
+
+	@Override
+	public void buy(Item item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sell(Item item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void use(Item item) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

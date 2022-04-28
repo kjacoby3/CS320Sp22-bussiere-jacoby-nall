@@ -16,4 +16,16 @@ public class InventoryController {
 		return inventory;
 		
 	}
+	
+	public Inventory getNPCInventory(int NPCID) {
+		Inventory inventory = db.constructInventoryByNPCID(NPCID);
+		
+		return inventory;
+	}
+	
+	public Inventory getRoomInventory(int roomID) {
+		Inventory inventory = db.constructInventoryByRoomID(roomID);
+		
+		return inventory;
+	}
 }

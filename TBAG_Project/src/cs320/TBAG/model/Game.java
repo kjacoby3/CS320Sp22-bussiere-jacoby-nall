@@ -9,14 +9,20 @@ public class Game {
 	private String password;
 	private Save save;
 	private ArrayList<Actor> actorsList;
+	private ArrayList<Player> playerList;
+	private ArrayList<NPC> npcList;
 	private ArrayList<Inventory> inventories;
 	private Map map;
 	private String input;
 	private Player player1;
 	
 	public Game() {
-		player1 = new Player();
+		//player1 = new Player();
 		map = new Map();
+		actorsList = new ArrayList<Actor>();
+		playerList = new ArrayList<Player>();
+		npcList = new ArrayList<NPC>();
+		inventories = new ArrayList<Inventory>();
 	}
 	
 	public void setUsername(String username) {
@@ -81,5 +87,19 @@ public class Game {
 	
 	public String mesg(String mesg) {
 		return mesg;
+	}
+	
+	public void addPlayer(Player player) {
+		playerList.add(player);
+		actorsList.add(player);
+	}
+	
+	public void addNPC(NPC npc) {
+		npcList.add(npc);
+		actorsList.add(npc);
+	}
+	
+	public void addInventory(Inventory inventory) {
+		inventories.add(inventory);
 	}
 }

@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cs320.TBAG.model.ActorStats;
+import cs320.TBAG.model.Equipment;
 import cs320.TBAG.model.Inventory;
 import cs320.TBAG.model.NPC;
 import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Room;
 import cs320.TBAG.model.RoomConnection;
+import cs320.TBAG.model.Weapon;
 import cs320.TBAG.model.Convo.ConversationNode;
 import cs320.TBAG.model.Convo.ConversationTree;
 import cs320.TBAG.model.Convo.DefaultResponse;

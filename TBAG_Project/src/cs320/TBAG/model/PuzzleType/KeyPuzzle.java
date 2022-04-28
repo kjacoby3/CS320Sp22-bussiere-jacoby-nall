@@ -9,7 +9,7 @@ public class KeyPuzzle extends Puzzle {
 	int interactableId;
 	
 	public KeyPuzzle() {
-		this.key = new Treasure("Blank Key", 0, 0, 0, 0, 0);
+		this.key = new Treasure("Blank Key", 0, 0, 0, 0);
 		complete = false;
 		hint = "This door needs a key.";
 		completeMSG = "You unlocked the door with the key";

@@ -3,7 +3,7 @@ package cs320.TBAG.model;
 import cs320.TBAG.model.Actions;
 import cs320.TBAG.model.Convo.ConversationTree;
 
-public class NPC extends Actor{
+public class NPC extends Actor implements ActionsInterface{
 	
 	//private Actions action = new Actions();
 	int aggression;
@@ -68,6 +68,90 @@ public class NPC extends Actor{
 	
 	public int getConversationTreeId() {
 		return conversationTreeId;
+	}
+	
+	@Override
+	public void equipWeapon(Weapon weapon) {
+		Weapon curWeapon = getEqWeap();
+		if(inventory.getWeapons().containsValue(weapon)) {
+			setEqWeap(weapon);
+			if(!(curWeapon.getName() == "Fists")) {
+				//if(!(inventory.addItem(curWeapon))){
+				inventory.addItem(curWeapon);
+				inventory.removeItem(weapon);
+				//}
+			}
+		}
+		
+	}
+	
+	@Override
+	public void unequipWeapon() {
+		Weapon curWeapon = getEqWeap();
+		inventory.addItem(curWeapon);
+		setEqWeap(new Weapon("Fists", 10, 100, 0, 0, 0, true));
+		
+	}
+	
+	@Override
+	public void equipEquipment(Equipment equipment) {
+		Equipment curEquipment = getEquipped();
+		if(inventory.getEquipment().containsValue(equipment)) {
+			setEquipped(equipment);
+			if(!(curEquipment.getName() == "Bare")) {
+				inventory.addItem(curEquipment);
+				inventory.removeItem(equipment);
+			}
+		}
+	}
+	
+	@Override
+	public void unequipEquipment() {
+		Equipment curEquipment = getEquipped();
+		inventory.addItem(curEquipment);
+		setEquipped(new Equipment("Bare",0, 100, 10, 0, 0, 0, 0, true));
+	}
+
+	@Override
+	public void move(String direction) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pickUp(Item item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void attack() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void talk(NPC npc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void buy(Item item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sell(Item item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void use(Item item) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
