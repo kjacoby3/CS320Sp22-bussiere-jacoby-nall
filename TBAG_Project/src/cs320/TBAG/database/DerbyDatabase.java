@@ -742,6 +742,10 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement npcs = null;
 				PreparedStatement connections = null;
 				PreparedStatement accounts = null;
+				PreparedStatement convoTree = null;
+				PreparedStatement convoNode = null;
+				PreparedStatement defaultResp = null;
+				PreparedStatement endResp = null;
 				
 				
 				try {
@@ -837,6 +841,35 @@ public class DerbyDatabase implements IDatabase {
 					);
 					trophies.executeUpdate();
 					
+					convoTree = conn.prepareStatement(
+							"create table conversationTree ("
+							+ "convoTreeID integer, npcID integer)"
+					);
+					convoTree.executeUpdate();
+					
+					convoNode = conn.prepareStatement(
+							"create table conversationNode ("
+							+ "convoNodeID integer, convoTreeID integer,"
+							+ "convoNodeKey integer, statement varchar(100))"
+					);
+					convoNode.executeUpdate();
+					
+					defaultResp = conn.prepareStatement(
+							"create table defaultResponse ("
+							+ "defaultResponseID integer, convoTreeID integer,"
+							+ "convoNodeID integer, response varchar(100), "
+							+ "responseNodeID integer)"
+					);
+					defaultResp.executeUpdate();
+					
+					endResp = conn.prepareStatement(
+							"create table endResponse ("
+							+ "endResponseID integer, convoTreeID integer, "
+							+ "convoNodeID integer, response varchar(100), "
+							+ "responseNodeID integer)"
+					);
+					endResp.executeUpdate();	
+					
 					return true;
 				} finally {
 					//DBUtil.closeQuietly(stmt1);
@@ -861,6 +894,10 @@ public class DerbyDatabase implements IDatabase {
 					List<Consumable> consumableList;
 					List<Treasure> treasureList;
 					List<Trophy> trophyList;
+					List<ConversationTree> convoTreeList;
+					List<ConversationNode> convoNodeList;
+					List<DefaultResponse> defaultRespList;
+					List<EndResponse> endRespList;
 					
 					try {
 
@@ -872,6 +909,10 @@ public class DerbyDatabase implements IDatabase {
 						consumableList = InitialData.getConsumables();
 						treasureList = InitialData.getTreasures();
 						trophyList = InitialData.getTrophies();
+						convoTreeList = InitialData.getConversationTrees();
+						convoNodeList = InitialData.getConversationNodes();
+						defaultRespList = InitialData.getDefaultResponses();
+						endRespList = InitialData.getEndResponses();
 						
 						
 						roomList = InitialData.getRooms();
@@ -890,6 +931,10 @@ public class DerbyDatabase implements IDatabase {
 					PreparedStatement insertTreasure;
 					PreparedStatement insertTrophy;
 					PreparedStatement insertAccount;
+					PreparedStatement insertConvoTree = null;
+					PreparedStatement insertConvoNode = null;
+					PreparedStatement insertDefaultResp = null;
+					PreparedStatement insertEndResp = null;
 					
 					
 					try {
@@ -1038,12 +1083,43 @@ public class DerbyDatabase implements IDatabase {
 						insertRoom.executeBatch();
 						
 						
-						return true;
+						//return true;
 					} finally {
 						DBUtil.closeQuietly(insertRoom);
 					}
 					
-					//return true;
+					try {
+						insertConvoTree = conn.prepareStatement("insert into conversationTree (convoTreeID, npcID) values (?, ?)");
+						for (ConversationTree convoTree : convoTreeList) {
+							insertConvoTree.setInt(1, convoTree.getConvoTreeId());
+							insertConvoTree.setInt(2, convoTree.getNPCIdId());
+							
+							insertConvoTree.addBatch();
+						}
+						insertConvoTree.executeBatch();
+						
+						//return true;
+					} finally {
+						DBUtil.closeQuietly(insertConvoTree);
+					}
+					
+					
+					try {
+						insertConvoNode = conn.prepareStatement("insert into conversationNode (convoNodeID, convoTreeID, convoNodeKey, statement)"
+								+ "values (?, ?, ?, ?)");
+						for (ConversationNode convoNode : convoNodeList) {
+							insertConvoNode.setInt(1,  convoNode.getConvoNodeId());
+							insertConvoNode.setInt(2, convoNode.getConvoTreeId());
+							insertConvoNode.setInt(3, convoNode.getConvoNodeKey());
+							insertConvoNode.setString(4, convoNode.getStatement());
+							
+							insertConvoNode.addBatch();
+						}
+						insertConvoNode.executeBatch();
+					} finally {
+						DBUtil.closeQuietly(insertConvoNode);
+					}
+					return true;
 					
 					}
 					
@@ -1304,6 +1380,35 @@ public class DerbyDatabase implements IDatabase {
 						DBUtil.closeQuietly(roomSet);
 				}
 				
+			}
+		});
+	}
+
+	@Override
+	public ConversationTree constructConversationTreeByNPCID(int npcID) {
+		// TODO Auto-generated method stub
+		return executeTransaction(new Transaction<ConversationTree>() {
+			@Override
+			public ConversationTree execute(Connection conn) throws SQLException {
+				PreparedStatement treeStmt = null;
+				PreparedStatement nodeStmt = null;
+				PreparedStatement defaultRespStmt = null;
+				
+				
+				try {
+					treeStmt = conn.prepareStatement(
+							"select ");
+					
+					
+					treeStmt.executeUpdate();
+					
+					//return true;
+				} 
+					
+					finally {
+						DBUtil.closeQuietly(treeStmt);
+				}
+				return null;
 			}
 		});
 	}

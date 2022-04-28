@@ -38,4 +38,5 @@ public interface IDatabase {
 	public RoomConnection getRoomConnectionByID(int roomID);
 	public ArrayList<Room> getRooms();
 	public ArrayList<RoomConnection> getConnections();
+	public ConversationTree constructConversationTreeByNPCID(int npcID);
 }
