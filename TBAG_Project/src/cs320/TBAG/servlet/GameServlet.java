@@ -51,6 +51,7 @@ public class GameServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
 		System.out.println("doPost");
+		int ID = 1;
 		GameController controller = new GameController();
 		session = req.getSession();
 		
@@ -91,20 +92,31 @@ public class GameServlet extends HttpServlet{
 			
 			else if(input.equalsIgnoreCase("south")) {
 				if(input.equalsIgnoreCase("south")) {
-					if(map.checkMove("s")){
+					int directionCheck = map.canMove(ID, "south");
+					if(directionCheck>0) {
+						player.move(directionCheck);
+						//GameController controller = new GameController();
+						controller.getRoomDescFromID(directionCheck);
+						
+					}
+					else {
+						updateHistory(input, "You cannot go that direction");
+						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+					}
+					/*if(map.checkMove("s")){
 						
 						map.setNewRoom(map.getNewRoomID());
 						req.setAttribute("roomMessage", map.getRoomDescription());
 						updateHistory(input, map.getRoomDescription());
 						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 						/*resp.getWriter().write(map.getRoomDescription());
-						terminalWriter.write(map.getRoomDescription());*/
+						terminalWriter.write(map.getRoomDescription());
 					}
 					else {
 						System.out.println("Southelse");
 						updateHistory(input, map.getRoomDescription());
 						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
-					}
+					}*/
 				}
 			}
 			

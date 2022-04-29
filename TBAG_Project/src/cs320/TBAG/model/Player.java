@@ -6,8 +6,9 @@ import cs320.TBAG.model.Convo.Conversation;
 public class Player extends Actor implements ActionsInterface{
 	
 	//private Actions action = new Actions();
+	private int prevRoomID;
 	private int playerId;
-	private int roomId;
+	private int roomID;
 	
 	public Player() {
 		name = "Player 1";
@@ -56,7 +57,7 @@ public class Player extends Actor implements ActionsInterface{
 	
 	//Actions from Actions Interface
 	@Override
-	public void move(String direction) {
+	public void move(int newRoom) {
 		//Map tempMap = new Map();
 		//boolean verify = tempMap.checkMove(tempMap.getCurrRoom(), direction);
 		//if(verify = true) {
@@ -69,7 +70,9 @@ public class Player extends Actor implements ActionsInterface{
 		//}
 		
 		//boolean verify = Map.checkMove(direction);
-		boolean verify = true;
+		prevRoomID = roomID;
+		roomID = newRoom;
+				
 		
 	}
 	@Override

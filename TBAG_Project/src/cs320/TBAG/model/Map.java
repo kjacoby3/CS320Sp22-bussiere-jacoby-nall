@@ -203,14 +203,15 @@ public class Map{
 	}
 	
 	
-	public boolean canMove(int ID, String direction) {
+	public int canMove(int ID, String direction) {
 		
 		IDatabase db = DatabaseProvider.getInstance();
 		Room room = db.getRoomByID(ID);
 		RoomConnection roomConnection = db.getRoomConnectionByID(ID);
 		
 		if (direction == "north") {
-			if (roomConnection.getNorth() > 0){
+			return roomConnection.getNorth();
+			/*if (roomConnection.getNorth() > 0){
 				
 				prevRoomID = actorCurrRoom;
 				actorCurrRoom = roomConnection.getNorth();
@@ -221,7 +222,7 @@ public class Map{
 			}
 			else {
 				return false;
-			}
+			}*/
 		
 		}
 		
