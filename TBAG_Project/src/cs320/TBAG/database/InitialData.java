@@ -84,13 +84,6 @@ public class InitialData {
 				room.setRoomName(i.next());
 				room.setRoomDescripLong(i.next());
 				room.setRoomDescripShort(i.next());
-				room.setRoomConnections(Integer.parseInt(i.next()));
-				room.setRoomUseable(Integer.parseInt(i.next()));
-				room.setRoomTreasure(Integer.parseInt(i.next()));
-				room.setRoomTrophy(Integer.parseInt(i.next()));
-				room.setRoomEquipment(Integer.parseInt(i.next()));
-				room.setRoomWeapon(Integer.parseInt(i.next()));
-				room.setRoomActor(Integer.parseInt(i.next()));
 				room.setRoomLevel(Integer.parseInt(i.next()));
 	
 				//These next two will not be in the room CSV. We need to figure out how to create these
