@@ -46,35 +46,22 @@ public class Room extends Map{
 	
 	
 	
-	public Room(int ID, String name, String longDescrip, String shortDescrip, int connections, int useable, int treasure, int trophy, int equipment, int weapon, int actor, int level) { //exits must be entered as four values <0,0,0,0> for n,s,w,e
+	public Room(int ID, String name, String shortDescrip, String longDescrip, int level) { //exits must be entered as four values <0,0,0,0> for n,s,w,e
 		this.roomID = ID;
 		this.roomName = name;
-		this.roomDescripLong = longDescrip;
 		this.roomDescripShort = shortDescrip;
-		this.roomConnections = connections;
-		this.roomUseable = useable;
-		this.roomTreasure = treasure;
-		this.roomTrophy = trophy;
-		this.roomEquipment = equipment;
-		this.roomWeapon = weapon;
-		this.roomActor = actor;
+		this.roomDescripLong = longDescrip;
 		this.roomLevel = level;
 		
-		//this.roomItems = roomItems;
-		//this.NPCsInRoom = NPCsInRoom;
-		//this.roomExits = exits;
 	}
 	
 	public Room() {
-		/*this.roomID = 1;
+		this.roomID = 1;
 		this.roomName = "starting";
+		this.roomDescripShort = "Starting Room";
 		this.roomDescripLong = "This is the starting area.  You can go North(n)";  //"You awaken to sound of explosions and the rocking of the ship.  You shoot up out of bed and notice that your cabinmate is not in their bed.  There is a door leading out into the hall";
-		this.roomItems = null;	
-		this.NPCsInRoom = null;
-		this.roomExits.add(2);
-		this.roomExits.add(0);
-		this.roomExits.add(3);
-		this.roomExits.add(0);*/
+		this.roomLevel = 1;
+		
 	}
 	
 	public void setRoomID(int ID) {
@@ -121,53 +108,6 @@ public class Room extends Map{
 		return roomConnections;
 	}
 	
-	public void setRoomUseable(int use) {
-		this.roomUseable = use;
-	}
-	
-	public int getRoomUseable() {
-		return roomUseable;
-	}
-	
-	public void setRoomTreasure(int treasure) {
-		this.roomTreasure = treasure;
-	}
-	
-	public int getRoomTreasure() {
-		return roomTreasure;
-	}
-	
-	public void setRoomTrophy(int trophy) {
-		this.roomTrophy = trophy;
-	}
-	
-	public int getRoomTrophy() {
-		return roomTrophy;
-	}
-	
-	public void setRoomEquipment(int equipment) {
-		this.roomEquipment = equipment;
-	}
-	
-	public int getRoomEquipment() {
-		return roomEquipment;
-	}
-	
-	public void setRoomWeapon(int weapon) {
-		this.roomWeapon = weapon;
-	}
-	
-	public int getRoomWeapon() {
-		return roomWeapon;
-	}
-	
-	public void setRoomActor(int actor) {
-		this.roomActor = actor;
-	}
-	
-	public int getRoomActor() {
-		return roomActor;
-	}
 	
 	public void setRoomLevel(int level) {
 		this.roomLevel = level;
@@ -178,11 +118,7 @@ public class Room extends Map{
 	}
 	
 	
-	
-	
-	
-	
-	public void setRoomItems(Inventory items) {
+	/*public void setRoomItems(Inventory items) {
 		this.roomItems = items;
 	}
 	
@@ -210,7 +146,7 @@ public class Room extends Map{
 	    	  NPCsInRoom.remove(npcName);
 	      }
 	    }
-	}
+	}*/
 	
 	public void setAvailableExits(ArrayList<Integer> exits) {
 		this.availableExits = exits;

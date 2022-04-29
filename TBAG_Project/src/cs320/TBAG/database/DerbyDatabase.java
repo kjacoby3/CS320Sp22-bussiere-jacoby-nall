@@ -1067,15 +1067,8 @@ public class DerbyDatabase implements IDatabase {
 						for (Room room : roomList) {
 							insertRoom.setInt(1, room.getRoomID());	// auto-generated primary key, don't insert this.  MAY NEED THIS WHEN LOADING MULTIPLE LEVELS
 							insertRoom.setString(2, room.getRoomName());
-							insertRoom.setString(3, room.getRoomDescripLong());
-							insertRoom.setString(4, room.getRoomDescripShort());
-							/*insertRoom.setInt(5, room.getRoomConnections());
-							insertRoom.setInt(6, room.getRoomUseable());
-							insertRoom.setInt(7, room.getRoomTreasure());
-							insertRoom.setInt(8, room.getRoomTrophy());
-							insertRoom.setInt(9, room.getRoomEquipment());
-							insertRoom.setInt(10, room.getRoomWeapon());
-							insertRoom.setInt(11, room.getRoomActor());*/
+							insertRoom.setString(3, room.getRoomDescripShort());
+							insertRoom.setString(4, room.getRoomDescripLong());
 							insertRoom.setInt(5, room.getRoomLevel());
 							
 							insertRoom.addBatch();
