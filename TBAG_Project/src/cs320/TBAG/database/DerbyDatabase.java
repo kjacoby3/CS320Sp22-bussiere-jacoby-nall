@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import cs320.TBAG.database.IDatabase;
 import cs320.TBAG.database.DBUtil;
@@ -30,6 +32,7 @@ import cs320.TBAG.model.Weapon;
 //import edu.ycp.cs320.booksdb.persist.DerbyDatabase.Transaction;
 
 import cs320.TBAG.model.Convo.ConversationNode;
+import cs320.TBAG.model.Convo.ConversationResponse;
 import cs320.TBAG.model.Convo.ConversationTree;
 import cs320.TBAG.model.Convo.DefaultResponse;
 import cs320.TBAG.model.Convo.EndResponse;
@@ -858,7 +861,7 @@ public class DerbyDatabase implements IDatabase {
 							"create table defaultResponse ("
 							+ "defaultResponseID integer, convoTreeID integer,"
 							+ "convoNodeID integer, response varchar(100), "
-							+ "responseNodeID integer)"
+							+ "resultNodeID integer)"
 					);
 					defaultResp.executeUpdate();
 					
@@ -866,7 +869,7 @@ public class DerbyDatabase implements IDatabase {
 							"create table endResponse ("
 							+ "endResponseID integer, convoTreeID integer, "
 							+ "convoNodeID integer, response varchar(100), "
-							+ "responseNodeID integer)"
+							+ "resultNodeID integer)"
 					);
 					endResp.executeUpdate();	
 					
@@ -1112,9 +1115,37 @@ public class DerbyDatabase implements IDatabase {
 					} finally {
 						DBUtil.closeQuietly(insertConvoNode);
 					}
-					return true;
+					//return true;
 					
+					try {
+						insertDefaultResp = conn.prepareStatement("insert into defaultResponse (defaultResponseID, convoTreeID, convoNodeID, response, resultNodeID)"
+								+ "values (?, ?, ?, ?, ?)");
+						for(DefaultResponse defaultResp : defaultRespList) {
+							insertDefaultResp.setInt(1, defaultResp.getResponseId());
+							insertDefaultResp.setInt(2, defaultResp.getConvoTreeId());
+							insertDefaultResp.setInt(3, defaultResp.getNodeId());
+							insertDefaultResp.setString(4, defaultResp.getResponseStr());
+							insertDefaultResp.setInt(5, defaultResp.getResultNode());
+						}
+					} finally {
+						DBUtil.closeQuietly(insertDefaultResp);
 					}
+					
+					try {
+						insertEndResp = conn.prepareStatement("insert into endResponse (endResponseID, convoTreeID, convoNodeID, response, resultNodeID)"
+								+ "values (?, ?, ?, ?, ?)");
+						for(EndResponse endResp : endRespList) {
+							insertEndResp.setInt(1, endResp.getResponseId());
+							insertEndResp.setInt(2, endResp.getConvoTreeId());
+							insertEndResp.setInt(3, endResp.getNodeId());
+							insertEndResp.setString(4, endResp.getResponseStr());
+							insertEndResp.setInt(5, endResp.getResultNode());
+						}
+					} finally {
+						DBUtil.closeQuietly(insertEndResp);
+					}
+					return true;
+				}
 					
 			});
 		
@@ -1386,22 +1417,94 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement treeStmt = null;
 				PreparedStatement nodeStmt = null;
 				PreparedStatement defaultRespStmt = null;
+				PreparedStatement endRespStmt = null;
+				ResultSet treeIDSet = null;
+				ResultSet nodeSet = null;
+				ResultSet defaultRespSet = null;
+				ResultSet endRespSet = null;
+				ConversationTree convoTree = null;
 				
 				
 				try {
 					treeStmt = conn.prepareStatement(
-							"select ");
+							"select convoTreeID from conversationTree"
+							+ "where conversationTree.npcID = ?");
+					treeStmt.setInt(1, npcID);
 					
+					treeIDSet = treeStmt.executeQuery();
 					
-					treeStmt.executeUpdate();
-					
+					while(treeIDSet.next()) {
+						TreeMap<Integer, ConversationNode> conversationTreeMap = new TreeMap<Integer, ConversationNode>();
+						int index = 1;
+						int treeID = treeIDSet.getInt(index++);
+						
+						nodeStmt = conn.prepareStatement(
+							"select convoNodeID, convoNodeKey, statement from conversationNode"
+							+ "where conversationNode.convoTreeID = ?");
+						nodeStmt.setInt(1, treeID);
+						
+						nodeSet = nodeStmt.executeQuery();
+						
+						while(nodeSet.next()) {
+							ArrayList<ConversationResponse> respList = new ArrayList<ConversationResponse>();
+							int nodeIndex = 1;
+							int convoNodeID = nodeSet.getInt(nodeIndex++);
+							int convoNodeKey = nodeSet.getInt(nodeIndex++);
+							String statement = nodeSet.getString(nodeIndex++);
+							
+							defaultRespStmt = conn.prepareStatement(
+								"select response, resultNodeID from defaultResponse"
+								+ "where defaultResponse.convoNodeID = ?");
+							defaultRespStmt.setInt(1, convoNodeID);	
+							
+							defaultRespSet = defaultRespStmt.executeQuery();
+							while(defaultRespSet.next()) {
+								int defaultIndex = 1;
+								String response = defaultRespSet.getString(defaultIndex++);
+								int resultNodeID = defaultRespSet.getInt(defaultIndex++);
+								
+								DefaultResponse resp = new DefaultResponse(response, resultNodeID);
+								resp.setConvoTreeId(treeID);
+								resp.setNodeId(convoNodeID);
+								respList.add(resp);
+							}
+							
+							endRespStmt = conn.prepareStatement(
+									"select response, resultNodeID from endResponse"
+									+ "where endResponse.convoNodeID = ?");
+								endRespStmt.setInt(1, convoNodeID);	
+								
+								endRespSet = defaultRespStmt.executeQuery();
+								while(endRespSet.next()) {
+									int endIndex = 1;
+									String response = endRespSet.getString(endIndex++);
+									int resultNodeID = endRespSet.getInt(endIndex++);
+									
+									EndResponse resp = new EndResponse(response);
+									resp.setResultNode(resultNodeID);
+									resp.setConvoTreeId(treeID);
+									resp.setNodeId(convoNodeID);
+									respList.add(resp);
+								}
+							
+							ConversationNode convoNode = new ConversationNode(statement, respList);
+							convoNode.setConvoTreeId(treeID);
+							convoNode.setConvoNodeKey(convoNodeKey);
+							conversationTreeMap.put(convoNodeKey, convoNode);
+						}
+						convoTree = new ConversationTree(conversationTreeMap);
+						
+					}
 					//return true;
+					return convoTree;
 				} 
 					
 					finally {
 						DBUtil.closeQuietly(treeStmt);
+						DBUtil.closeQuietly(nodeStmt);
+						DBUtil.closeQuietly(defaultRespStmt);
 				}
-				return null;
+				//return null;
 			}
 		});
 	}
