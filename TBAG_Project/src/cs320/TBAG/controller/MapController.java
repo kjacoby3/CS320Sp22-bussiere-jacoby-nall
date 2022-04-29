@@ -10,22 +10,7 @@ public class MapController {
 		db = new DerbyDatabase();
 	}
 	
-	public Inventory getPlayerInventory(int playerID) {
-		Inventory inventory = db.constructInventoryByPlayerID(playerID);
-		
-		return inventory;
-		
-	}
-	
-	public Inventory getNPCInventory(int NPCID) {
-		Inventory inventory = db.constructInventoryByNPCID(NPCID);
-		
-		return inventory;
-	}
-	
-	public Inventory getRoomInventory(int roomID) {
-		Inventory inventory = db.constructInventoryByRoomID(roomID);
-		
-		return inventory;
+	public String getRoomDescByID(int ID) {
+		return null;
 	}
 }
