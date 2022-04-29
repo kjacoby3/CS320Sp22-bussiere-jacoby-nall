@@ -15,6 +15,7 @@ import cs320.TBAG.model.Map;
 import cs320.TBAG.model.Inventory;
 import cs320.TBAG.model.Save;
 import cs320.TBAG.model.Weapon;
+import cs320.TBAG.model.Convo.ConversationTree;
 import cs320.TBAG.database.DatabaseProvider;
 import cs320.TBAG.database.IDatabase;
 import cs320.TBAG.dbclass.InitDatabase;
@@ -81,6 +82,9 @@ public class GameController {
 					npc.equipEquipment(equipped);
 				}
 			}
+			
+			ConversationTree convoTree = db.constructConversationTreeByNPCID(npc.getNPCId());
+			npc.setConversationTree(convoTree);
 			
 			//Add npc to game list
 			model.addNPC(npc);
