@@ -36,7 +36,7 @@ public class MapController {
 		Map map;
 		int newRoom = map.canMove(actorRoom, direction);
 		String descrip;
-		boolean activatedCheck;
+		boolean activatedCheck = true;
 		
 		if (activatedCheck = true) {
 			if(newRoom > 0) {
