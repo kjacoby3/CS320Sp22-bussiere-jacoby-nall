@@ -1300,6 +1300,9 @@ public class DerbyDatabase implements IDatabase {
 						room.setRoomDescripShort(roomSet.getString(3));
 						room.setRoomDescripLong(roomSet.getString(4));
 						room.setRoomLevel(roomSet.getInt(5));
+						//room.setRoomInv(roomSet.getInventory(6));
+						room.setRoomPrevVisit(roomSet.getBoolean(7));
+						room.setRoomGameID(roomSet.getInt(8));
 						
 						roomList.add(room);
 						
@@ -1507,6 +1510,22 @@ public class DerbyDatabase implements IDatabase {
 				//return null;
 			}
 		});
+	}
+	
+	
+	public String constructDescripByRoomID(int ID) {
+		
+		Room room = getRoomByID(ID);
+		String descrip;
+		boolean prevVisitCheck = room.getRoomPrevVisit();
+		
+		if (prevVisitCheck = true) {
+			descrip = room.getRoomDescripShort();
+			return descrip;
+		}
+		
+		descrip = room.getRoomDescripLong();
+		return descrip;
 	}
 }
 	

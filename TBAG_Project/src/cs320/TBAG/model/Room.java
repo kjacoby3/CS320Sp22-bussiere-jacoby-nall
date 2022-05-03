@@ -17,7 +17,10 @@ public class Room extends Map{
 	int roomWeapon;
 	int roomActor;
 	int roomLevel;
-	
+	boolean prevVisit;
+	int roomGameID;
+	Inventory roomInv;
+
 	
 	Inventory roomItems;
 	ArrayList<NPC> NPCsInRoom = new ArrayList<NPC>();
@@ -46,12 +49,15 @@ public class Room extends Map{
 	
 	
 	
-	public Room(int ID, String name, String shortDescrip, String longDescrip, int level) { //exits must be entered as four values <0,0,0,0> for n,s,w,e
+	public Room(int ID, String name, String shortDescrip, String longDescrip, int level, Inventory inv, boolean prev, int gID) { //exits must be entered as four values <0,0,0,0> for n,s,w,e
 		this.roomID = ID;
 		this.roomName = name;
 		this.roomDescripShort = shortDescrip;
 		this.roomDescripLong = longDescrip;
 		this.roomLevel = level;
+		this.roomInv = inv;
+		this.prevVisit = prev;
+		this.roomGameID = gID;
 		
 	}
 	
@@ -116,6 +122,32 @@ public class Room extends Map{
 	public int getRoomLevel() {
 		return roomLevel;
 	}
+	
+	public void setRoomPrevVisit(boolean prev) {
+		this.prevVisit = prev;
+	}
+	
+	public boolean getRoomPrevVisit() {
+		return prevVisit;
+	}
+	
+	public void setRoomInv(Inventory inv) {
+		this.roomInv = inv;
+	}
+	
+	public Inventory getRoomInv() {
+		return roomInv;
+	}
+	
+	public void setRoomGameID(int ID) {
+		this.roomGameID = ID;
+	}
+	
+	public int getRoomGameID() {
+		return roomGameID;
+	}
+	
+	
 	
 	
 	/*public void setRoomItems(Inventory items) {

@@ -2,6 +2,7 @@ package cs320.TBAG.controller;
 
 import cs320.TBAG.database.*;
 import cs320.TBAG.model.Inventory;
+import cs320.TBAG.model.Map;
 
 public class MapController {
 
@@ -10,7 +11,24 @@ public class MapController {
 		db = new DerbyDatabase();
 	}
 	
-	public String getRoomDescByID(int ID) {
-		return null;
+	public Inventory getRoomInventory(int roomID) {
+		Inventory inventory = db.constructInventoryByRoomID(roomID);
+		
+		return inventory;
 	}
+	
+	public String getRoomDescByID(int ID) {
+		
+		String descrip = db.constructDescripByRoomID(ID); 
+		return descrip;
+	}
+	
+	public void createMap() {
+		Map map = new Map();
+		//model.addMap(map);
+	}
+	
+	/*public void createRoom() {
+		Room room = new Room();
+		}*/
 }
