@@ -34,11 +34,12 @@ public class MapController {
 		
 		int actorRoom = player.getRoomId();
 		Map map;
+		int newRoom = map.canMove(actorRoom, direction);
 		
-		if(map.canMove(actorRoom, direction) == true) {
+		if(newRoom > 0) {
 			int prevRoomID = actorRoom;
 			player.setPrevRoomId(prevRoomID); //actor needs a get/setPrevRoomID(int) method
-			int actorCurrRoom = roomConnection.getNorth();
+			int actorCurrRoom = newRoom;
 			Room connectedRoom = db.getRoomByID(actorCurrRoom);
 			player.setRoomId(actorCurrRoom); 
 			if (connectedRoom.getRoomPrevVisit() == false) {

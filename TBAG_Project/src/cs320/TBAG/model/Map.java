@@ -203,11 +203,12 @@ public class Map{
 	}
 	
 	
-	public boolean canMove(int ID, String direction) {
+	public int canMove(int ID, String direction) {
 		
 		IDatabase db = DatabaseProvider.getInstance();
 		Room room = db.getRoomByID(ID);
 		RoomConnection roomConnection = db.getRoomConnectionByID(ID);
+		int newRoom = -1;
 		
 		if (direction == "north") {
 			//return roomConnection.getNorth();
@@ -218,10 +219,12 @@ public class Map{
 				Room connectedRoom = db.getRoomByID(actorCurrRoom);
 				currRoomName = connectedRoom.getRoomName();
 				currRoomDescrip = connectedRoom.getRoomDescrip();*/
-				return true;
+				
+				newRoom = roomConnection.getNorth();
+				return newRoom;
 			}
 			else {
-				return false;
+				return newRoom;
 			}
 		
 		}
@@ -229,31 +232,33 @@ public class Map{
 		if (direction == "east") {
 			if (roomConnection.getEast() > 0){
 				
-				prevRoomID = actorCurrRoom;
+				/*prevRoomID = actorCurrRoom;
 				actorCurrRoom = roomConnection.getEast();
 				Room connectedRoom = db.getRoomByID(actorCurrRoom);
 				currRoomName = connectedRoom.getRoomName();
-				currRoomDescrip = connectedRoom.getRoomDescrip();
-				return true;
+				currRoomDescrip = connectedRoom.getRoomDescrip();*/
+				newRoom = roomConnection.getEast();
+				return newRoom;
 			}
 			else {
-				return false;
+				return newRoom;
 			}
-		
 		}
 		
 		if (direction == "south") {
 			if (roomConnection.getSouth() > 0){
 				
-				prevRoomID = actorCurrRoom;
+				/*prevRoomID = actorCurrRoom;
 				actorCurrRoom = roomConnection.getSouth();
 				Room connectedRoom = db.getRoomByID(actorCurrRoom);
 				currRoomName = connectedRoom.getRoomName();
-				currRoomDescrip = connectedRoom.getRoomDescrip();
-				return true;
+				currRoomDescrip = connectedRoom.getRoomDescrip();*/
+				
+				newRoom = roomConnection.getSouth();
+				return newRoom;
 			}
 			else {
-				return false;
+				return newRoom;
 			}
 		
 		}
@@ -261,15 +266,17 @@ public class Map{
 		if (direction == "west") {
 			if (roomConnection.getWest() > 0){
 				
-				prevRoomID = actorCurrRoom;
+				/*prevRoomID = actorCurrRoom;
 				actorCurrRoom = roomConnection.getWest();
 				Room connectedRoom = db.getRoomByID(actorCurrRoom);
 				currRoomName = connectedRoom.getRoomName();
-				currRoomDescrip = connectedRoom.getRoomDescrip();
-				return true;
+				currRoomDescrip = connectedRoom.getRoomDescrip();*/
+				
+				newRoom = roomConnection.getWest();
+				return newRoom;
 			}
 			else {
-				return false;
+				return newRoom;
 			}
 		
 		}
@@ -277,21 +284,23 @@ public class Map{
 		if (direction == "exit") {
 			if (roomConnection.getExit() > 0){
 				
-				prevRoomID = actorCurrRoom;
+				/*prevRoomID = actorCurrRoom;
 				actorCurrRoom = roomConnection.getExit();
 				Room connectedRoom = db.getRoomByID(actorCurrRoom);
 				currRoomName = connectedRoom.getRoomName();
-				currRoomDescrip = connectedRoom.getRoomDescrip();
-				return true;
+				currRoomDescrip = connectedRoom.getRoomDescrip();*/
+				
+				newRoom = roomConnection.getExit();
+				return newRoom;
 			}
 			else {
-				return false;
+				return newRoom;
 			}
 		
 		}
 		
 		
-		return false;
+		return newRoom;
 		
 	}
 	
