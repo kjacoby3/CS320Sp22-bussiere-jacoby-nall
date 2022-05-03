@@ -17,7 +17,7 @@ public class Room extends Map{
 	int roomWeapon;
 	int roomActor;
 	int roomLevel;
-	boolean prevVisit;
+	boolean roomPrevVisit;
 	int roomGameID;
 	Inventory roomInv;
 
@@ -49,14 +49,14 @@ public class Room extends Map{
 	
 	
 	
-	public Room(int ID, String name, String shortDescrip, String longDescrip, int level, Inventory inv, boolean prev, int gID) { //exits must be entered as four values <0,0,0,0> for n,s,w,e
+	public Room(int ID, String name, String shortDescrip, String longDescrip, int level, boolean prev, int gID, Inventory inv) { //exits must be entered as four values <0,0,0,0> for n,s,w,e
 		this.roomID = ID;
 		this.roomName = name;
 		this.roomDescripShort = shortDescrip;
 		this.roomDescripLong = longDescrip;
 		this.roomLevel = level;
 		this.roomInv = inv;
-		this.prevVisit = prev;
+		this.roomPrevVisit = prev;
 		this.roomGameID = gID;
 		
 	}
@@ -67,6 +67,9 @@ public class Room extends Map{
 		this.roomDescripShort = "Starting Room";
 		this.roomDescripLong = "This is the starting area.  You can go North(n)";  //"You awaken to sound of explosions and the rocking of the ship.  You shoot up out of bed and notice that your cabinmate is not in their bed.  There is a door leading out into the hall";
 		this.roomLevel = 1;
+		this.roomInv = null;
+		this.roomPrevVisit = false;
+		this.roomGameID = 1;
 		
 	}
 	
@@ -124,11 +127,11 @@ public class Room extends Map{
 	}
 	
 	public void setRoomPrevVisit(boolean prev) {
-		this.prevVisit = prev;
+		this.roomPrevVisit = prev;
 	}
 	
 	public boolean getRoomPrevVisit() {
-		return prevVisit;
+		return roomPrevVisit;
 	}
 	
 	public void setRoomInv(Inventory inv) {

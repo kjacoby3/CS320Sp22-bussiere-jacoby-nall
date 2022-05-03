@@ -1,20 +1,20 @@
-1|Your Cabin|This is your cabin.  Your cabinmate still isn't here|You awaken to sound of explosions and the rocking of the ship.  You shoot up out of bed and notice that your cabinmate is not in their bed.  There is a door leading out into the hall|1
-2|Hallway A|This is the hall outside of your cabin|You enter the hall outside of your cabin.  There are shiphands running to various locations.  Everyone seems too focused to talk.  The hallway goes left (Northward) or right (Southward)|1
-3|Hallway B|This hallway leads to the infirmary or your cabin.  There is a cabin on this corner|The hallway comes to a corner and heads Eastward to the infirmary or Southward toward your cabin.  There is a cabin on the corner Westward|1
-4|Hallway E|This hallway leads to the mess hall or your cabin.  There is a cabin and the showers on this corner|The hallway comes to a corner and leads Eastward to the Mess Hall or Northward to your cabin.  There is a a cabin on the corner to the West.  The showers are are also here Southward|1
-5|North Cabin|This is the cabin of DeRock and Zandr|This is the cabin of DeRock and Zandr.  They must be on the bridge |1
-6|Hallway C|The hallway outside the infirmary and mechanical room.  The hallway leads to the cabins or Mess Hall|The hallway comes to a head outside the Infirmary to the North and the Mechanical Room to the South.  The hall continues South to the Mess Hall or West to the cabins|1
-7|Infirmary|The ship's infirmary|The ship's infirmary. There are no wounded, but there are plenty of medical supplies|1
-8|Mechanical Room|The ship's Mechanical Room|The ship's Mechanical Room.  There are various tools on the walls and shelves.  The ship's electrical systems are here as well|1
-9|Hallway D|This is the hallway outside of the Mess Hall.  The hallway leads to the Infirmary, the cabins, or Navigation/Armory|The hallway comes to an intersection.  To the North are the Infirmary and Mechanical Room.  To the South are the ship's cabins.  To the West is the Mess Hall.  To the East is the Navigation and Armory|1
-10|Mess Hall|The ship's Mess Hall|The ship's Mess Hall.  It is empty of people, but plenty of food|1
-11|South Cabin|This is the Cabin of Clarx and Larris|This is the cabin of Clarx and Larris.  They must be at Navigation|1
-12|Showers|The ship's showers.  There's no one in here perv|The ship's showers.  There's no one in here perv|1
-13|Hallway F|The hallway outside of the Armory and Navigation.  The hallway leads to the Mess Hall or Bridge/Drop Pods|The hallway comes to another intersection.  To the West is the hallway to the Mess Hall.  To the North is Navigation.  To the South is the Armory.  To the East are the Bridge and Drop Pods|1
-14|Navigation|The ship's Navigation|The ship's Navigation Room.  Clarx and Larris are focusing on their consoles|1
-15|Armory|The ship's Armory|The ship's Armory.  There are plenty of weapons in here|1
-16|Hallway G|The hallway outside of the Bridge.  The hallway leads to the Drop Pods or Navigation/Armory|The hallway comes to a T-Intersection.  To the North is the ship's Bridge.  To the West are Navigation and the Armory.  To the South are the Drop Pods|1
-17|Bridge|The ship's Bridge|You enter the ship's Bridge.   DeRock and Zandr are at their posts, but the captain is not here.  There is a terminal that is displaying the security code to the escape pods as 2603|1
-18|Hallway H|The hallway outside the Drop Pods.  The hallway also leads back toward the bridge|The hallway continues on toward the Drop Pods|1
-19|Drop Pods|The ship's Drop Pods. Is it time to escape?|The ship's Drop Pods. It needs a security code to activate|1
-20|Drop Pods|The ship's Drop Pods. Is it time to escape?|The ship's Drop Pods. Is it time to escape?|1
+1|Your Cabin|This is your cabin.  Your cabinmate still isn't here|You awaken to sound of explosions and the rocking of the ship.  You shoot up out of bed and notice that your cabinmate is not in their bed.  There is a door leading out into the hall|1|false|1|null
+2|Hallway A|This is the hall outside of your cabin|You enter the hall outside of your cabin.  There are shiphands running to various locations.  Everyone seems too focused to talk.  The hallway goes left (Northward) or right (Southward)|1|false|1|null
+3|Hallway B|This hallway leads to the infirmary or your cabin.  There is a cabin on this corner|The hallway comes to a corner and heads Eastward to the infirmary or Southward toward your cabin.  There is a cabin on the corner Westward|1|false|1|null
+4|Hallway E|This hallway leads to the mess hall or your cabin.  There is a cabin and the showers on this corner|The hallway comes to a corner and leads Eastward to the Mess Hall or Northward to your cabin.  There is a a cabin on the corner to the West.  The showers are are also here Southward|1|false|1|null
+5|North Cabin|This is the cabin of DeRock and Zandr|This is the cabin of DeRock and Zandr.  They must be on the bridge |1|false|1|null
+6|Hallway C|The hallway outside the infirmary and mechanical room.  The hallway leads to the cabins or Mess Hall|The hallway comes to a head outside the Infirmary to the North and the Mechanical Room to the South.  The hall continues South to the Mess Hall or West to the cabins|1|false|1|null
+7|Infirmary|The ship's infirmary|The ship's infirmary. There are no wounded, but there are plenty of medical supplies|1|false|1|null
+8|Mechanical Room|The ship's Mechanical Room|The ship's Mechanical Room.  There are various tools on the walls and shelves.  The ship's electrical systems are here as well|1|false|1|null
+9|Hallway D|This is the hallway outside of the Mess Hall.  The hallway leads to the Infirmary, the cabins, or Navigation/Armory|The hallway comes to an intersection.  To the North are the Infirmary and Mechanical Room.  To the South are the ship's cabins.  To the West is the Mess Hall.  To the East is the Navigation and Armory|1|false|1|null
+10|Mess Hall|The ship's Mess Hall|The ship's Mess Hall.  It is empty of people, but plenty of food|1|false|1|null
+11|South Cabin|This is the Cabin of Clarx and Larris|This is the cabin of Clarx and Larris.  They must be at Navigation|1|false|1|null
+12|Showers|The ship's showers.  There's no one in here perv|The ship's showers.  There's no one in here perv|1|false|1|null
+13|Hallway F|The hallway outside of the Armory and Navigation.  The hallway leads to the Mess Hall or Bridge/Drop Pods|The hallway comes to another intersection.  To the West is the hallway to the Mess Hall.  To the North is Navigation.  To the South is the Armory.  To the East are the Bridge and Drop Pods|1|false|1|null
+14|Navigation|The ship's Navigation|The ship's Navigation Room.  Clarx and Larris are focusing on their consoles|1|false|1|null
+15|Armory|The ship's Armory|The ship's Armory.  There are plenty of weapons in here|1|false|1|null
+16|Hallway G|The hallway outside of the Bridge.  The hallway leads to the Drop Pods or Navigation/Armory|The hallway comes to a T-Intersection.  To the North is the ship's Bridge.  To the West are Navigation and the Armory.  To the South are the Drop Pods|1|false|1|null
+17|Bridge|The ship's Bridge|You enter the ship's Bridge.   DeRock and Zandr are at their posts, but the captain is not here.  There is a terminal that is displaying the security code to the escape pods as 2603|1|false|1|null
+18|Hallway H|The hallway outside the Drop Pods.  The hallway also leads back toward the bridge|The hallway continues on toward the Drop Pods|1|false|1|null
+19|Drop Pods|The ship's Drop Pods. Is it time to escape?|The ship's Drop Pods. It needs a security code to activate|1|false|1|null
+20|Drop Pods|The ship's Drop Pods. Is it time to escape?|The ship's Drop Pods. Is it time to escape?|1|false|1|null

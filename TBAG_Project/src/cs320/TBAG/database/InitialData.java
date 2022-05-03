@@ -85,7 +85,10 @@ public class InitialData {
 				room.setRoomDescripLong(i.next());
 				room.setRoomDescripShort(i.next());
 				room.setRoomLevel(Integer.parseInt(i.next()));
-	
+				room.setRoomPrevVisit(Boolean.parseBoolean(i.next()));
+				room.setRoomGameID(Integer.parseInt(i.next()));
+				//room.setRoomInventory(i.next());
+				
 				//These next two will not be in the room CSV. We need to figure out how to create these
 				//room.setRoomItems(null);
 				//room.setNPCsInRoom(null);
