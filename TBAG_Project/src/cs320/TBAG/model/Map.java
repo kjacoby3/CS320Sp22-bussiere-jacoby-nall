@@ -203,26 +203,26 @@ public class Map{
 	}
 	
 	
-	public int canMove(int ID, String direction) {
+	public boolean canMove(int ID, String direction) {
 		
 		IDatabase db = DatabaseProvider.getInstance();
 		Room room = db.getRoomByID(ID);
 		RoomConnection roomConnection = db.getRoomConnectionByID(ID);
 		
 		if (direction == "north") {
-			return roomConnection.getNorth();
-			/*if (roomConnection.getNorth() > 0){
+			//return roomConnection.getNorth();
+			if (roomConnection.getNorth() > 0){
 				
-				prevRoomID = actorCurrRoom;
+				/*prevRoomID = actorCurrRoom;
 				actorCurrRoom = roomConnection.getNorth();
 				Room connectedRoom = db.getRoomByID(actorCurrRoom);
 				currRoomName = connectedRoom.getRoomName();
-				currRoomDescrip = connectedRoom.getRoomDescrip();
+				currRoomDescrip = connectedRoom.getRoomDescrip();*/
 				return true;
 			}
 			else {
 				return false;
-			}*/
+			}
 		
 		}
 		

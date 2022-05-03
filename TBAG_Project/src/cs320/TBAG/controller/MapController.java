@@ -3,6 +3,8 @@ package cs320.TBAG.controller;
 import cs320.TBAG.database.*;
 import cs320.TBAG.model.Inventory;
 import cs320.TBAG.model.Map;
+import cs320.TBAG.model.Player;
+import cs320.TBAG.model.Room;
 
 public class MapController {
 
@@ -28,7 +30,29 @@ public class MapController {
 		//model.addMap(map);
 	}
 	
-	/*public void createRoom() {
-		Room room = new Room();
-		}*/
+	public void move(Player player, String direction) {
+		
+		int actorRoom = player.getRoomId();
+		Map map;
+		
+		if(map.canMove(actorRoom, direction) == true) {
+			int prevRoomID = actorRoom;
+			player.setPrevRoomId(prevRoomID); //actor needs a get/setPrevRoomID(int) method
+			Room connectedRoom = db.getRoomByID(actorCurrRoom);
+			int actorCurrRoom = roomConnection.getNorth();
+			player.setRoomId(actorCurrRoom); 
+			if (connectedRoom.getRoomPrevVisit() == false) {
+				connectedRoom.setRoomPrevVisit(true);
+				String descrip = getRoomDescByID(actorCurrRoom);
+			}
+			
+			
+			String currRoomName = connectedRoom.getRoomName();
+			String currRoomDescrip = getRoomDescByID(actorCurrRoom);
+		}
+		
+		else {
+			String descrip = "You can't go that way";
+		}
+	}
 }
