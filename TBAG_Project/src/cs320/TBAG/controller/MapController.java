@@ -35,25 +35,34 @@ public class MapController {
 		int actorRoom = player.getRoomId();
 		Map map;
 		int newRoom = map.canMove(actorRoom, direction);
+		String descrip;
+		boolean activatedCheck;
 		
-		if(newRoom > 0) {
-			int prevRoomID = actorRoom;
-			player.setPrevRoomId(prevRoomID); //actor needs a get/setPrevRoomID(int) method
-			int actorCurrRoom = newRoom;
-			Room connectedRoom = db.getRoomByID(actorCurrRoom);
-			player.setRoomId(actorCurrRoom); 
-			if (connectedRoom.getRoomPrevVisit() == false) {
-				connectedRoom.setRoomPrevVisit(true);
-				String descrip = getRoomDescByID(actorCurrRoom);
+		if (activatedCheck = true) {
+			if(newRoom > 0) {
+				int prevRoomID = actorRoom;
+				player.setPrevRoomId(prevRoomID); //actor needs a get/setPrevRoomID(int) method
+				int actorCurrRoom = newRoom;
+				Room connectedRoom = db.getRoomByID(actorCurrRoom);
+				player.setRoomId(actorCurrRoom); 
+				if (connectedRoom.getRoomPrevVisit() == false) {
+					connectedRoom.setRoomPrevVisit(true);
+					descrip = getRoomDescByID(actorCurrRoom);
+				}
+				
+				
+				String currRoomName = connectedRoom.getRoomName();
+				String currRoomDescrip = getRoomDescByID(actorCurrRoom);
 			}
 			
-			
-			String currRoomName = connectedRoom.getRoomName();
-			String currRoomDescrip = getRoomDescByID(actorCurrRoom);
+			else {
+				descrip = "You can't go that way";
+			}
 		}
 		
 		else {
-			String descrip = "You can't go that way";
+			descrip = "This exit is not yet activated"; //use getHint()
 		}
+		
 	}
 }
