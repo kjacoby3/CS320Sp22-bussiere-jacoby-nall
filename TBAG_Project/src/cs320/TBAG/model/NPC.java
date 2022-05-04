@@ -149,8 +149,9 @@ public class NPC extends Actor implements ActionsInterface{
 	}
 
 	@Override
-	public void use(Item item) {
+	public String use(Item item) {
 		// TODO Auto-generated method stub
+		return null;
 		
 	}
 

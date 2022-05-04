@@ -7,6 +7,7 @@ import java.util.HashMap;
 import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Consumable;
 import cs320.TBAG.model.Usable;
+import cs320.TBAG.model.InteractableObj.Interactable;
 
 public class Actions implements ActionsInterface {
 	public String direction;
@@ -85,7 +86,7 @@ public class Actions implements ActionsInterface {
 	}
 	
 	@Override 
-	public void use(Item item) {
+	public String use(Item item) {
 		//TODO
 		if (item instanceof Consumable) {
 			inventory.removeItem(item);

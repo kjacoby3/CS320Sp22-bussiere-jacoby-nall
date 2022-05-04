@@ -394,7 +394,7 @@ public class Combat{
 		actor2Stats.setCurHP(0);
 		Inventory actor1Inv = actor1.getInventory();
 		Inventory actor2Inv = actor2.getInventory();
-		Inventory roomInv = actor1.getLocation().getRoomItems();
+		Inventory roomInv = actor1.getLocation().getRoomInv();
 		actor1Stats.addExp(actor2Stats.getCurExp());
 		result = "Congrats, you have defeated " + actor2.getName() +
 				"and have earned " + actor2Stats.getCurExp() + " XP!";
@@ -468,5 +468,12 @@ public class Combat{
 		}
 		return result;
 	}
+	
+	public String player1UsesItem(Item item) {
+		String result = null;
+		
+		return result;
+	}
+	
 }
 

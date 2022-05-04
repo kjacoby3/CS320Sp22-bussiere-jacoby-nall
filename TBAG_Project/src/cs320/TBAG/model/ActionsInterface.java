@@ -1,7 +1,9 @@
 package cs320.TBAG.model;
 
+import cs320.TBAG.model.InteractableObj.Interactable;
+
 public interface ActionsInterface {
-	void move(int newRoomID);
+	void move(String direction);
 	void pickUp(Item item);
 	void attack();
 	void equipWeapon(Weapon weapon);
@@ -11,5 +13,6 @@ public interface ActionsInterface {
 	void talk(NPC npc);
 	void buy(Item item);
 	void sell(Item item);
-	void use(Item item);
+	String use(Item item);
+	String activateObj(String activationStr, Interactable obj);
 }

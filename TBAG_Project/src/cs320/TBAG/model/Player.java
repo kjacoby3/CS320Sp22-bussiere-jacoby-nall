@@ -1,7 +1,12 @@
 package cs320.TBAG.model;
 
+import java.util.Iterator;
+
 import cs320.TBAG.model.Actions;
 import cs320.TBAG.model.Convo.Conversation;
+import cs320.TBAG.model.InteractableObj.Interactable;
+import cs320.TBAG.model.PuzzleType.KeyPuzzle;
+import cs320.TBAG.model.PuzzleType.Puzzle;
 
 public class Player extends Actor implements ActionsInterface{
 	
@@ -24,6 +29,10 @@ public class Player extends Actor implements ActionsInterface{
 	public Player(String name, Room location, Inventory inventory, ActorStats actorStats,
 			Weapon eqWeap, Equipment equipped) {
 		type = "player";
+		this.inventory = inventory;
+		this.actorStats = actorStats;
+		this.eqWeap = eqWeap;
+		this.equipped = equipped;
 	}
 	
 	public void setPlayerId(int playerId) {
@@ -34,6 +43,14 @@ public class Player extends Actor implements ActionsInterface{
 		return playerId;
 	}
 
+	public void setPrevRoomId(int prevRoomID) {
+		this.prevRoomID = prevRoomID;
+	}
+	
+	public int getPrevRoomId() {
+		return prevRoomID;
+	}
+	
 //	//Actions from Actions interface	
 //	public void movePlayer(String direction) {
 //		action.move(direction);
@@ -56,8 +73,8 @@ public class Player extends Actor implements ActionsInterface{
 //	}
 	
 	//Actions from Actions Interface
-	@Override
-	public void move(int newRoom) {
+	//@Override
+	//public void move(int newRoom) {
 		//Map tempMap = new Map();
 		//boolean verify = tempMap.checkMove(tempMap.getCurrRoom(), direction);
 		//if(verify = true) {
@@ -70,11 +87,11 @@ public class Player extends Actor implements ActionsInterface{
 		//}
 		
 		//boolean verify = Map.checkMove(direction);
-		prevRoomID = roomID;
-		roomID = newRoom;
+		//prevRoomID = roomID;
+		//roomID = newRoom;
 				
 		
-	}
+	//}
 	@Override
 	public void pickUp(Item item) {
 		inventory.addItem(item);
@@ -158,9 +175,179 @@ public class Player extends Actor implements ActionsInterface{
 	}
 
 	@Override
-	public void use(Item item) {
+	public String use(Item item) {
 		// TODO Auto-generated method stub
+		String result = null;
+		String change = null;
+		if(inventory.getConsumables().size() == 0 && inventory.getTreasures().size() == 0) {
+			result = "You do not have any items to use.";
+		}
+		for(Consumable consum : inventory.getConsumables().values()) {
+				if(item == consum) {
+								if(consum.getMaxHPMod() != 0) {
+					actorStats.setMaxHP((int)((double) actorStats.getMaxHP() * (1.0 + ((double) consum.getMaxHPMod() / 100))));
+					
+					if(consum.getMaxHPMod() > 0) {
+						change = "increase";
+					} else {
+						change = "decrease";
+					}
+					
+					if(result == null) {
+						result = "You used " + consum.getName() + " to " + change + " your maximum health by "
+								+ consum.getMaxHPMod() + " percent";
+					} else {
+						result += ", to " + change + " your maximum health by " + consum.getMaxHPMod() + " percent";
+					}
+				}
+								
+				if(consum.getCurHPMod() != 0) {
+					//actorStats.setCurHP((int)(actorStats.getCurHP() * (1 + (double) (consum.getCurHPMod() / 100))));
+					actorStats.setCurHP(actorStats.getCurHP() + consum.getCurHPMod());
+					if(actorStats.getCurHP() > actorStats.getMaxHP()) {
+						actorStats.setCurHP(actorStats.getMaxHP());
+					}
+					
+					if(consum.getCurHPMod() > 0) {
+						change = "increase";
+					} else {
+						change = "decrease";
+					}
+					
+					if(result == null) {
+						result = "You used " + consum.getName() + " to " + change + " your health by "
+								+ consum.getCurHPMod();
+					} else {
+						result += ", to " + change + " your health by " + consum.getCurHPMod();
+					}
+				}
+				
+				if(consum.getdefMod() != 0) {
+					actorStats.setDef((int)(actorStats.getDef() * (1 + ((double)consum.getdefMod() / 100))));
+					
+					if(consum.getdefMod() > 0) {
+						change = "increase";
+					} else {
+						change = "decrease";
+					}
+					
+					if(result == null) {
+						result = "You used " + consum.getName() + " to " + change + " your defense by "
+								+ consum.getdefMod() + " percent";
+					} else {
+						result += ", to " + change + " your defense by " + consum.getdefMod() + " percent";
+					}
+				}
+				
+				if(consum.getdmgMod() != 0) {
+					actorStats.setDmg((int)(actorStats.getDmg() * (1 + ((double)consum.getdmgMod() / 100))));
+					
+					if(consum.getdmgMod() > 0) {
+						change = "increase";
+					} else {
+						change = "decrease";
+					}
+					
+					if(result == null) {
+						result = "You used " + consum.getName() + " to " + change + " your damage by "
+								+ consum.getdmgMod() + " percent";
+					} else {
+						result += ", to " + change + " your damage by " + consum.getdmgMod() + " percent";
+					}
+				}
+				
+				if(consum.getspdMod() != 0) {
+					actorStats.setSpd((int)(actorStats.getSpd() * (1 + ((double)consum.getspdMod() / 100))));
+					
+					if(consum.getspdMod() > 0) {
+						change = "increase";
+					} else {
+						change = "decrease";
+					}
+					
+					if(result == null) {
+						result = "You used " + consum.getName() + " to " + change + " your speed by "
+								+ consum.getspdMod();
+					} else {
+						result += ", to " + change + " your speed by " + consum.getspdMod() + " percent";
+					}
+				}
+				//System.out.println(inventory.getConsumables());
+				inventory.removeItem(consum);
+			} else {
+				result = "" + item.getName() + " is not a usable item or is not in your inventory.";
+			}
+		}
+		
+		for(Treasure treasure : inventory.getTreasures().values()) {
+			if(item == treasure) {
+				Iterator<Interactable> iter = location.getInteractables().iterator(); //Need getPuzzles method in Room
+				while(iter.hasNext()) {
+					Interactable object = iter.next();
+					if(object.getPuzzle() instanceof KeyPuzzle) {
+						KeyPuzzle puzzle = (KeyPuzzle)object.getPuzzle();
+						if(puzzle.getKey() == treasure) {
+							if(!puzzle.getComplete()) {
+								puzzle.setComplete(true);
+								inventory.removeItem(treasure);
+							}
+							result = puzzle.checkConditions();
+						} else {
+							result = "That does not work here.";
+						}
+					} else {
+						result = "That does not work here.";
+					}
+				}
+			}
+		}
+
+		
+		return result;
+	}
+	
+	@Override
+	public void move(String direction) {
+		
+		int actorRoom = roomID;
+		Map map;
+		int newRoom = 0;//map.canMove(actorRoom, direction);
+		String descrip;
+		boolean activatedCheck = true;
+		
+		if (activatedCheck = true) {
+			if(newRoom > 0) {
+				int prevRoomID = actorRoom;
+				//setPrevRoomId(prevRoomID); //actor needs a get/setPrevRoomID(int) method
+				int actorCurrRoom = newRoom;
+				Room connectedRoom = null;//db.getRoomByID(actorCurrRoom);
+				roomID = actorCurrRoom;     //player.setRoomId(actorCurrRoom); 
+				if (connectedRoom.getRoomPrevVisit() == false) {
+					connectedRoom.setRoomPrevVisit(true);
+					//descrip = getRoomDescByID(actorCurrRoom);
+				}
+				
+				
+				String currRoomName = connectedRoom.getRoomName();
+				//String currRoomDescrip = getRoomDescByID(actorCurrRoom);
+			}
+			
+			else {
+				descrip = "You can't go that way";
+			}
+		}
+		
+		else {
+			descrip = "This exit is not yet activated"; //use getHint()
+		}
 		
 	}
 	
+	@Override
+	public String activateObj(String activationStr, Interactable obj) {
+		String result = null;
+		
+		
+		return result;
+	}
 }
