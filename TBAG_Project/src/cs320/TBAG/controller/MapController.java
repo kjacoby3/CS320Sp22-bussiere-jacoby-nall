@@ -1,5 +1,6 @@
 package cs320.TBAG.controller;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import cs320.TBAG.model.Inventory;
 import cs320.TBAG.model.Map;
 import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Room;
+import cs320.TBAG.model.RoomConnection;
 import cs320.TBAG.model.Weapon;
 
 public class MapController {
@@ -32,8 +34,11 @@ public class MapController {
 	}
 	
 	public void createMap() {
-		List<Room> roomList = db.findAllRooms();
+		List<Room> roomList = db.getRooms();
+		ArrayList<RoomConnection> connections= db.getConnections();
 		Iterator<Room> iterator = roomList.iterator();
+		Iterator<RoomConnection> i = connections.iterator();
+		
 		while (iterator.hasNext()) {
 			Room room = iterator.next();
 			
@@ -48,6 +53,15 @@ public class MapController {
 			Inventory inv = invCreator.getRoomInventory(room.getRoomID());
 			room.setRoomInv(inv);
 			
+			for (Room room : roomList) {
+				ArrayList<Integer> exit = new ArrayList<Integer>();
+				RoomConnection conn = i.next();
+				exit.add(conn.getNorth());
+				exit.add(conn.getEast());
+				exit.add(conn.getSouth());
+				exit.add(conn.getWest());
+				room.setAvailableExits(exit);
+			}
 			
 			
 			/*for(Weapon weap : inv.getWeapons().values()) {

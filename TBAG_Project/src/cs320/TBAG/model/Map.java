@@ -119,7 +119,7 @@ public class Map{
 			
 			
 		}*/
-		ArrayList<Room> rooms = db.getRooms();
+		/*ArrayList<Room> rooms = db.getRooms();
 		ArrayList<RoomConnection> connections= db.getConnections();
 		
 		Iterator<RoomConnection> i = connections.iterator();
@@ -133,19 +133,19 @@ public class Map{
 			exit.add(conn.getWest());
 			room.setAvailableExits(exit);
 			
-			level1Rooms.add(room);
+			level1Rooms.addRoom(room);
 			
-		}
+		}*/
 		
 		
 		
 		
 		
-		this.actorCurrRoom = 1;
+		/*this.actorCurrRoom = 1;
 		this.currRoomName = "starting";
 		this.currRoomDescrip = "This is the starting area.  You can go North(n)";
 		this.actors = null;
-		this.roomInventory = null;
+		this.roomInventory = null;*/
 		//this.validExits = startRoom;
 		
 	}
