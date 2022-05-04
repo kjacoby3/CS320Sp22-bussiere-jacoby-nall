@@ -42,8 +42,8 @@ public class GameServlet extends HttpServlet{
 		session.setAttribute("commandHistory", "");
 		session.setAttribute("history", new ArrayList<String>());
 		
-		String roomDesc = map.getRoomDescription();
-		req.setAttribute("roomMessage", roomDesc);
+		//String roomDesc = map.getRoomDescription();
+		//req.setAttribute("roomMessage", roomDesc);
 		req.getRequestDispatcher("/_view/Game.jsp").forward(req,resp);
 	}
 	

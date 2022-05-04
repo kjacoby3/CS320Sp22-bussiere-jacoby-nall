@@ -640,7 +640,7 @@ public class DerbyDatabase implements IDatabase {
 				public String execute(Connection conn) throws SQLException {
 					PreparedStatement account = null;
 					ResultSet pass = null;
-					String password;
+					String password = null;
 					
 					try {
 						account = conn.prepareStatement(
@@ -650,8 +650,9 @@ public class DerbyDatabase implements IDatabase {
 						
 						pass = account.executeQuery();
 						
-						pass.next();
+						if(pass.next()) {
 						password = pass.getString(1);
+						}
 						
 						return password;
 						
@@ -780,7 +781,7 @@ public class DerbyDatabase implements IDatabase {
 						"create table rooms ("
 						+ " roomID integer ,"
 						+ "roomname varchar(40), short varchar (400), long varchar(800),"
-						+ " level integer)"
+						+ " level integer, prev boolean, gID integer)"
 						);
 					rooms.executeUpdate();
 					
@@ -968,7 +969,8 @@ public class DerbyDatabase implements IDatabase {
 						}
 						insertRoomConnections.executeBatch();
 						
-						insertAccount = conn.prepareStatement("insert into accounts (username, password) values('username','password')");
+						System.out.println("Execute insertAccount");
+						insertAccount = conn.prepareStatement("insert into accounts (username, password) values('admin','password')");
 						insertAccount.executeUpdate();
 						
 						
@@ -1256,10 +1258,8 @@ public class DerbyDatabase implements IDatabase {
 				
 				try {
 					roomstmt = conn.prepareStatement(
-							"select room.*"
-							+ "from room"
-							+ "where room.roomID = ?"
-							);	
+							"select rooms.* from rooms where rooms.roomID = ?"
+				);
 				
 					roomstmt.setInt(1, roomID);
 					
@@ -1345,9 +1345,7 @@ public class DerbyDatabase implements IDatabase {
 				
 				try {
 					roomCon = conn.prepareStatement(
-							"select connections.*"
-							+ "from connections"
-							+ "where connections.roomID = ?"
+							"select connections.* from connections where connections.roomID = ?"
 							);	
 				
 					roomCon.setInt(1, roomID);
