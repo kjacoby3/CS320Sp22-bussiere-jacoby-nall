@@ -34,7 +34,8 @@ public class LoginServlet extends HttpServlet{
 			String compare=db.selectAccountFromUsername(req.getParameter("username"));
 			
 			if(req.getParameter("password").equals(compare)) {
-				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+				//req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+				resp.sendRedirect("/TBAG/game");
 			}
 			else {
 				req.setAttribute("errorMessage", "Incorrect Username or Password");

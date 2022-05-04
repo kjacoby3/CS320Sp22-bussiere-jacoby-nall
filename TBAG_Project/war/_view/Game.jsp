@@ -7,87 +7,15 @@
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://unpkg.com/jquery.terminal/js/jquery.terminal.min.js"></script>
         <script src="js/app-ajax.js" type="text/javascript"></script>
-        <link rel="stylesheet" href="https://unpkg.com/jquery.terminal/css/jquery.terminal.min.css"/>
+        <link rel="stylesheet" href="Style.css"/>
 
-        <style type = "text/css">
-            .grid-container{
-                display: grid;
-                grid-template-columns: 50vh auto 50vh;
-                gap: 10px;
-                background-color: #11013b;
-                width:auto;
-                height:auto;
-                color: white;
-                padding:10px;
-            }
-
-            .grid-container > div{
-                background-color: black;
-                font-size:30px;
-                height:96vh;
-                padding-bottom:10px;
-            }
-            
-
-            .roomMessage {
-                text-align: center;
-                width: 540px;
-                font-size: 200%;
-                color: red;
-            }
-
-            .normal{
-                text-align: right;
-                font-size: 150%;
-            }
-            .error{
-                color: red;
-                font-weight: bold;
-                
-            }
-
-            input[type=text]{
-                width: auto;
-                padding-left: 40px;
-            }
-            
-
-
-            .history{
-                color: black;
-                font-size: 100%;
-                background-color: #11013b;
-
-            }
-
-
-            .terminal{
-                background-color: black;
-                text-align:left;
-                overflow: scroll;
-                font-size: 100%;
-            }
-            .script{
-                border-style:solid;
-                overflow-y: scroll;
-                color: white;
-                width: auto;
-                height: 80VH;
-
-                border-width: medium;
-                border-color: white;
-                padding: 20px;
-                margin: 20px;
-                background-color: black;
-            }
-
-        </style>
+        
         
         
         
         </style>
     </head>
-    <body class="grid-container">
+    <body class="gridContainer">
         <!--<c:if test="${empty roomMessage}">
             <div class="roomMessage">Welcome to the Game! <br> Press The Button to Begin</div>
             <form action="${pageContext.servletContext.contextPath}/game" method="get">

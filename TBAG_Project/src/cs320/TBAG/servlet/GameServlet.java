@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Queue;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,22 +30,38 @@ import cs320.TBAG.model.Weapon;
 
 public class GameServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
-	Game model = new Game();
+	//Game model = new Game();
+	GameController controller;
+	Player player;
+	Game model;
+	int gameID;
+	Map map;
+	
 	HttpSession session;
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		System.out.println("doGet");
-		Map map = new Map();
+		controller = new GameController();
+		model = new Game();
+		player = new Player();
+		gameID = 1;
+		map = model.getMap();
 		
 		session = req.getSession();
-		
+		session.setAttribute("controller", controller);
+		session.setAttribute("model", model);
+		session.setAttribute("player", player);
+		session.setAttribute("gameID", gameID);
 		session.setAttribute("commandHistory", "");
 		session.setAttribute("history", new ArrayList<String>());
 		
+		forwardRoomDesc(player, player.getRoomId(), null, req, resp);
+		
+		
 		//String roomDesc = map.getRoomDescription();
 		//req.setAttribute("roomMessage", roomDesc);
-		req.getRequestDispatcher("/_view/Game.jsp").forward(req,resp);
+		//req.getRequestDispatcher("/_view/Game.jsp").forward(req,resp);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -53,36 +70,45 @@ public class GameServlet extends HttpServlet{
 			throws ServletException, IOException {
 		System.out.println("GameServletdoPost");
 		int ID = 1;
-		int gameID = 1;
-		GameController controller = new GameController();
+		//int gameID = 1;
+		//GameController controller = new GameController();
 		session = req.getSession();
 		
+		if(session.getAttribute("player")== null) {
+			System.out.println("null");
+		}
+		player = (Player) session.getAttribute("player");
+		
+		System.out.println(player.getRoomId());
 		PrintWriter terminalWriter = resp.getWriter();
 		
 		
 		controller.setModel(model);
 		String input = (String) req.getParameter("command");
-		input = input.toLowerCase();
+		if(input!= null) {
+			input = input.toLowerCase();
+		}
+
 		
 		System.out.println("t" + input);
 		
-		Player player= model.getPlayer();
-		Map map = model.getMap();
-		String error = null;
+		//Player player= model.getPlayer();
+		//Map map = model.getMap();
+		//String error = null;
 		
 		
-		req.setAttribute("game", model);
+		/*req.setAttribute("game", model);
 		session.setAttribute("controller", controller);
 		session.setAttribute("model", model);
 		session.setAttribute("player", player);
-		session.setAttribute("gameID", gameID);
+		session.setAttribute("gameID", gameID);*/
 		
 		if(input != null) {
 			
 			
 			if(input.equalsIgnoreCase("north") || input.equalsIgnoreCase("n")) {
 				
-				int directionCheck = map.canMove(ID, "north");
+				int directionCheck = map.canMove(player.getRoomId(), "north");
 				if(directionCheck>0) {
 					forwardRoomDesc(player, directionCheck, input, req, resp);	
 				}
@@ -94,7 +120,8 @@ public class GameServlet extends HttpServlet{
 			}
 			
 			else if(input.equalsIgnoreCase("south") || input.equalsIgnoreCase("s")) {
-				int directionCheck = map.canMove(ID, "south");
+				System.out.println("south");
+				int directionCheck = map.canMove(player.getRoomId(), "south");
 				if(directionCheck>0) {
 					forwardRoomDesc(player, directionCheck, input, req, resp);	
 				}
@@ -105,7 +132,7 @@ public class GameServlet extends HttpServlet{
 			}
 			
 			else if(input.equalsIgnoreCase("west") || input.equalsIgnoreCase("w")) {
-				int directionCheck = map.canMove(ID, "west");
+				int directionCheck = map.canMove(player.getRoomId(), "west");
 				if(directionCheck>0) {
 					forwardRoomDesc(player, directionCheck, input, req, resp);	
 				}
@@ -117,7 +144,7 @@ public class GameServlet extends HttpServlet{
 			}
 			
 			else if(input.equalsIgnoreCase("east")|| input.equalsIgnoreCase("e")) {
-				int directionCheck = map.canMove(ID, "east");
+				int directionCheck = map.canMove(player.getRoomId(), "east");
 				if(directionCheck>0) {
 					forwardRoomDesc(player, directionCheck, input, req, resp);	
 				}
@@ -127,7 +154,7 @@ public class GameServlet extends HttpServlet{
 				}			
 			}
 			else if(input.equals("exit")) {
-				int directionCheck = map.canMove(ID, "exit");
+				int directionCheck = map.canMove(player.getRoomId(), "exit");
 				if(directionCheck>0) {
 					forwardRoomDesc(player, directionCheck, input, req, resp);	
 				}
@@ -139,7 +166,7 @@ public class GameServlet extends HttpServlet{
 			}
 			
 			else if(input.equalsIgnoreCase("inventory")) {
-				InventoryController ic = new InventoryController();
+				/*InventoryController ic = new InventoryController();
 				Inventory inventory = ic.getPlayerInventory(ID);
 				
 				req.setAttribute("weapons", new ArrayList<>(inventory.getWeapons().values()));
@@ -147,9 +174,14 @@ public class GameServlet extends HttpServlet{
 				req.setAttribute("trophies", new ArrayList<>(inventory.getTrophies().values()));
 				req.setAttribute("usables", new ArrayList<>(inventory.getUsables().values()));
 				req.setAttribute("treasures", new ArrayList<>(inventory.getTreasures().values()));
-				req.setAttribute("consumables", new ArrayList<>(inventory.getConsumables().values()));
+				req.setAttribute("consumables", new ArrayList<>(inventory.getConsumables().values()));*/
 				
-				req.getRequestDispatcher("/_view/inventory.jsp").forward(req, resp);
+				
+				
+				//req.getRequestDispatcher("/_view/inventory.jsp").forward(req, resp);
+				
+				//resp.sendRedirect("/_view/inventory.jsp");
+				resp.sendRedirect("/TBAG/inventory");
 			}
 			
 			else if(input.equalsIgnoreCase("pickup")) {
@@ -326,7 +358,7 @@ public class GameServlet extends HttpServlet{
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 			else {
-				error = "unsupported command";
+				String error = "unsupported command";
 				req.setAttribute("errorMessage", error);
 				req.setAttribute("roomMessage",map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
@@ -335,7 +367,7 @@ public class GameServlet extends HttpServlet{
 		}
 		else {
 			System.out.println("else");
-			req.setAttribute("roomMessage", map.getRoomDescription());
+			//req.setAttribute("roomMessage", map.getRoomDescription());
 			req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			//resp.getWriter().write("Nothing Happens");
 		}
@@ -401,7 +433,12 @@ public class GameServlet extends HttpServlet{
 	public void forwardRoomDesc (Player player, int directionCheck, String input, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		player.move(directionCheck);
 		MapController mc = new MapController();
-		updateHistory(input, mc.getRoomDescByID(directionCheck));
+		if(input== null) {
+			updateHistory(mc.getRoomDescByID(directionCheck));
+		}
+		else {
+			updateHistory(input, mc.getRoomDescByID(directionCheck));
+		}
 		req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 	}
 		

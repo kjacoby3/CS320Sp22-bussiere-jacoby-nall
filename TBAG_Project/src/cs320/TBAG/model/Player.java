@@ -24,6 +24,7 @@ public class Player extends Actor implements ActionsInterface{
 		inventory.addItem(new Equipment("Cloth Armor", 10, 50, 50, 50,1,0,0,true));
 		eqWeap = new Weapon("Fists", 10, 10, 0, 0, 0,true);
 		equipped = new Equipment("Bare",0, 10, 10, 0,1,0,0,true);
+		roomID = 1;
 	}
 	
 	public Player(String name, Room location, Inventory inventory, ActorStats actorStats,
@@ -306,8 +307,8 @@ public class Player extends Actor implements ActionsInterface{
 		return result;
 	}
 	
-	@Override
-	public void move(String direction) {
+	
+	public void move(int directionCheck) {
 		
 		int actorRoom = roomID;
 		Map map;

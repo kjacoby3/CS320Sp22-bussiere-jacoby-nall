@@ -1528,10 +1528,12 @@ public class DerbyDatabase implements IDatabase {
 		
 		if (prevVisitCheck = true) {
 			descrip = room.getRoomDescripShort();
+			System.out.println("short" + descrip);
 			return descrip;
 		}
 		
 		descrip = room.getRoomDescripLong();
+		System.out.println("long" + descrip);
 		return descrip;
 	}
 }

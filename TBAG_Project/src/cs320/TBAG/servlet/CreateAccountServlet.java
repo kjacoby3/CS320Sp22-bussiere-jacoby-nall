@@ -26,8 +26,15 @@ public class CreateAccountServlet extends HttpServlet{
 			throws ServletException, IOException{
 		System.out.println("doPost");
 		session = req.getSession();
+		System.out.println(req.getParameter("username"));
+		if(req.getParameter("username").equals("")  || req.getParameter("password").equals("") || req.getParameter("confirmPassword").equals("")) {
+			System.out.println("else3");
+			req.setAttribute("errorMessage", "Enter a Username and your password twice");
+			
+			req.getRequestDispatcher("/_view/createAccount.jsp").forward(req, resp);
+		}
 		
-		if(req.getParameter("username") != null && req.getParameter("password") != null && req.getParameter("confirmPassword")!= null) {
+		if(req.getParameter("username") != null  && req.getParameter("password") != null && req.getParameter("confirmPassword")!= null) {
 			
 			if(req.getParameter("password").equals(req.getParameter("confirmPassword"))) {
 				System.out.println("if");

@@ -1,0 +1,50 @@
+.gridContainer{
+    display: grid;
+    grid-template-columns: 50vh auto 50vh;
+    gap: 10px;
+    background-color: #11013b;
+    width:auto;
+    height:auto;
+    color: white;
+    padding:10px;
+}
+
+.gridContainer > div{
+    background-color: black;
+    font-size:30px;
+    height:96vh;
+    padding-bottom:10px;
+}
+
+.terminal{
+    background-color: black;
+    text-align:left;
+    overflow: scroll;
+    font-size: 100%;
+}
+.script{
+    border-style:solid;
+    overflow-y: scroll;
+    color: white;
+    width: auto;
+    height: 80VH;
+
+    border-width: medium;
+    border-color: white;
+    padding: 20px;
+    margin: 20px;
+    background-color: black;
+}
+
+.body{
+    background-color: #11013b;
+    width:auto;
+    height:auto;
+    color: white;
+    padding:10px;
+}
+
+.text{
+    background-color: black;
+    color: white;
+}

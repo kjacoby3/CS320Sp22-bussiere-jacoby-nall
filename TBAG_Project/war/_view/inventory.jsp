@@ -50,10 +50,10 @@ body {
   background-color: inherit;
   color: white;
   padding: 22px 16px;
-  width: 100%;
+  width: 10vh;
   border: none;
   outline: none;
-  text-align: left;
+  text-align: center;
   cursor: pointer;
   transition: 0.3s;
   font-size: 17px;
@@ -89,7 +89,7 @@ body {
     text-align: center;
 }
 
-.weapon:hover + .hide{
+.item:hover + .hide{
     display: block;
     color: white;
     font-weight: bold;
@@ -97,7 +97,7 @@ body {
     text-align: center;
 }
 
-.weapon{
+.item{
     text-align: left;
     background-color: black;
     color:white;
@@ -125,7 +125,7 @@ body {
     
     <p><c:forEach var="weapon" items="${weapons}">
         <c:if test="${! empty weapons}">
-        <div class="weapon">${weapon.name}</div>
+        <div class="ite">${weapon.name}</div>
         <div class="hide" >
             Damage: ${weapon.damage}<br>
             Price: ${weapon.sellPrice}
@@ -139,7 +139,7 @@ body {
     
     <p><c:forEach var="equip" items="${equipment}">
         <c:if test="${! empty equip}">
-            <div class="weapon">${equip.name}</div>
+            <div class="item">${equip.name}</div>
             <div class="hide" >
                 Price: ${equip.price}<br>
                 Defense Modifier: ${equip.defenseMod}<br>
@@ -156,7 +156,7 @@ body {
     
     <p><c:forEach var="trophy" items="${trophies}">
         <c:if test="${! empty trophy}">
-        <div class="weapon">${trophy.name}</div>
+        <div class="item">${trophy.name}</div>
         <div class="hide" >
             Price: ${trophy.sellPrice}
         </div>
@@ -170,7 +170,7 @@ body {
     
     <p><c:forEach var="usable" items="${usables}">
         <c:if test="${! empty usables}">
-        <div class="weapon">${usable.name}</div>
+        <div class="item">${usable.name}</div>
         <div class="hide" >
             Price: ${usable.sellPrice}
         </div>
@@ -183,7 +183,7 @@ body {
     <h3 style="text-align: center;color: white;">Treasures</h3>
     <!--<c:if test="! empty treasures">-->
     <c:forEach var="treasure" items="${treasures}">
-        <div class="weapon">${treasure.name}</div>
+        <div class="item">${treasure.name}</div>
         <div class="hide" >
             HP Modifier: ${treasure.HPMod}<br>
             Defense Modifier: ${treasure.defMod}<br>
@@ -198,7 +198,7 @@ body {
     <h3 style="text-align: center; color: white;">Consumables</h3>
     <c:if test="! empty consumables">
     <p><c:forEach var="consumable" items="${consumables}">
-        <div class="weapon">${consumable.name}</div>
+        <div class="item">${consumable.name}</div>
         <div class="hide" >
             Healing: ${consumable.curHPMod}<br>
             Temporary Max Health Increase: ${consumable.maxHPMod}<br>
