@@ -18,6 +18,7 @@ public class Map{
 	int prevRoomID;
 	String currRoomName;
 	String currRoomDescrip;
+	private ArrayList<Room> roomList;
 	ArrayList<Integer> validExits = new ArrayList<Integer>();
 	//ArrayList<Room> trialRooms = new ArrayList<Room>();
 	ArrayList<Integer> startRoom = new ArrayList<Integer>();
@@ -160,7 +161,7 @@ public class Map{
 		return currRoomName;
 	}
 	//public boolean checkMove(int actorCurrRoom, String direction)
-	public boolean checkMove(String direction)
+	/*public boolean checkMove(String direction)
 	{
 		//int currRoom = actorCurrRoom;
 		//if(trialMap[currRoom][2] == direction){
@@ -200,7 +201,7 @@ public class Map{
 		}
 		
 		return false;
-	}
+	}*/
 	
 	
 	public int canMove(int ID, String direction) {
@@ -337,6 +338,9 @@ public class Map{
 		currRoomDescrip = teleportRoom.getRoomDescrip();
 	}
 	
+	public void addRoom(Room room) {
+		roomList.add(room);
+	}
 	
 	
 }

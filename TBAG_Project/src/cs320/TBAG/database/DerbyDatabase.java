@@ -1066,13 +1066,15 @@ public class DerbyDatabase implements IDatabase {
 
 					try {
 						// populate Rooms table 
-						insertRoom = conn.prepareStatement("insert into rooms (roomID,roomName, short, long, Level) values (?,?,?,?,?)");
+						insertRoom = conn.prepareStatement("insert into rooms (roomID,roomName, short, long, Level, prev, gID) values (?,?,?,?,?,?,?)");
 						for (Room room : roomList) {
 							insertRoom.setInt(1, room.getRoomID());	// auto-generated primary key, don't insert this.  MAY NEED THIS WHEN LOADING MULTIPLE LEVELS
 							insertRoom.setString(2, room.getRoomName());
 							insertRoom.setString(3, room.getRoomDescripShort());
 							insertRoom.setString(4, room.getRoomDescripLong());
 							insertRoom.setInt(5, room.getRoomLevel());
+							insertRoom.setBoolean(6, room.getRoomPrevVisit());
+							insertRoom.setInt(7, room.getRoomGameID());
 							
 							insertRoom.addBatch();
 						}
@@ -1235,6 +1237,13 @@ public class DerbyDatabase implements IDatabase {
 		return null;
 	}
 
+	@Override
+	public List<Room> findAllRooms(){
+		//return roomList;
+		return null;
+	}
+	
+	
 	@Override
 	public Room getRoomByID(int roomID) {
 		

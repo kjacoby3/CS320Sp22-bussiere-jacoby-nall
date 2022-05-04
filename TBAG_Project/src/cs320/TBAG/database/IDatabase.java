@@ -40,4 +40,5 @@ public interface IDatabase {
 	public ArrayList<RoomConnection> getConnections();
 	public ConversationTree constructConversationTreeByNPCID(int npcID);
 	public String constructDescripByRoomID(int ID);
+	public List<Room> findAllRooms();
 }
