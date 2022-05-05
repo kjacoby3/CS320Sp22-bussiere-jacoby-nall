@@ -347,7 +347,11 @@ public class Player extends Actor implements ActionsInterface{
 	@Override
 	public String activateObj(String activationStr, Interactable obj) {
 		String result = null;
-		
+		if(activationStr == obj.getActivationKeyword()) {
+			result = obj.activateObj();
+		} else {
+			result = "That command doesn't work here.";
+		}
 		
 		return result;
 	}

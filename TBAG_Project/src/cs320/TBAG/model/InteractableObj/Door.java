@@ -27,7 +27,7 @@ public class Door extends Interactable {
 	}
 	
 	
-	public String activateObj(String activation) {
+	public String activateObj() {
 		String result;
 		Boolean unlocked;
 		if(activated == false) {

@@ -13,7 +13,7 @@ public abstract class Interactable {
 	protected int roomId;
 	protected int puzzleId;
 	
-	public abstract String activateObj(String activation);
+	public abstract String activateObj();
 	
 	
 	public String getName() {

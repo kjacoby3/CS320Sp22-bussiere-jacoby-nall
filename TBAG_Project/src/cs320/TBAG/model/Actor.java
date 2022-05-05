@@ -114,6 +114,10 @@ public abstract class Actor{
 		this.currency = currency;
 	}
 	
+	public void addCurrency(int add) {
+		currency += add;
+	}
+	
 	public boolean isDead() {
 		if(actorStats.getCurHP() <= 0) {
 			return true;
