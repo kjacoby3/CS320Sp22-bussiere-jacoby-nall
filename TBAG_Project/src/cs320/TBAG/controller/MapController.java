@@ -33,7 +33,7 @@ public class MapController {
 		return descrip;
 	}
 	
-	public void createMap() {
+	public Map createMap() {
 		List<Room> roomList = db.getRooms();
 		ArrayList<RoomConnection> connections= db.getConnections();
 		Iterator<Room> iterator = roomList.iterator();
@@ -53,15 +53,15 @@ public class MapController {
 			Inventory inv = invCreator.getRoomInventory(room.getRoomID());
 			room.setRoomInv(inv);
 			
-			for (Room room : roomList) {
-				ArrayList<Integer> exit = new ArrayList<Integer>();
-				RoomConnection conn = i.next();
-				exit.add(conn.getNorth());
-				exit.add(conn.getEast());
-				exit.add(conn.getSouth());
-				exit.add(conn.getWest());
-				room.setAvailableExits(exit);
-			}
+			//for (room : roomList) {
+			ArrayList<Integer> exit = new ArrayList<Integer>();
+			RoomConnection conn = i.next();
+			exit.add(conn.getNorth());
+			exit.add(conn.getEast());
+			exit.add(conn.getSouth());
+			exit.add(conn.getWest());
+			room.setAvailableExits(exit);
+			//}
 			
 			
 			/*for(Weapon weap : inv.getWeapons().values()) {
@@ -79,6 +79,8 @@ public class MapController {
 			//Add room to room list
 			model.addRoom(room);
 		}
+		
+		return model;
 	}
 	
 	/*public void move(Player player, String direction) {
