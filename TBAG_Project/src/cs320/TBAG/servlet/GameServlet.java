@@ -26,6 +26,9 @@ import cs320.TBAG.model.Item;
 import cs320.TBAG.model.LevelUp;
 import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Weapon;
+import cs320.TBAG.model.InteractableObj.Interactable;
+import cs320.TBAG.model.InteractableObj.Keypad;
+import cs320.TBAG.model.PuzzleType.PinPuzzle;
 
 
 public class GameServlet extends HttpServlet{
@@ -70,7 +73,10 @@ public class GameServlet extends HttpServlet{
 			throws ServletException, IOException {
 		System.out.println("GameServletdoPost");
 		int ID = 1;
-		//int gameID = 1;
+		
+		String prevInput;
+		
+				//int gameID = 1;
 		//GameController controller = new GameController();
 		session = req.getSession();
 		
@@ -82,7 +88,9 @@ public class GameServlet extends HttpServlet{
 		System.out.println(player.getRoomId());
 		PrintWriter terminalWriter = resp.getWriter();
 		
-		
+		Boolean objActivated = (Boolean) session.getAttribute("objActivated");
+		Interactable activeObj = (Interactable) session.getAttribute("activeObj");
+
 		controller.setModel(model);
 		String input = (String) req.getParameter("command");
 		if(input!= null) {
@@ -105,8 +113,15 @@ public class GameServlet extends HttpServlet{
 		
 		if(input != null) {
 			
+			if(objActivated != null && activeObj != null && objActivated) {
+				System.out.println("ObjActivated");
+				updateHistory(input, player.activateObj(input, activeObj));
+				objActivated = false;
+				session.setAttribute("objActivated", false);
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+			}
 			
-			if(input.equalsIgnoreCase("north") || input.equalsIgnoreCase("n")) {
+			else if(input.equalsIgnoreCase("north") || input.equalsIgnoreCase("n")) {
 				
 				int directionCheck = map.canMove(player.getRoomId(), "north");
 				if(directionCheck>0) {
@@ -357,6 +372,46 @@ public class GameServlet extends HttpServlet{
 				req.setAttribute("roomMessage", map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
+			
+			else if (input.startsWith("enter")){
+				String activation;
+				
+				if(input.equalsIgnoreCase("enter")) {
+					activation = input;
+				} else {
+					String[] splitStr = input.split(" ");
+					activation = splitStr[0];
+				}
+				int count = 0;
+				Interactable Obj;
+				
+				//This block of code is for testing only, will be deleted later
+				Keypad obj = new Keypad();
+				PinPuzzle pinPuzzle = new PinPuzzle();
+				Obj = obj;
+				obj.setPuzzle(pinPuzzle);
+				//---------------------------------//
+				
+				//for(Interactable obj : player.getLocation().getInteractables()) {
+					//if(obj.getActivationKeyword() == "enter") {
+						Obj = obj;
+						count++;
+					//}
+				//}
+				if(count == 1) {
+					updateHistory(player.activateObj(activation, Obj));
+					objActivated = true;
+					session.setAttribute("objActivated", objActivated);
+					System.out.println("First activated obj");
+					activeObj = Obj;
+					session.setAttribute("activeObj", activeObj);
+				} else if(count < 1) {
+					updateHistory(input + " does not work here.");
+				} else if (count > 1) {
+					updateHistory("What object are you trying to interact with?");
+				}
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+			}
 			else {
 				String error = "unsupported command";
 				req.setAttribute("errorMessage", error);
@@ -364,6 +419,7 @@ public class GameServlet extends HttpServlet{
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 				//resp.getWriter().write("Nothing Happens");
 			}
+			prevInput = input;
 		}
 		else {
 			System.out.println("else");

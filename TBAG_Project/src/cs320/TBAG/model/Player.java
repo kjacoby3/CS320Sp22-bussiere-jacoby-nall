@@ -5,6 +5,7 @@ import java.util.Iterator;
 import cs320.TBAG.model.Actions;
 import cs320.TBAG.model.Convo.Conversation;
 import cs320.TBAG.model.InteractableObj.Interactable;
+import cs320.TBAG.model.InteractableObj.Keypad;
 import cs320.TBAG.model.PuzzleType.KeyPuzzle;
 import cs320.TBAG.model.PuzzleType.Puzzle;
 
@@ -282,18 +283,24 @@ public class Player extends Actor implements ActionsInterface{
 		
 		for(Treasure treasure : inventory.getTreasures().values()) {
 			if(item == treasure) {
-				Iterator<Interactable> iter = location.getInteractables().iterator(); //Need getPuzzles method in Room
+				Iterator<Interactable> iter = location.getInteractables().iterator(); //Need getInteractables method in Room
 				while(iter.hasNext()) {
 					Interactable object = iter.next();
 					if(object.getPuzzle() instanceof KeyPuzzle) {
 						KeyPuzzle puzzle = (KeyPuzzle)object.getPuzzle();
 						if(puzzle.getKey() == treasure) {
+							
+							//If the treasure being used is the same as the key needed and
+							//puzzle is not already solved, complete the puzzle and remove treasure from inventory.
 							if(!puzzle.getComplete()) {
 								puzzle.setComplete(true);
 								inventory.removeItem(treasure);
 							}
+							
+							//Return condition statement of puzzle.
 							result = puzzle.checkConditions();
 						} else {
+							//Treasure item does not match required key item.
 							result = "That does not work here.";
 						}
 					} else {
@@ -347,7 +354,18 @@ public class Player extends Actor implements ActionsInterface{
 	@Override
 	public String activateObj(String activationStr, Interactable obj) {
 		String result = null;
-		if(activationStr == obj.getActivationKeyword()) {
+		System.out.println(activationStr);
+		System.out.println(obj.getActivationKeyword());
+		if(obj.getActivated()) {
+			if(!activationStr.equalsIgnoreCase(obj.getActivationKeyword())) {
+				result = "Incorrect.";
+			} else {
+				result = obj.activateObj();
+			}
+		
+			obj.setActivated(false);
+		} else if(activationStr.equalsIgnoreCase(obj.getActivationKeyword())) {
+			System.out.print("Works");
 			result = obj.activateObj();
 		} else {
 			result = "That command doesn't work here.";

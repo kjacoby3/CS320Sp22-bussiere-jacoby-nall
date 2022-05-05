@@ -3,7 +3,7 @@ package cs320.TBAG.model;
 import cs320.TBAG.model.InteractableObj.Interactable;
 
 public interface ActionsInterface {
-	void move(String direction);
+	void move(int direction);
 	void pickUp(Item item);
 	void attack();
 	void equipWeapon(Weapon weapon);

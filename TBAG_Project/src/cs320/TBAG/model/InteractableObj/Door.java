@@ -26,7 +26,7 @@ public class Door extends Interactable {
 		this.puzzleLock = puzzleLock;
 	}
 	
-	
+	@Override
 	public String activateObj() {
 		String result;
 		Boolean unlocked;
@@ -56,5 +56,13 @@ public class Door extends Interactable {
 	
 	public int getDoorId() {
 		return doorId;
+	}
+	
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
+	
+	public String getDirection() {
+		return direction;
 	}
 }
