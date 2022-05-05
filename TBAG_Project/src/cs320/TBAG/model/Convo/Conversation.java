@@ -13,6 +13,7 @@ public class Conversation {
 	ConversationTree npcDialog;
 	ConversationNode selectedNode;
 	ConversationResponse selectedResponse;
+	Boolean ended;
 	
 	
 	public Conversation(Player player, NPC npc) {
@@ -21,6 +22,7 @@ public class Conversation {
 		npcDialog = npc.getConversationTree();
 		selectedNode = npcDialog.getConversationTreeMap().get(1);
 		displaySelectedNodeMSG();
+		ended = false;
 	}
 	
 	public ConversationTree getNPCDialog() {
@@ -91,5 +93,13 @@ public class Conversation {
 		//}
 			
 		return selectedResponse;
+	}
+	
+	public void setEnded(Boolean ended) {
+		this.ended = ended;
+	}
+	
+	public Boolean getEnded() {
+		return ended;
 	}
 }

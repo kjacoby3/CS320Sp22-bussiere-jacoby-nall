@@ -26,6 +26,7 @@ import cs320.TBAG.model.Item;
 import cs320.TBAG.model.LevelUp;
 import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Weapon;
+import cs320.TBAG.model.Convo.Conversation;
 import cs320.TBAG.model.InteractableObj.Interactable;
 import cs320.TBAG.model.InteractableObj.Keypad;
 import cs320.TBAG.model.PuzzleType.PinPuzzle;
@@ -90,6 +91,9 @@ public class GameServlet extends HttpServlet{
 		
 		Boolean objActivated = (Boolean) session.getAttribute("objActivated");
 		Interactable activeObj = (Interactable) session.getAttribute("activeObj");
+		
+		Boolean conversationEnded = (Boolean) session.getAttribute("conversationEnded");
+		Conversation conversation = (Conversation) session.getAttribute("conversation");
 
 		controller.setModel(model);
 		String input = (String) req.getParameter("command");
@@ -409,6 +413,20 @@ public class GameServlet extends HttpServlet{
 					updateHistory(input + " does not work here.");
 				} else if (count > 1) {
 					updateHistory("What object are you trying to interact with?");
+				}
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+			}
+			else if(input.startsWith("talk")) {
+				if(input.equalsIgnoreCase("talk")) {
+					if(player.getLocation().getNPCsInRoom().size() == 1) {
+						if(player.getLocation().getNPCsInRoom().get(0).getAggression() >= 0) {
+							conversation = new Conversation(player, player.getLocation().getNPCsInRoom().get(0));
+							session.setAttribute("conversation", conversation);
+							session.setAttribute("conversationEnded", conversation.getEnded());
+						}
+					}
+				} else {
+					String[] splitStr = input.split(" ", 2);
 				}
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}

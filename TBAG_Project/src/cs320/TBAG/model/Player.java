@@ -354,8 +354,8 @@ public class Player extends Actor implements ActionsInterface{
 	@Override
 	public String activateObj(String activationStr, Interactable obj) {
 		String result = null;
-		System.out.println(activationStr);
-		System.out.println(obj.getActivationKeyword());
+		//System.out.println(activationStr);
+		//System.out.println(obj.getActivationKeyword());
 		if(obj.getActivated()) {
 			if(!activationStr.equalsIgnoreCase(obj.getActivationKeyword())) {
 				result = "Incorrect.";
@@ -365,7 +365,7 @@ public class Player extends Actor implements ActionsInterface{
 		
 			obj.setActivated(false);
 		} else if(activationStr.equalsIgnoreCase(obj.getActivationKeyword())) {
-			System.out.print("Works");
+			//System.out.print("Works");
 			result = obj.activateObj();
 		} else {
 			result = "That command doesn't work here.";

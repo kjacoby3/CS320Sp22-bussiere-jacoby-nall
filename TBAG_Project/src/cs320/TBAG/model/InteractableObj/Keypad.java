@@ -43,7 +43,6 @@ public class Keypad extends Interactable {
 			} else {
 				result = "Error 1";
 			}
-			//result = "Error 2";
 		}
 		return result;
 	}
