@@ -2,6 +2,8 @@ package cs320.TBAG.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import cs320.TBAG.model.InteractableObj.Interactable;
+
 public class Room extends Map{
 	int roomID;
 	int connectingID;
@@ -17,7 +19,9 @@ public class Room extends Map{
 	int roomWeapon;
 	int roomActor;
 	int roomLevel;
+	ArrayList<Interactable> roomInteractables;
 	boolean roomPrevVisit;
+	boolean roomActivatedCheck;
 	int roomGameID;
 	Inventory roomInv;
 
@@ -150,8 +154,29 @@ public class Room extends Map{
 		return roomGameID;
 	}
 	
+	public void setRoomActivatedCheck(boolean activated) {
+		this.roomActivatedCheck = activated;
+	}
 	
+	public boolean getRoomActivatedCheck() {
+		return roomActivatedCheck;
+	}
 	
+	public void setNPCsInRoom(ArrayList<NPC> NPCs) {
+		this.NPCsInRoom = NPCs;
+	}
+	
+	public ArrayList<NPC> getNPCsInRoom() {
+		return NPCsInRoom;
+	}
+
+	public void setRoomInteractables(ArrayList<Interactable> Interactable) {
+		this.roomInteractables = Interactable;
+	}
+	
+	public ArrayList<Interactable> getRoomInteractables() {
+		return roomInteractables;
+	}
 	
 	/*public void setRoomItems(Inventory items) {
 		this.roomItems = items;
