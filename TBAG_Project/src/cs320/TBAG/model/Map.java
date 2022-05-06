@@ -84,6 +84,7 @@ public class Map{
 		ArrayList<Integer> exits = new ArrayList<Integer>();
 		IDatabase db = DatabaseProvider.getInstance();
 		
+		roomList = new ArrayList<Room>();
 		//DerbyDatabase db = new DerbyDatabase();
 		
 		/*for (int i = 1; i<21; i++) {

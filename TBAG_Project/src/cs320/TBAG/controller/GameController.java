@@ -17,31 +17,44 @@ import cs320.TBAG.model.Save;
 import cs320.TBAG.model.Weapon;
 import cs320.TBAG.model.Convo.ConversationTree;
 import cs320.TBAG.database.DatabaseProvider;
+import cs320.TBAG.database.DerbyDatabase;
 import cs320.TBAG.database.IDatabase;
 import cs320.TBAG.dbclass.InitDatabase;
 
 public class GameController {
 	private Game model;
 	private InventoryController invCreator;
-	IDatabase db = null;
+	private Map map;
+	private Player player;
+	IDatabase db = new DerbyDatabase();
 	
 	public GameController() {
 		invCreator = new InventoryController();
 		InitDatabase.init(1);
 		db = DatabaseProvider.getInstance();
-		
+	}
+	
+	public void startGame(int playerID, int GameID	) {
+		MapController mapController = new MapController();
+		map = mapController.createMap();
+		model.setMap(map);
+		createPlayers(playerID);
+		for(room : )
+		//createNPCs();
 	}
 	
 	
 	
-	public void createPlayers() {
+	public void createPlayers(int playerID) {
 		List<Player> playerList = db.findAllPlayers();
-		Iterator<Player> iterator = playerList.iterator();
-		while (iterator.hasNext()) {
-			Player player = iterator.next();
-			ActorStats stats = db.findActorStatsByPlayerId(player.getPlayerId());
+		//Iterator<Player> iterator = playerList.iterator();
+		//while (iterator.hasNext()) {
+			//Player player = iterator.next();
+		//for(Player player : playerList) {
+		player = new Player();
+			ActorStats stats = db.findActorStatsByPlayerId(playerID);
 			player.setActorStats(stats);
-			Inventory inv = invCreator.getPlayerInventory(player.getPlayerId());
+			Inventory inv = invCreator.getPlayerInventory(playerID);
 			player.setInventory(inv);
 			
 			for(Weapon weap : inv.getWeapons().values()) {
@@ -58,7 +71,7 @@ public class GameController {
 			
 			//Add player to game list
 			model.addPlayer(player);
-		}
+		//}
 	}
 	
 	public void createNPCs() {

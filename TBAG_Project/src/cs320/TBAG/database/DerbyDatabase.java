@@ -469,7 +469,7 @@ public class DerbyDatabase implements IDatabase {
 						equipmentstmt = conn.prepareStatement(
 								"select equipment.*" +
 								"  from  equipment " +
-								"  where equipments.roomID = ? "
+								"  where equipment.roomID = ? "
 						);
 						
 						equipmentstmt.setInt(1, roomID);

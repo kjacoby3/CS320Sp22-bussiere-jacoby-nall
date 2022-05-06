@@ -17,13 +17,14 @@ import cs320.TBAG.model.RoomConnection;
 import cs320.TBAG.model.Weapon;
 
 public class MapController {
-	private Map model;
+	private Map map;
 	private InventoryController invCreator;
 	private IDatabase db = null;
 	public MapController() {
 		invCreator = new InventoryController();
 		InitDatabase.init(1);
 		db = new DerbyDatabase();
+		map = new Map();
 	}
 	
 		
@@ -77,10 +78,10 @@ public class MapController {
 			}*/
 			
 			//Add room to room list
-			model.addRoom(room);
+			map.addRoom(room);
 		}
 		
-		return model;
+		return map;
 	}
 	
 	/*public void move(Player player, String direction) {

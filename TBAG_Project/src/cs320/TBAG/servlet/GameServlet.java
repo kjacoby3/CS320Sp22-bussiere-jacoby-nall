@@ -39,6 +39,7 @@ public class GameServlet extends HttpServlet{
 	Player player;
 	Game model;
 	int gameID;
+	int playerID;
 	Map map;
 	
 	HttpSession session;
@@ -46,10 +47,17 @@ public class GameServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		System.out.println("doGet");
+		gameID = 1;
+		playerID = 1;
 		controller = new GameController();
 		model = new Game();
-		player = new Player();
-		gameID = 1;
+		controller.setModel(model);
+		controller.startGame(playerID, gameID);
+		
+		//player = new Player();
+		//gameID = 1;
+		//map = model.getMap();
+		player = model.getPlayer();
 		map = model.getMap();
 		
 		session = req.getSession();
@@ -57,7 +65,6 @@ public class GameServlet extends HttpServlet{
 		session.setAttribute("model", model);
 		session.setAttribute("player", player);
 		session.setAttribute("gameID", gameID);
-		session.setAttribute("commandHistory", "");
 		session.setAttribute("history", new ArrayList<String>());
 		
 		forwardRoomDesc(player, player.getRoomId(), null, req, resp);
@@ -72,8 +79,7 @@ public class GameServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
-		System.out.println("GameServletdoPost");
-		int ID = 1;
+		//System.out.println("GameServletdoPost");
 		
 		String prevInput;
 		
@@ -81,13 +87,15 @@ public class GameServlet extends HttpServlet{
 		//GameController controller = new GameController();
 		session = req.getSession();
 		
-		if(session.getAttribute("player")== null) {
+		/*if(session.getAttribute("player")== null) {
 			System.out.println("null");
-		}
+		}*/
+		model = (Game) session.getAttribute("model");
+		
 		player = (Player) session.getAttribute("player");
+		map = model.getMap();
 		
 		System.out.println(player.getRoomId());
-		PrintWriter terminalWriter = resp.getWriter();
 		
 		Boolean objActivated = (Boolean) session.getAttribute("objActivated");
 		Interactable activeObj = (Interactable) session.getAttribute("activeObj");
@@ -97,12 +105,12 @@ public class GameServlet extends HttpServlet{
 
 		controller.setModel(model);
 		String input = (String) req.getParameter("command");
-		if(input!= null) {
+		/*if(input!= null) {
 			input = input.toLowerCase();
-		}
+		}*/
 
 		
-		System.out.println("t" + input);
+		System.out.println("" + input);
 		
 		//Player player= model.getPlayer();
 		//Map map = model.getMap();
@@ -116,7 +124,7 @@ public class GameServlet extends HttpServlet{
 		session.setAttribute("gameID", gameID);*/
 		
 		if(input != null) {
-			
+			input = input.toLowerCase();
 			if(objActivated != null && activeObj != null && objActivated) {
 				System.out.println("ObjActivated");
 				updateHistory(input, player.activateObj(input, activeObj));
@@ -431,9 +439,9 @@ public class GameServlet extends HttpServlet{
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 			else {
-				String error = "unsupported command";
-				req.setAttribute("errorMessage", error);
-				req.setAttribute("roomMessage",map.getRoomDescription());
+				//String error = "unsupported command";
+				//req.setAttribute("errorMessage", error);
+				//req.setAttribute("roomMessage",map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 				//resp.getWriter().write("Nothing Happens");
 			}

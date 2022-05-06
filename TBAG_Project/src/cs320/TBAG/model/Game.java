@@ -18,7 +18,7 @@ public class Game {
 	
 	public Game() {
 		//player1 = new Player();
-		map = new Map();
+		//map = new Map();
 		actorsList = new ArrayList<Actor>();
 		playerList = new ArrayList<Player>();
 		npcList = new ArrayList<NPC>();
@@ -27,6 +27,10 @@ public class Game {
 	
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public void setMap(Map map) {
+		this.map=map;
 	}
 	
 	public String getUsername() {
@@ -70,7 +74,8 @@ public class Game {
 	}
 	
 	public Player getPlayer() {
-		return player1;
+		//return player1;
+		return playerList.get(0);
 	}
 	
 	public void addEmptyPlayer() {
