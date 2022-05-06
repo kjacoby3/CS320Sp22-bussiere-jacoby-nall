@@ -284,5 +284,38 @@ public class Room extends Map{
 		}
 		return door;
 	}
+	
+	public ArrayList<String> getRoomNPCDescription(){
+		ArrayList<String> strList = new ArrayList<String>();
+		String npcStr;
+		String aggroStr = null;
+					
+		for(int i = 0; i < NPCsInRoom.size(); i++) {
+			npcStr = null;
+			System.out.println("Got here" + NPCsInRoom.get(i).getName());
+			if(NPCsInRoom.get(i).getAggression() == 1) {
+				aggroStr = "a friendly";
+			} else if(NPCsInRoom.get(i).getAggression() == -1) {
+				aggroStr = "an angry";
+			} else {
+				aggroStr = "a";
+			}
+			if(strList.size() == 0) {
+				npcStr = "There is "; 
+			} else { 
+				npcStr = "";
+			}
+			npcStr = npcStr + aggroStr + " " +
+						NPCsInRoom.get(i).getType() + " " + NPCsInRoom.get(i).getName();
+			if(i < NPCsInRoom.size() - 1) {
+				npcStr = npcStr + ", ";
+			} else {
+				npcStr = npcStr + ".";
+			}
+			strList.add(npcStr);
+		}
+		System.out.println(strList);
+		return strList;
+	}
 }
 

@@ -25,8 +25,10 @@ import cs320.TBAG.model.Inventory;
 import cs320.TBAG.model.Item;
 import cs320.TBAG.model.LevelUp;
 import cs320.TBAG.model.Player;
+import cs320.TBAG.model.Room;
 import cs320.TBAG.model.Weapon;
 import cs320.TBAG.model.Convo.Conversation;
+import cs320.TBAG.model.InteractableObj.Door;
 import cs320.TBAG.model.InteractableObj.Interactable;
 import cs320.TBAG.model.InteractableObj.Keypad;
 import cs320.TBAG.model.PuzzleType.PinPuzzle;
@@ -125,10 +127,27 @@ public class GameServlet extends HttpServlet{
 		
 		if(input != null) {
 			input = input.toLowerCase();
-			if(conversationEnded != null && !conversationEnded) {
+			if(conversation != null && !conversationEnded) {
 				System.out.println("Working");
 				//updateHistory(input, )
-				
+				if(input.equalsIgnoreCase("exit")) {
+					Boolean validChoice = false;
+					for(int i = 1; i <= conversation.getSelectedNode().getResponseList().size(); i++) {
+						String intToStr = "" + i;
+						if(input.equalsIgnoreCase(intToStr)) {
+							conversation.selectResponse(i);
+							validChoice = true;
+						}
+					}
+					if(!validChoice) {
+						updateHistory(input, "That is not an available choice."
+								+ " Use 'Exit' to leave conversation.");
+					} else {
+						updateHistory(input);
+					}
+					updateHistory(conversation.getDisplayList());
+				}
+				conversation.setEnded(true);
 			}
 			
 			if(objActivated != null && activeObj != null && objActivated) {
@@ -432,6 +451,11 @@ public class GameServlet extends HttpServlet{
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 			else if(input.startsWith("talk")) {
+				/* To delete Later */
+				NPC newNPC = new NPC();
+				newNPC.setLocation(player.getLocation());
+				player.getLocation().addNPCInRoom(newNPC);
+				//-----------------------------//
 				int count = 0;
 				if(input.equalsIgnoreCase("talk")) {
 					if(player.getLocation().getNPCsInRoom().size() == 1) {
@@ -440,9 +464,10 @@ public class GameServlet extends HttpServlet{
 							session.setAttribute("conversation", conversation);
 							session.setAttribute("conversationEnded", conversation.getEnded());
 							updateHistory(input, "Talking to " + player.getLocation().getNPCsInRoom().get(0).getName());
-							for(String str : conversation.getDisplayList()) {
-								updateHistory(str);
-							}
+//							for(String str : conversation.getDisplayList()) {
+//								updateHistory(str);
+//							}
+							updateHistory(conversation.getDisplayList());
 						} else {
 							updateHistory(input, player.getLocation().getNPCsInRoom().get(0).getName() + " doesn't want to talk.");
 						}
@@ -452,6 +477,7 @@ public class GameServlet extends HttpServlet{
 						updateHistory(input, "Please specify who you want to talk to.");
 					}
 				} else {
+					
 					String[] splitStr = input.split(" ", 2);
 					String npcName = splitStr[1];
 					NPC talking = null;
@@ -468,9 +494,11 @@ public class GameServlet extends HttpServlet{
 								session.setAttribute("conversation", conversation);
 								session.setAttribute("conversationEnded", conversation.getEnded());
 								updateHistory(input, "Talking to " + talking.getName());
-								for(String str : conversation.getDisplayList()) {
-									updateHistory(str);
-								}
+//								for(String str : conversation.getDisplayList()) {
+//									updateHistory(str);
+//								}
+								updateHistory(conversation.getDisplayList());
+
 							} else {
 								updateHistory(input, talking.getName() + " doesn't want to talk.");
 							}
@@ -480,6 +508,73 @@ public class GameServlet extends HttpServlet{
 							updateHistory(input, "There is no one to talk to.");
 						}
 					}
+				}
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+			} else if (input.startsWith("open")) {
+				String activation;
+				
+				if(input.equalsIgnoreCase("open")) {
+					activation = input;
+				} else {
+					String[] splitStr = input.split(" ");
+					activation = splitStr[0];
+				}
+				int count = 0;
+				Interactable Obj;
+				
+				//This block of code is for testing only, will be deleted later
+				Door ob = new Door();
+				Obj = ob;
+				player.getLocation().addInteractable(ob);
+				//---------------------------------//
+				
+				for(Interactable obj : player.getLocation().getRoomInteractables()) {
+					if(obj.getActivationKeyword().equalsIgnoreCase("open")) {
+						Obj = obj;
+						count++;
+					}
+				}
+				if(count == 1) {
+					updateHistory(player.activateObj(activation, Obj));
+					objActivated = true;
+					session.setAttribute("objActivated", objActivated);
+					System.out.println("First activated obj");
+					activeObj = Obj;
+					session.setAttribute("activeObj", activeObj);
+				} else if(count < 1) {
+					updateHistory(input + " does not work here.");
+				} else if (count > 1) {
+					updateHistory("What object are you trying to interact with?");
+				}
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+			} else if (input.startsWith("look")) {
+				if(input.equalsIgnoreCase("look")) {
+					ArrayList<String> strList = new ArrayList<String>();
+					Room location = player.getLocation();
+					
+					/* To be deleted */
+					NPC npc = new NPC();
+					npc.setLocation(location);
+					NPC npc2 = new NPC();
+					npc2.setLocation(location);
+					location.addNPCInRoom(npc);
+					location.addNPCInRoom(npc2);
+					location.setRoomInv(new Inventory(100));
+					//-----------------------//
+					System.out.println("Gets this far");
+					if(location.getRoomNPCDescription() != null) {
+						strList.addAll(location.getRoomNPCDescription());
+						strList.add("");
+					}
+					
+					if(location.getRoomInv().getInventoryDescription() != null) {
+						strList.addAll(location.getRoomInv().getInventoryDescription());
+					}
+					
+					Collections.reverse(strList);
+					updateHistory(strList);
+					
+					
 				}
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
@@ -555,6 +650,20 @@ public class GameServlet extends HttpServlet{
 		session.setAttribute("history", hist);
 		
 		//session.setAttribute("commandHistory", history);
+	}
+	
+	public void updateHistory(ArrayList<String> inputList) {
+		ArrayList<String> hist = (ArrayList<String>) session.getAttribute("history");
+		System.out.println("updateHistory List" + inputList);
+		if(hist==null) {
+			hist = new ArrayList<String>();
+		}
+		Collections.reverse(hist);
+		for(int i = 0; i < inputList.size(); i++) {
+			hist.add(inputList.get(i));
+		}
+		Collections.reverse(hist);
+		session.setAttribute("history", hist);
 	}
 	
 	public void forwardRoomDesc (Player player, int directionCheck, String input, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

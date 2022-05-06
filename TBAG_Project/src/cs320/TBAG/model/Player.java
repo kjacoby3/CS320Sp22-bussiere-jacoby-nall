@@ -19,7 +19,7 @@ public class Player extends Actor implements ActionsInterface{
 	public Player() {
 		name = "Player 1";
 		type = "player";
-		//location = new Room();
+		location = new Room();
 		inventory = new Inventory(100);
 		actorStats = new ActorStats();
 		inventory.addItem(new Equipment("Cloth Armor", 10, 50, 50, 50,1,0,0,true));
@@ -318,7 +318,7 @@ public class Player extends Actor implements ActionsInterface{
 	public void move(int directionCheck) {
 		
 		int actorRoom = roomID;
-		Map map;
+		//Map map;
 		int newRoom = 0;//map.canMove(actorRoom, direction);
 		String descrip;
 		boolean activatedCheck = true;
