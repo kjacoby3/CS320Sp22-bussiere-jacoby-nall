@@ -14,6 +14,7 @@ public class Conversation {
 	ConversationNode selectedNode;
 	ConversationResponse selectedResponse;
 	Boolean ended;
+	ArrayList<String> displayList;
 	
 	
 	public Conversation(Player player, NPC npc) {
@@ -21,8 +22,12 @@ public class Conversation {
 		this.npc = npc;
 		npcDialog = npc.getConversationTree();
 		selectedNode = npcDialog.getConversationTreeMap().get(1);
-		displaySelectedNodeMSG();
+		displayList = displaySelectedNodeMSG();
 		ended = false;
+	}
+	
+	public ArrayList<String> getDisplayList(){
+		return displayList;
 	}
 	
 	public ConversationTree getNPCDialog() {
@@ -53,15 +58,20 @@ public class Conversation {
 //		return responseStrs;
 //	}
 	
-	public void displaySelectedNodeMSG() {
+	public ArrayList<String> displaySelectedNodeMSG() {
+		ArrayList<String> stringList = new ArrayList<String>();
 		System.out.println(selectedNode.getStatement());
+		stringList.add(selectedNode.getStatement());
 		for(int i = 0; i < selectedNode.getResponseList().size(); i++) {
 			System.out.println("" + (i + 1) + "| " + selectedNode.getResponseList().get(i).getResponseStr());
+			stringList.add("" + (i + 1) + "| " + selectedNode.getResponseList().get(i).getResponseStr());
 		}
 		
 //		for(int i : selectedNode.getResponseMap().keySet()) {
 //			System.out.println("" + i + "| " + selectedNode.getResponseMap().get(i).getResponseStr());
 //		}
+		
+		return stringList;
 	}
 	
 	public ConversationResponse selectResponse(int responseNum) {
@@ -86,6 +96,7 @@ public class Conversation {
 		
 		selectNode(selectedResponse.getResultNode());
 		System.out.println("      " + responseNum);
+		displayList = displaySelectedNodeMSG();
 		displaySelectedNodeMSG();
 		//} else {
 		//	selectNode(selectedResponse.getResultNode());

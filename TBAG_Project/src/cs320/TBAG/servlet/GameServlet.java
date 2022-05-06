@@ -125,6 +125,12 @@ public class GameServlet extends HttpServlet{
 		
 		if(input != null) {
 			input = input.toLowerCase();
+			if(conversationEnded != null && !conversationEnded) {
+				System.out.println("Working");
+				//updateHistory(input, )
+				
+			}
+			
 			if(objActivated != null && activeObj != null && objActivated) {
 				System.out.println("ObjActivated");
 				updateHistory(input, player.activateObj(input, activeObj));
@@ -426,16 +432,54 @@ public class GameServlet extends HttpServlet{
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 			else if(input.startsWith("talk")) {
+				int count = 0;
 				if(input.equalsIgnoreCase("talk")) {
 					if(player.getLocation().getNPCsInRoom().size() == 1) {
 						if(player.getLocation().getNPCsInRoom().get(0).getAggression() >= 0) {
 							conversation = new Conversation(player, player.getLocation().getNPCsInRoom().get(0));
 							session.setAttribute("conversation", conversation);
 							session.setAttribute("conversationEnded", conversation.getEnded());
+							updateHistory(input, "Talking to " + player.getLocation().getNPCsInRoom().get(0).getName());
+							for(String str : conversation.getDisplayList()) {
+								updateHistory(str);
+							}
+						} else {
+							updateHistory(input, player.getLocation().getNPCsInRoom().get(0).getName() + " doesn't want to talk.");
 						}
+					} else if (player.getLocation().getNPCsInRoom().size() == 0){
+						updateHistory(input, "There is no one to talk to.");
+					} else {
+						updateHistory(input, "Please specify who you want to talk to.");
 					}
 				} else {
 					String[] splitStr = input.split(" ", 2);
+					String npcName = splitStr[1];
+					NPC talking = null;
+					if(player.getLocation().getNPCsInRoom().size() > 0) {
+						for(NPC npc : player.getLocation().getNPCsInRoom()) {
+							if(npcName.equalsIgnoreCase(npc.getName()) || npcName.equalsIgnoreCase(npc.getType())) {
+								count++;
+								talking = npc;
+							}
+						}
+						if(count == 1 ) {
+							if(talking.getAggression() >= 0) {
+								conversation = new Conversation(player, talking);
+								session.setAttribute("conversation", conversation);
+								session.setAttribute("conversationEnded", conversation.getEnded());
+								updateHistory(input, "Talking to " + talking.getName());
+								for(String str : conversation.getDisplayList()) {
+									updateHistory(str);
+								}
+							} else {
+								updateHistory(input, talking.getName() + " doesn't want to talk.");
+							}
+						} else if (count > 1) {
+							updateHistory(input, "Please specify who you want to talk to.");
+						} else {
+							updateHistory(input, "There is no one to talk to.");
+						}
+					}
 				}
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
