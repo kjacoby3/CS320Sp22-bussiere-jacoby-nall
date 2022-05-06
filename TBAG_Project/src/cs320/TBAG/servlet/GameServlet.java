@@ -18,7 +18,9 @@ import cs320.TBAG.model.NPC;
 import cs320.TBAG.controller.GameController;
 import cs320.TBAG.controller.InventoryController;
 import cs320.TBAG.controller.MapController;
+import cs320.TBAG.model.ActorStats;
 import cs320.TBAG.model.Combat;
+import cs320.TBAG.model.Consumable;
 import cs320.TBAG.model.Equipment;
 import cs320.TBAG.model.Game;
 import cs320.TBAG.model.Inventory;
@@ -26,6 +28,7 @@ import cs320.TBAG.model.Item;
 import cs320.TBAG.model.LevelUp;
 import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Room;
+import cs320.TBAG.model.Treasure;
 import cs320.TBAG.model.Weapon;
 import cs320.TBAG.model.Convo.Conversation;
 import cs320.TBAG.model.InteractableObj.Door;
@@ -111,7 +114,9 @@ public class GameServlet extends HttpServlet{
 			input = input.toLowerCase();
 		}*/
 
-		
+		Consumable healthPotion = new Consumable("Health Potion", 0, 10, 20, 0, 0, 0, 0, 0, 0);
+		player.setActorStats(new ActorStats());
+		player.getInventory().addItem(healthPotion);
 		System.out.println("" + input);
 		
 		//Player player= model.getPlayer();
@@ -575,6 +580,26 @@ public class GameServlet extends HttpServlet{
 					updateHistory(strList);
 					
 					
+				}
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+			} else if (input.startsWith("use")) {
+				if(input.equalsIgnoreCase("use")) {
+					updateHistory(input, "You need to select something to use.");
+				} else {
+					String[] splitStr = input.split(" ", 2);
+					String useItem = splitStr[1];
+					for(Consumable item : player.getInventory().getConsumables().values()) {
+						if(item.getName().equalsIgnoreCase(useItem)) {
+							updateHistory(player.use(item));
+							break;
+						}
+					}
+					for(Treasure item : player.getInventory().getTreasures().values()) {
+						if(item.getName().equalsIgnoreCase(useItem)) {
+							updateHistory(player.use(item));
+							break;
+						}
+					}
 				}
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
