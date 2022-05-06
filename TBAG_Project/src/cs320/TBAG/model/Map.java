@@ -223,6 +223,9 @@ public class Map{
 				currRoomDescrip = connectedRoom.getRoomDescrip();*/
 				
 				newRoom = roomConnection.getNorth();
+				if(!room.getDoor(direction).getActivated()) {
+					newRoom = -1;
+				}
 				return newRoom;
 			}
 			else {
@@ -240,6 +243,9 @@ public class Map{
 				currRoomName = connectedRoom.getRoomName();
 				currRoomDescrip = connectedRoom.getRoomDescrip();*/
 				newRoom = roomConnection.getEast();
+				if(!room.getDoor(direction).getActivated()) {
+					newRoom = -1;
+				}
 				return newRoom;
 			}
 			else {
@@ -257,6 +263,9 @@ public class Map{
 				currRoomDescrip = connectedRoom.getRoomDescrip();*/
 				
 				newRoom = roomConnection.getSouth();
+				if(!room.getDoor(direction).getActivated()) {
+					newRoom = -1;
+				}
 				return newRoom;
 			}
 			else {
@@ -275,6 +284,9 @@ public class Map{
 				currRoomDescrip = connectedRoom.getRoomDescrip();*/
 				
 				newRoom = roomConnection.getWest();
+				if(!room.getDoor(direction).getActivated()) {
+					newRoom = -1;
+				}
 				return newRoom;
 			}
 			else {
@@ -293,6 +305,9 @@ public class Map{
 				currRoomDescrip = connectedRoom.getRoomDescrip();*/
 				
 				newRoom = roomConnection.getExit();
+				if(!room.getDoor(direction).getActivated()) {
+					newRoom = -1;
+				}
 				return newRoom;
 			}
 			else {

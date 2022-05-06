@@ -2,6 +2,7 @@ package cs320.TBAG.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import cs320.TBAG.model.InteractableObj.Door;
 import cs320.TBAG.model.InteractableObj.Interactable;
 
 public class Room extends Map{
@@ -74,7 +75,8 @@ public class Room extends Map{
 		this.roomInv = null;
 		this.roomPrevVisit = false;
 		this.roomGameID = 1;
-		
+		this.roomInteractables = new ArrayList<Interactable>();
+		this.NPCsInRoom = new ArrayList<NPC>();
 	}
 	
 	public void setRoomID(int ID) {
@@ -178,6 +180,13 @@ public class Room extends Map{
 		return roomInteractables;
 	}
 	
+	public void addInteractable(Interactable interactable) {
+		roomInteractables.add(interactable);
+	}
+	
+	public void removeInteractable(Interactable interactable) {
+		roomInteractables.remove(interactable);
+	}
 	/*public void setRoomItems(Inventory items) {
 		this.roomItems = items;
 	}
@@ -193,20 +202,21 @@ public class Room extends Map{
 	public ArrayList<NPC> getNPCsInRoom() {
 		return NPCsInRoom;
 	}
-	
+	*/
 	public void addNPCInRoom(NPC npc) {
 		NPCsInRoom.add(npc);
 	}
 	
 	public void removeNPCInRoom(NPC npc) {
-		Iterator<NPC> itr = NPCsInRoom.iterator();
-	    while (itr.hasNext()) {
-	      NPC npcName = itr.next();
-	      if (npcName.equals(npc)) {
-	    	  NPCsInRoom.remove(npcName);
-	      }
-	    }
-	}*/
+//		Iterator<NPC> itr = NPCsInRoom.iterator();
+//	    while (itr.hasNext()) {
+//	      NPC npcName = itr.next();
+//	      if (npcName.equals(npc)) {
+//	    	  NPCsInRoom.remove(npcName);
+//	      }
+//	    }
+		NPCsInRoom.remove(npc);
+	}
 	
 	public void setAvailableExits(ArrayList<Integer> exits) {
 		this.availableExits = exits;
@@ -262,6 +272,17 @@ public class Room extends Map{
 
 		return false;
 	}
-		
+	
+	public Door getDoor(String direction) {
+		Door door = null;
+		for(Interactable obj : roomInteractables) {
+			if(obj instanceof Door) {
+				if(((Door) obj).getDirection().equalsIgnoreCase(direction)) {
+					door = (Door) obj;
+				}
+			}
+		}
+		return door;
+	}
 }
 

@@ -398,18 +398,19 @@ public class GameServlet extends HttpServlet{
 				Interactable Obj;
 				
 				//This block of code is for testing only, will be deleted later
-				Keypad obj = new Keypad();
+				Keypad ob = new Keypad();
 				PinPuzzle pinPuzzle = new PinPuzzle();
-				Obj = obj;
-				obj.setPuzzle(pinPuzzle);
+				Obj = ob;
+				ob.setPuzzle(pinPuzzle);
+				player.getLocation().addInteractable(ob);
 				//---------------------------------//
 				
-				//for(Interactable obj : player.getLocation().getInteractables()) {
-					//if(obj.getActivationKeyword() == "enter") {
+				for(Interactable obj : player.getLocation().getRoomInteractables()) {
+					if(obj.getActivationKeyword().equalsIgnoreCase("enter")) {
 						Obj = obj;
 						count++;
-					//}
-				//}
+					}
+				}
 				if(count == 1) {
 					updateHistory(player.activateObj(activation, Obj));
 					objActivated = true;
