@@ -14,7 +14,7 @@ public class Player extends Actor implements ActionsInterface{
 	//private Actions action = new Actions();
 	private int prevRoomID;
 	private int playerId;
-	private int roomID;
+	//private int roomID;
 	
 	public Player() {
 		name = "Player 1";
@@ -25,7 +25,7 @@ public class Player extends Actor implements ActionsInterface{
 		inventory.addItem(new Equipment("Cloth Armor", 10, 50, 50, 50,1,0,0,true));
 		eqWeap = new Weapon("Fists", 10, 10, 0, 0, 0,true);
 		equipped = new Equipment("Bare",0, 10, 10, 0,1,0,0,true);
-		roomID = 1;
+		roomId = 1;
 	}
 	
 	public Player(String name, Room location, Inventory inventory, ActorStats actorStats,
@@ -316,9 +316,10 @@ public class Player extends Actor implements ActionsInterface{
 	
 	
 	public void move(int directionCheck) {
-		
-		int actorRoom = roomID;
-		//Map map;
+
+		roomId = directionCheck;
+		int actorRoom = roomId;
+		Map map;
 		int newRoom = 0;//map.canMove(actorRoom, direction);
 		String descrip;
 		boolean activatedCheck = true;
@@ -329,7 +330,7 @@ public class Player extends Actor implements ActionsInterface{
 				//setPrevRoomId(prevRoomID); //actor needs a get/setPrevRoomID(int) method
 				int actorCurrRoom = newRoom;
 				Room connectedRoom = null;//db.getRoomByID(actorCurrRoom);
-				roomID = actorCurrRoom;     //player.setRoomId(actorCurrRoom); 
+				//roomID = actorCurrRoom;     //player.setRoomId(actorCurrRoom); 
 				if (connectedRoom.getRoomPrevVisit() == false) {
 					connectedRoom.setRoomPrevVisit(true);
 					//descrip = getRoomDescByID(actorCurrRoom);

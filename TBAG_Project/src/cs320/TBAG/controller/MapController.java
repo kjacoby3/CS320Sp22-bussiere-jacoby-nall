@@ -55,13 +55,15 @@ public class MapController {
 			room.setRoomInv(inv);
 			
 			//for (room : roomList) {
-			ArrayList<Integer> exit = new ArrayList<Integer>();
-			RoomConnection conn = i.next();
-			exit.add(conn.getNorth());
+			//ArrayList<Integer> exit = new ArrayList<Integer>();
+			room.setRoomConnections(i.next());
+			
+			
+			/*exit.add(conn.getNorth());
 			exit.add(conn.getEast());
 			exit.add(conn.getSouth());
 			exit.add(conn.getWest());
-			room.setAvailableExits(exit);
+			room.setAvailableExits(exit);*/
 			//}
 			
 			
@@ -78,7 +80,7 @@ public class MapController {
 			}*/
 			
 			//Add room to room list
-			map.addRoom(room);
+			map.addRoom(room.getRoomID(), room);
 		}
 		
 		return map;

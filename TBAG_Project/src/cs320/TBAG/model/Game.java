@@ -14,7 +14,7 @@ public class Game {
 	private ArrayList<Inventory> inventories;
 	private Map map;
 	private String input;
-	private Player player1;
+	private Player player;
 	
 	public Game() {
 		//player1 = new Player();
@@ -75,7 +75,7 @@ public class Game {
 	
 	public Player getPlayer() {
 		//return player1;
-		return playerList.get(0);
+		return player;
 	}
 	
 	public void addEmptyPlayer() {
@@ -94,9 +94,8 @@ public class Game {
 		return mesg;
 	}
 	
-	public void addPlayer(Player player) {
-		playerList.add(player);
-		actorsList.add(player);
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 	
 	public void addNPC(NPC npc) {
