@@ -39,7 +39,7 @@ public class GameController {
 		map = mapController.createMap();
 		model.setMap(map);
 		createPlayers(playerID);
-		for(room : )
+		//for(room : )
 		//createNPCs();
 	}
 	
@@ -52,7 +52,8 @@ public class GameController {
 			//Player player = iterator.next();
 		//for(Player player : playerList) {
 		player = new Player();
-			ActorStats stats = db.findActorStatsByPlayerId(playerID);
+		player.setRoomId(1);
+		ActorStats stats = db.findActorStatsByPlayerId(playerID);
 			player.setActorStats(stats);
 			Inventory inv = invCreator.getPlayerInventory(playerID);
 			player.setInventory(inv);
@@ -70,7 +71,7 @@ public class GameController {
 			}
 			
 			//Add player to game list
-			model.addPlayer(player);
+			model.setPlayer(player);
 		//}
 	}
 	

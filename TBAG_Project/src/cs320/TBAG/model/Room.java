@@ -7,50 +7,17 @@ import cs320.TBAG.model.InteractableObj.Interactable;
 
 public class Room extends Map{
 	int roomID;
-	int connectingID;
 	String roomName;
-	String roomDescription;
 	String roomDescripLong;
 	String roomDescripShort;
-	int roomConnections;
-	int roomUseable;
-	int roomTreasure;
-	int roomTrophy;
-	int roomEquipment;
-	int roomWeapon;
-	int roomActor;
 	int roomLevel;
 	ArrayList<Interactable> roomInteractables;
 	boolean roomPrevVisit;
 	boolean roomActivatedCheck;
 	int roomGameID;
 	Inventory roomInv;
-
-	
-	Inventory roomItems;
+	RoomConnection roomConnection;
 	ArrayList<NPC> NPCsInRoom = new ArrayList<NPC>();
-	ArrayList<Integer> availableExits = new ArrayList<Integer>();
-	ArrayList<String> otherExitOptions = new ArrayList<String>();
-	
-	static ArrayList<String> directionsForValidation = new ArrayList<>();
-	static {
-		directionsForValidation.add("n");
-		directionsForValidation.add("s");
-		directionsForValidation.add("w");
-		directionsForValidation.add("e");
-	}
-	
-	ArrayList<Integer> roomExits = new ArrayList<Integer>(); //Will be replaced with availableExits and otherExitOptions
-	Boolean verifyExit;
-	int attemptedExit;
-	
-	public Room(int ID, String name, String descrip, ArrayList<Integer> exits) {
-		this.roomID = ID;
-		this.roomName = name;
-		this.roomDescription = descrip;
-		this.availableExits = exits;
-		roomLevel = 1;
-	}
 	
 	
 	
@@ -67,14 +34,6 @@ public class Room extends Map{
 	}
 	
 	public Room() {
-		this.roomID = 1;
-		this.roomName = "starting";
-		this.roomDescripShort = "Starting Room";
-		this.roomDescripLong = "This is the starting area.  You can go North(n)";  //"You awaken to sound of explosions and the rocking of the ship.  You shoot up out of bed and notice that your cabinmate is not in their bed.  There is a door leading out into the hall";
-		this.roomLevel = 1;
-		this.roomInv = null;
-		this.roomPrevVisit = false;
-		this.roomGameID = 1;
 		this.roomInteractables = new ArrayList<Interactable>();
 		this.NPCsInRoom = new ArrayList<NPC>();
 	}
@@ -94,11 +53,6 @@ public class Room extends Map{
 		return roomName;
 	}
 	
-	public String getRoomDescrip() {
-		return roomDescription;
-	}
-	
-	
 	public void setRoomDescripLong(String longDescrip) {
 		this.roomDescripLong = longDescrip;
 	}
@@ -115,12 +69,12 @@ public class Room extends Map{
 		return roomDescripShort;
 	}
 	
-	public void setRoomConnections(int connections) {
-		this.roomConnections = connections;
+	public void setRoomConnections(RoomConnection connections) {
+		this.roomConnection = connections;
 	}
 	
-	public int getRoomConnections() {
-		return roomConnections;
+	public RoomConnection getRoomConnection() {
+		return roomConnection;
 	}
 	
 	
@@ -187,22 +141,7 @@ public class Room extends Map{
 	public void removeInteractable(Interactable interactable) {
 		roomInteractables.remove(interactable);
 	}
-	/*public void setRoomItems(Inventory items) {
-		this.roomItems = items;
-	}
-	
-	public Inventory getRoomItems() {
-		return roomItems;
-	}
-	
-	public void setNPCsInRoom(ArrayList<NPC> npc) {
-		this.NPCsInRoom = npc;
-	}
-	
-	public ArrayList<NPC> getNPCsInRoom() {
-		return NPCsInRoom;
-	}
-	*/
+
 	public void addNPCInRoom(NPC npc) {
 		NPCsInRoom.add(npc);
 	}
@@ -216,61 +155,6 @@ public class Room extends Map{
 //	      }
 //	    }
 		NPCsInRoom.remove(npc);
-	}
-	
-	public void setAvailableExits(ArrayList<Integer> exits) {
-		this.availableExits = exits;
-	}
-	
-	public ArrayList<Integer> getAvailableExits(){
-		return availableExits;
-	}
-	
-	public void setOtherExitOptions(ArrayList<String> others) {
-		this.otherExitOptions = others;
-	}
-	
-	public ArrayList<String> getOtherExitOptions(){
-		return otherExitOptions;
-	}
-	
-	public ArrayList<Integer> getRoomExits() { //this will be removed after exits moves over to availableExits
-		return roomExits;
-	}
-	
-	public int getConnectingID() {
-		return connectingID;
-	}
-	
-	public void setAttemptedExit(int attExit) {
-		this.attemptedExit = attExit;
-	}
-	
-	public boolean verifyExit(String direction) {
-		int i=4;
-		if (direction == "n") {
-			i=0;
-		}
-		if (direction == "s") {
-			i=1;
-		}
-		if (direction == "w") {
-			i=2;
-		}
-		if (direction == "e") {
-			i=3;
-		}
-		
-		if (i >= roomExits.size()) {
-			return false;
-		}
-		
-		if (roomExits.get(i) != 0) {
-			this.connectingID = roomExits.get(i);
-			return true;
-		}
-
-		return false;
 	}
 	
 	public Door getDoor(String direction) {
