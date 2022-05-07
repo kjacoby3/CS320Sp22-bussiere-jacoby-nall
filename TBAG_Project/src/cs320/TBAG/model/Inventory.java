@@ -1,4 +1,5 @@
 package cs320.TBAG.model;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Inventory{
@@ -206,6 +207,67 @@ public class Inventory{
 		return consumablesMaxSize;
 	}
 
-	
+	public ArrayList<String> getInventoryDescription(){
+		ArrayList<String> strList = new ArrayList<String>();
+		String itemStr = null;
+		
+		for(Weapon weap : weapons.values()) {
+			itemStr = null;
+			if(strList.size() == 0) {
+				itemStr = "There is a ";
+			} else {
+				itemStr = "";
+			}
+			itemStr = itemStr + weap.getType() + ", " + weap.getName() + " on the ground.";
+			strList.add(itemStr);
+		}
+		
+		for(Equipment equip : equipment.values()) {
+			itemStr = null;
+			if(strList.size() == 0) {
+				itemStr = "There is a ";
+			} else {
+				itemStr = "";
+			}
+			itemStr = itemStr + equip.getType() + ", " + equip.getName() + " on the ground.";
+			strList.add(itemStr);
+		}
+		
+		for(Usable use : usables.values()) {
+			itemStr = null;
+			if(strList.size() == 0) {
+				itemStr = "There is a ";
+			} else {
+				itemStr = "";
+			}
+			itemStr = itemStr + use.getType() + ", " + use.getName() + " on the ground.";
+			strList.add(itemStr);
+		}
+		
+		for(Consumable consum : consumables.values()) {
+			itemStr = null;
+			if(strList.size() == 0) {
+				itemStr = "There is a ";
+			} else {
+				itemStr = "";
+			}
+			itemStr = itemStr + consum.getType() + ", " + consum.getName() + " on the ground.";
+			strList.add(itemStr);
+		}
+		
+		for(Treasure treas : treasures.values()) {
+			itemStr = null;
+			if(strList.size() == 0) {
+				itemStr = "There is a ";
+			} else {
+				itemStr = "";
+			}
+			itemStr = itemStr + treas.getType() + ", " + treas.getName() + " on the ground.";
+			strList.add(itemStr);
+		}
+		
+		
+		return strList;
+	}
 	
 }

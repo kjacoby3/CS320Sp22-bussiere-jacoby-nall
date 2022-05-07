@@ -19,7 +19,7 @@ public class Player extends Actor implements ActionsInterface{
 	public Player() {
 		name = "Player 1";
 		type = "player";
-		//location = new Room();
+		location = new Room();
 		inventory = new Inventory(100);
 		actorStats = new ActorStats();
 		inventory.addItem(new Equipment("Cloth Armor", 10, 50, 50, 50,1,0,0,true));
@@ -185,8 +185,8 @@ public class Player extends Actor implements ActionsInterface{
 			result = "You do not have any items to use.";
 		}
 		for(Consumable consum : inventory.getConsumables().values()) {
-				if(item == consum) {
-								if(consum.getMaxHPMod() != 0) {
+			if(item == consum) {
+				if(consum.getMaxHPMod() != 0) {
 					actorStats.setMaxHP((int)((double) actorStats.getMaxHP() * (1.0 + ((double) consum.getMaxHPMod() / 100))));
 					
 					if(consum.getMaxHPMod() > 0) {
@@ -283,7 +283,7 @@ public class Player extends Actor implements ActionsInterface{
 		
 		for(Treasure treasure : inventory.getTreasures().values()) {
 			if(item == treasure) {
-				Iterator<Interactable> iter = location.getInteractables().iterator(); //Need getInteractables method in Room
+				Iterator<Interactable> iter = location.getRoomInteractables().iterator(); //Need getInteractables method in Room
 				while(iter.hasNext()) {
 					Interactable object = iter.next();
 					if(object.getPuzzle() instanceof KeyPuzzle) {
@@ -316,6 +316,7 @@ public class Player extends Actor implements ActionsInterface{
 	
 	
 	public void move(int directionCheck) {
+
 		roomId = directionCheck;
 		int actorRoom = roomId;
 		Map map;

@@ -94,6 +94,10 @@ public class Conversation {
 			}
 		}
 		
+		if(selectedResponse instanceof EndResponse) {
+			ended = true;
+		}
+		
 		selectNode(selectedResponse.getResultNode());
 		System.out.println("      " + responseNum);
 		displayList = displaySelectedNodeMSG();

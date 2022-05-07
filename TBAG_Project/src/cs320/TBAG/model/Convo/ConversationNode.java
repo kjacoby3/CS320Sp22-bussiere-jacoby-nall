@@ -16,7 +16,7 @@ public class ConversationNode{
 	public ConversationNode() {
 		stmt = "Blank statement";
 		//responseMap = new TreeMap<Integer, ConversationResponse>();
-		responseList = new ArrayList<ConversationResponse>();
+		//responseList = new ArrayList<ConversationResponse>();
 		//DefaultResponse response1 = new DefaultResponse();
 		//DefaultResponse response2 = new DefaultResponse();
 		//responseList.add(response1);
