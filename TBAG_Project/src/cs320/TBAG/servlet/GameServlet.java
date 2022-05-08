@@ -167,6 +167,8 @@ public class GameServlet extends HttpServlet{
 				
 				int directionCheck = map.canMove(player.getRoomId(), "north");
 				if(directionCheck>0) {
+					player.move(directionCheck);
+					session.setAttribute("player", player);
 					forwardRoomDesc(player, directionCheck, input, req, resp);	
 				}
 				else {
@@ -180,6 +182,8 @@ public class GameServlet extends HttpServlet{
 				System.out.println("south");
 				int directionCheck = map.canMove(player.getRoomId(), "south");
 				if(directionCheck>0) {
+					player.move(directionCheck);
+					session.setAttribute("player", player);
 					forwardRoomDesc(player, directionCheck, input, req, resp);	
 				}
 				else {
@@ -191,6 +195,8 @@ public class GameServlet extends HttpServlet{
 			else if(input.equalsIgnoreCase("west") || input.equalsIgnoreCase("w")) {
 				int directionCheck = map.canMove(player.getRoomId(), "west");
 				if(directionCheck>0) {
+					player.move(directionCheck);
+					session.setAttribute("player", player);
 					forwardRoomDesc(player, directionCheck, input, req, resp);	
 				}
 				else {
@@ -203,6 +209,8 @@ public class GameServlet extends HttpServlet{
 			else if(input.equalsIgnoreCase("east")|| input.equalsIgnoreCase("e")) {
 				int directionCheck = map.canMove(player.getRoomId(), "east");
 				if(directionCheck>0) {
+					player.move(directionCheck);
+					session.setAttribute("player", player);
 					forwardRoomDesc(player, directionCheck, input, req, resp);	
 				}
 				else {
@@ -213,6 +221,8 @@ public class GameServlet extends HttpServlet{
 			else if(input.equals("exit")) {
 				int directionCheck = map.canMove(player.getRoomId(), "exit");
 				if(directionCheck>0) {
+					player.move(directionCheck);
+					session.setAttribute("player", player);
 					forwardRoomDesc(player, directionCheck, input, req, resp);	
 				}
 				else {
@@ -244,14 +254,16 @@ public class GameServlet extends HttpServlet{
 			else if(input.equalsIgnoreCase("pickup")) {
 				player.getInventory().addItem(new Weapon("banana", 1000000, 1000000,1,0,0, true));
 				updateHistory(input);
-				req.setAttribute("roomMessage", map.getRoomDescription());
+				//req.setAttribute("roomMessage", map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req,resp);
 			}
 			else if(input.equalsIgnoreCase("start")) {
-				map.setCurrRoom(1);
-				updateHistory(input, map.getRoomDescription());
-				req.setAttribute("roomMessage",map.getRoomDescription());
-				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+				forwardRoomDesc(player, 1, "start", req, resp);
+				//player.move(1);
+				
+				//updateHistory(input, map.getRoomDescription());
+				//req.setAttribute("roomMessage",map.getRoomDescription());
+				//req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 				//terminalWriter.write(map.getRoomDescription());
 			}
 			else if(input.equalsIgnoreCase("attack")) {
@@ -371,7 +383,7 @@ public class GameServlet extends HttpServlet{
 						updateHistory(equipName + " was equipped");
 					}
 				}
-				req.setAttribute("roomMessage", map.getRoomDescription());
+				//req.setAttribute("roomMessage", map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 			else if (input.startsWith("unequip")) {
@@ -411,7 +423,7 @@ public class GameServlet extends HttpServlet{
 						updateHistory("The item of " + str + " is not equipped. Try checking your spelling.");
 					}
 				}
-				req.setAttribute("roomMessage", map.getRoomDescription());
+				//req.setAttribute("roomMessage", map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 			
@@ -692,14 +704,27 @@ public class GameServlet extends HttpServlet{
 	}
 	
 	public void forwardRoomDesc (Player player, int directionCheck, String input, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		player.move(directionCheck);
-		MapController mc = new MapController();
-		if(input== null) {
-			updateHistory(mc.getRoomDescByID(directionCheck));
+		//player.move(directionCheck);
+		Room newRoom = map.getRoom(directionCheck);
+		if(newRoom == null) {
+			System.out.println("newRoom");
+		}
+		String roomDesc;
+		if(newRoom.getRoomPrevVisit()) {
+			roomDesc = newRoom.getRoomDescripLong();
 		}
 		else {
-			updateHistory(input, mc.getRoomDescByID(directionCheck));
+			roomDesc = newRoom.getRoomDescripShort();
+			newRoom.setRoomPrevVisit(true);
 		}
+		if(input== null) {
+			updateHistory(roomDesc);
+		}
+		else {
+			updateHistory(input, roomDesc);
+		}
+		//HttpSession session = req.getSession();
+		//session.setAttribute("player", player);
 		req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 	}
 		

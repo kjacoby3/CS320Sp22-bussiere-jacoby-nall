@@ -17,6 +17,13 @@ public class Inventory{
 	private HashMap<String, Treasure> treasures;
 	private HashMap<String, Consumable> consumables;
 	
+	private HashMap<String, Integer> equipmentCount;
+	private HashMap<String, Integer> weaponCount;
+	private HashMap<String, Integer> trophyCount;
+	private HashMap<String, Integer> usableCount;
+	private HashMap<String, Integer> treasureCount;
+	private HashMap<String, Integer> consumableCount;
+	
 	public Inventory(int maxSize) {
 		equipment = new HashMap<String, Equipment>();
 		weapons = new HashMap<String, Weapon>();
@@ -24,6 +31,13 @@ public class Inventory{
 		usables = new HashMap<String, Usable>();
 		treasures = new HashMap<String, Treasure>();
 		consumables = new HashMap<String, Consumable>();
+		
+		equipmentCount = new HashMap<String, Integer>();
+		weaponCount = new HashMap<String, Integer>();
+		trophyCount = new HashMap<String, Integer>();
+		usableCount = new HashMap<String, Integer>();
+		treasureCount = new HashMap<String, Integer>();
+		consumableCount = new HashMap<String, Integer>();
 		
 		
 		equipmentMaxSize = maxSize;
@@ -38,43 +52,79 @@ public class Inventory{
 	public boolean addItem(Item item) {
 		
 		if(item.getType().equals("Equipment")) {
-			if(equipment.size()<equipmentMaxSize) {
-				equipment.put(item.getName(), (Equipment) item);
+			if(equipment.size()<equipmentMaxSize || equipment.containsKey(item.getName())) {
+				if(equipment.containsKey(item.getName())) {
+					equipmentCount.merge(item.getName(), 1, Integer::sum);
+				}
+				else {
+					equipment.put(item.getName(), (Equipment) item);
+					equipmentCount.put(item.getName(), 1);
+				}
 				return true;
 			}
 		}
 		
 		else if(item.getType() == "Weapon") {
-			if(weapons.size()<weaponsMaxSize) {
-				weapons.put(item.getName(), (Weapon) item);
+			if(weapons.size()<weaponsMaxSize || weapons.containsKey(item.getName())) {
+				if(weapons.containsKey(item.getName())) {
+					weaponCount.merge(item.getName(), 1, Integer::sum);
+				}
+				else {
+					weapons.put(item.getName(), (Weapon) item);
+					weaponCount.put(item.getName(), 1);
+				}
 				return true;
 			}
 		}
 		
 		else if(item.getType().equals("Trophy")) {
-			if(trophies.size()<trophiesMaxSize) {
-				trophies.put(item.getName(), (Trophy) item);
+			if(trophies.size()<trophiesMaxSize || trophies.containsKey(item.getName())) {
+				if(trophies.containsKey(item.getName())) {
+					trophyCount.merge(item.getName(), 1, Integer::sum);
+				}
+				else {
+					trophies.put(item.getName(), (Trophy) item);
+					trophyCount.put(item.getName(), 1);
+				}
 				return true;
 			}
 		}
 		
 		else if(item.getType().equals("Usable")) {
-			if(usables.size()<usablesMaxSize) {
-				usables.put(item.getName(), (Usable) item);
+			if(usables.size()<usablesMaxSize || usables.containsKey(item.getName())) {
+				if(usables.containsKey(item.getName())) {
+					usableCount.merge(item.getName(), 1, Integer::sum);
+				}
+				else {
+					usables.put(item.getName(), (Usable) item);
+					usableCount.put(item.getName(), 1);
+				}
 				return true;
 			}
 		}
 		else if(item.getType().equals("Consumable")) {
-			if(consumables.size()<consumablesMaxSize) {
-				consumables.put(item.getName(), (Consumable) item);
+			if(consumables.size()<consumablesMaxSize || consumables.containsKey(item.getName())) {
+				if(consumables.containsKey(item.getName())) {
+					consumableCount.merge(item.getName(), 1, Integer::sum);
+				}
+				else {
+					consumables.put(item.getName(), (Consumable) item);
+					consumableCount.put(item.getName(), 1);
+				}
 			}
 		}
 		return false;
 	}
 	
-	public boolean addItem(Treasure treasure) {
-		if(treasures.size()<treasuresMaxSize) {
-			treasures.put(treasure.getName(), treasure);
+	public boolean addItem(Treasure item) {
+		if(treasures.size()<treasuresMaxSize || treasures.containsKey(item.getName())) {
+			if(treasures.containsKey(item.getName())) {
+				treasureCount.merge(item.getName(), 1, Integer::sum);
+			}
+			else {
+				treasures.put(item.getName(), item);
+				treasureCount.put(item.getName(), 1);
+			}
 			return true;
 		}
 		
@@ -83,29 +133,72 @@ public class Inventory{
 	
 	public Item removeItem(Item item) {
 		if(item.getType().equals("Equipment")) {
-			return equipment.remove(item.getName());
+			if(equipmentCount.get(item.getName())>1) {
+				equipmentCount.merge(item.getName(), -1, Integer::sum);
+				return equipment.get(item.getName());
+			}
+			else {
+				equipmentCount.remove(item.getName());
+				return equipment.remove(item.getName());
+			}
+
 		}
 		
 		else if(item.getType() == "Weapon") {
-			return weapons.remove(item.getName());
+			if(weaponCount.get(item.getName())>1) {
+				weaponCount.merge(item.getName(), -1, Integer::sum);
+				return weapons.get(item.getName());
+			}
+			else {
+				weaponCount.remove(item.getName());
+				return weapons.remove(item.getName());
+			}
 		}
 		
 		else if(item.getType().equals("Trophy")) {
-			return trophies.remove(item.getName());
+			if(trophyCount.get(item.getName())>1) {
+				trophyCount.merge(item.getName(), -1, Integer::sum);
+				return trophies.get(item.getName());
+			}
+			else {
+				trophyCount.remove(item.getName());
+				return trophies.remove(item.getName());
+			}
 		}
 		
 		else if(item.getType().equals("Usable")) {
-			return usables.remove(item.getName());
+			if(usableCount.get(item.getName())>1) {
+				usableCount.merge(item.getName(), -1, Integer::sum);
+				return usables.get(item.getName());
+			}
+			else {
+				usableCount.remove(item.getName());
+				return usables.remove(item.getName());
+			}
 		}
 		else if(item.getType().equals("Consumable")) {
-			return consumables.remove(item.getName());
+			if(consumableCount.get(item.getName())>1) {
+				consumableCount.merge(item.getName(), -1, Integer::sum);
+				return consumables.get(item.getName());
+			}
+			else {
+				consumableCount.remove(item.getName());
+				return consumables.remove(item.getName());
+			}
 		}
 		
 		return null;	
 	}
 	
-	public Treasure removeItem(Treasure treasure) {
-		return (treasures.remove(treasure.getName()));
+	public Treasure removeItem(Treasure item) {
+		if(treasureCount.get(item.getName())>1) {
+			treasureCount.merge(item.getName(), -1, Integer::sum);
+			return treasures.get(item.getName());
+		}
+		else {
+			treasureCount.remove(item.getName());
+			return treasures.remove(item.getName());
+		}
 	}
 	
 	public boolean checkFull(String type) {
@@ -157,6 +250,30 @@ public class Inventory{
 	
 	public HashMap<String, Consumable> getConsumables(){
 		return consumables;
+	}
+	
+	public HashMap<String, Integer> getEquipmentCount() {
+		return equipmentCount;
+	}
+	
+	public HashMap<String, Integer> getWeaponCount(){
+		return weaponCount;
+	}
+	
+	public HashMap<String, Integer> getTrophyCount(){
+		return trophyCount;
+	}
+	
+	public HashMap<String, Integer> getUsableCount(){
+		return usableCount;
+	}
+	
+	public HashMap<String, Integer> getTreasureCount(){
+		return treasureCount;
+	}
+	
+	public HashMap<String, Integer> getConsumableCount(){
+		return consumableCount;
 	}
 	
 	public void setEquipmentMaxSize(int size) {

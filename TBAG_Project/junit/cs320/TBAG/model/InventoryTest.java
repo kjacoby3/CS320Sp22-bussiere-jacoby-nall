@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 public class InventoryTest extends TestCase {
 	private Inventory inventory;
 	Weapon weapon;
+	Weapon sword2;
 	Usable usable;
 	Trophy trophy;
 	Treasure treasure;
@@ -17,13 +18,13 @@ public class InventoryTest extends TestCase {
 	
 	@Before
 	protected void setUp() throws Exception{
-		weapon = new Weapon("Sword", 15, 450);
-		usable = new Usable("Key");
-		trophy = new Trophy("Claw");
+		weapon = new Weapon("Sword", 15, 450,0,0,0,true);
+		usable = new Usable("Key",0,0,0,0);
+		trophy = new Trophy("Claw", 10, 10, 10, 10);
 		treasure = new Treasure("Keepsake", 0, 0, 2, 0);
-		equipment1 = new Equipment("Chest Armor", 800, 20, 0, 0);
-		equipment2 = new Equipment("Leg Armor", 400, 15, 0, 2);
-		equipment3 = new Equipment("Boots", 470, 10, 0, 0 );
+		equipment1 = new Equipment("Chest Armor", 800, 20, 0, 0,0,0,0,false);
+		equipment2 = new Equipment("Leg Armor", 400, 15, 0, 2,0,0,0,false);
+		equipment3 = new Equipment("Boots", 470, 10, 0, 0,0,0,0,false);
 		
 		
 	}
@@ -38,6 +39,14 @@ public class InventoryTest extends TestCase {
 		assertTrue(inventory.addItem(equipment1));
 		assertTrue(inventory.addItem(equipment2));
 		assertFalse(inventory.addItem(equipment3));
+		
+		System.out.println(inventory.getWeaponCount().get(weapon.getName()));
+		assertTrue(inventory.getWeaponCount().get(weapon.getName()).equals(1));
+		
+		assertTrue(inventory.getUsableCount().get(usable.getName())==1);
+		assertTrue(inventory.getTrophyCount().get(trophy.getName())==1);
+		assertTrue(inventory.getTreasureCount().get(treasure.getName())==1);
+		assertTrue(inventory.getEquipmentCount().get(equipment1.getName())==1);
 		
 		Weapon weapon1 = inventory.getWeapons().get("Sword");
 		Usable usable1 = inventory.getUsables().get("Key");
@@ -63,6 +72,47 @@ public class InventoryTest extends TestCase {
 		
 		assertFalse(inventory.getEquipment().containsKey("Boots"));
 		
+		
+		assertTrue(inventory.addItem(weapon));
+		assertTrue(inventory.addItem(usable));
+		assertTrue(inventory.addItem(trophy));
+		assertTrue(inventory.addItem(treasure));
+		assertTrue(inventory.addItem(equipment1));
+		
+		assertTrue(inventory.getWeaponCount().get(weapon.getName())==2);
+		assertTrue(inventory.getUsableCount().get(usable.getName())==2);
+		assertTrue(inventory.getTrophyCount().get(trophy.getName())==2);
+		assertTrue(inventory.getTreasureCount().get(treasure.getName())==2);
+		assertTrue(inventory.getEquipmentCount().get(equipment1.getName())==2);
+		
+	}
+	
+	@Test
+	public void addMultipleItems() {
+		inventory = new Inventory(2);
+		assertTrue(inventory.addItem(weapon));
+		assertTrue(inventory.addItem(usable));
+		assertTrue(inventory.addItem(trophy));
+		assertTrue(inventory.addItem(treasure));
+		assertTrue(inventory.addItem(equipment1));
+		
+		assertTrue(inventory.getWeaponCount().get(weapon.getName())==1);
+		assertTrue(inventory.getWeaponCount().get(usable.getName())==1);
+		assertTrue(inventory.getWeaponCount().get(trophy.getName())==1);
+		assertTrue(inventory.getWeaponCount().get(treasure.getName())==1);
+		assertTrue(inventory.getWeaponCount().get(equipment1.getName())==1);
+		
+		assertTrue(inventory.addItem(weapon));
+		assertTrue(inventory.addItem(usable));
+		assertTrue(inventory.addItem(trophy));
+		assertTrue(inventory.addItem(treasure));
+		assertTrue(inventory.addItem(equipment1));
+		
+		assertTrue(inventory.getWeaponCount().get(weapon.getName())==2);
+		assertTrue(inventory.getWeaponCount().get(usable.getName())==2);
+		assertTrue(inventory.getWeaponCount().get(trophy.getName())==2);
+		assertTrue(inventory.getWeaponCount().get(treasure.getName())==2);
+		assertTrue(inventory.getWeaponCount().get(equipment1.getName())==2);
 	}
 	
 	
@@ -93,8 +143,46 @@ public class InventoryTest extends TestCase {
 		assertFalse(inventory.getEquipment().containsValue(equipment1));
 		assertFalse(inventory.getEquipment().containsValue(equipment2));
 		assertTrue(inventory.getEquipment().containsValue(equipment3));
+		assertFalse(inventory.getWeaponCount().containsKey(weapon.getName()));
+		assertFalse(inventory.getUsableCount().containsKey(usable.getName()));
+		assertFalse(inventory.getTrophyCount().containsKey(trophy.getName()));
+		assertFalse(inventory.getTreasureCount().containsKey(treasure.getName()));
+		assertFalse(inventory.getEquipmentCount().containsKey(equipment1.getName()));
 		
 		assertTrue(inventory.getEquipment().size() == 1);
+		
+		
+		inventory.addItem(weapon);
+		inventory.addItem(usable);
+		inventory.addItem(trophy);
+		inventory.addItem(treasure);
+		inventory.addItem(equipment3);
+		inventory.addItem(weapon);
+		inventory.addItem(usable);
+		inventory.addItem(trophy);
+		inventory.addItem(treasure);
+		inventory.addItem(equipment3);
+		
+		assertTrue(inventory.getWeaponCount().get(weapon.getName())==2);
+		assertTrue(inventory.getUsableCount().get(usable.getName())==2);
+		assertTrue(inventory.getTrophyCount().get(trophy.getName())==2);
+		assertTrue(inventory.getTreasureCount().get(treasure.getName())==2);
+		assertTrue(inventory.getEquipmentCount().get(equipment3.getName())==3);
+
+		
+		assertTrue(inventory.removeItem(weapon).equals(weapon));
+		assertTrue(inventory.removeItem(usable).equals(usable));
+		assertTrue(inventory.removeItem(trophy).equals(trophy));
+		assertTrue(inventory.removeItem(treasure).equals(treasure));
+		assertTrue(inventory.removeItem(equipment3).equals(equipment3));
+		
+		assertTrue(inventory.getWeaponCount().get(weapon.getName())==1);
+		assertTrue(inventory.getUsableCount().get(usable.getName())==1);
+		assertTrue(inventory.getTrophyCount().get(trophy.getName())==1);
+		assertTrue(inventory.getTreasureCount().get(treasure.getName())==1);
+		assertTrue(inventory.getEquipmentCount().get(equipment3.getName())==2);
+		
+		
 		
 		
 	}
