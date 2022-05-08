@@ -6,6 +6,7 @@
 
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://unpkg.com/jquery.terminal/js/jquery.terminal.min.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/jquery.terminal/css/jquery.terminal.min.css"/>
         <script src="js/app-ajax.js" type="text/javascript"></script>
         <link rel="stylesheet" href="Style.css"/>
 
@@ -50,7 +51,7 @@
 
             </div>
             <div class = "terminal">
-                <div>
+                <!--<div>
                 <form action="${pageContext.servletContext.contextPath}/game" method="post">
                     <input type ="text" name = "command" size="12" value="${command}">
                 <input type="Submit" name="submit" value = "Enter">
@@ -62,7 +63,7 @@
                         ${input}<br>
 
                     </c:forEach></div>
-            </form>
+            </form>-->
 
             </div>
             <div class = "playerDetails"></div>
@@ -76,8 +77,8 @@
         
 
         <script>
-            
-            /*term = $(".terminal").terminal(function(input){
+            $(document).ready(function(){
+            term = $(".terminal").terminal(function(input){
                 $.post('http://localhost:8081/TBAG/game', { 
                     command: input
                         
@@ -92,9 +93,20 @@
                     
                 })
             },{
-                greetings: 'Hello'
+                greetings: getAjax('http://localhost:8081/TBAG/game').done(function(response){
+                    return response
+                })
+            
+        })
+
+        function getAjax(url){
+            return $.ajax({
+                type:'get',
+                url : url,
+                data : null,
+                success: function(response){
             }
-            );*/
+        }
             </script>
     </body>
     

@@ -2,6 +2,7 @@ package cs320.TBAG.servlet;
 
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.PageContext;
 
 import cs320.TBAG.model.Map;
 import cs320.TBAG.model.NPC;
@@ -48,10 +50,17 @@ public class GameServlet extends HttpServlet{
 	Map map;
 	
 	HttpSession session;
+	
+	public GameServlet() {
+		super();
+	}
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		System.out.println("doGet");
+		String headerName = req.getHeader("x-requested-with");
+		System.out.println(headerName);
+		
 		gameID = 1;
 		playerID = 1;
 		controller = new GameController();
@@ -72,7 +81,16 @@ public class GameServlet extends HttpServlet{
 		session.setAttribute("gameID", gameID);
 		session.setAttribute("history", new ArrayList<String>());
 		
-		forwardRoomDesc(player, player.getRoomId(), null, req, resp);
+		
+		
+		if(headerName != null) {
+			forwardRoomDesc(player, player.getRoomId(), null, req, resp);
+		}
+		else {
+			req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+		}
+		
+		
 		
 		
 		//String roomDesc = map.getRoomDescription();
@@ -87,7 +105,7 @@ public class GameServlet extends HttpServlet{
 		//System.out.println("GameServletdoPost");
 		
 		String prevInput;
-		
+		//TerminalWriter
 				//int gameID = 1;
 		//GameController controller = new GameController();
 		session = req.getSession();
@@ -95,6 +113,7 @@ public class GameServlet extends HttpServlet{
 		/*if(session.getAttribute("player")== null) {
 			System.out.println("null");
 		}*/
+		PrintWriter terminalWriter = resp.getWriter();
 		model = (Game) session.getAttribute("model");
 		
 		player = (Player) session.getAttribute("player");
@@ -117,7 +136,7 @@ public class GameServlet extends HttpServlet{
 		Consumable healthPotion = new Consumable("Health Potion", 0, 10, 20, 0, 0, 0, 0, 0, 0);
 		player.setActorStats(new ActorStats());
 		player.getInventory().addItem(healthPotion);
-		System.out.println("" + input);
+		System.out.println("Input " + input);
 		
 		//Player player= model.getPlayer();
 		//Map map = model.getMap();
@@ -164,7 +183,7 @@ public class GameServlet extends HttpServlet{
 			}
 			
 			else if(input.equalsIgnoreCase("north") || input.equalsIgnoreCase("n")) {
-				
+				System.out.println("in North");
 				int directionCheck = map.canMove(player.getRoomId(), "north");
 				if(directionCheck>0) {
 					player.move(directionCheck);
@@ -705,6 +724,7 @@ public class GameServlet extends HttpServlet{
 	
 	public void forwardRoomDesc (Player player, int directionCheck, String input, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//player.move(directionCheck);
+		PrintWriter terminalWriter = resp.getWriter();
 		Room newRoom = map.getRoom(directionCheck);
 		if(newRoom == null) {
 			System.out.println("newRoom");
@@ -718,6 +738,9 @@ public class GameServlet extends HttpServlet{
 			newRoom.setRoomPrevVisit(true);
 		}
 		if(input== null) {
+			System.out.println(roomDesc);
+			req.setAttribute("roomMessage", roomDesc);
+			terminalWriter.print(roomDesc);
 			updateHistory(roomDesc);
 		}
 		else {
