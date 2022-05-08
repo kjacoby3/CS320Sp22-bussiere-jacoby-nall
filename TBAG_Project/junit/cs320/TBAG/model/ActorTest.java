@@ -22,7 +22,7 @@ public class ActorTest extends TestCase {
 	@Before
 	protected void setUp() throws Exception{
 		name = "Player 1";
-		//location = new Room();
+		location = new Room();
 		inventory = new Inventory(100);
 		actorStats = new ActorStats();
 		fists = new Weapon("Fists", 0, 0, 0, 0, 0, true);
@@ -106,5 +106,44 @@ public class ActorTest extends TestCase {
 		System.out.println("DEF " + player1.getActorStats().getDef());
 		System.out.println("DMG " + player1.getActorStats().getDmg());
 		System.out.println("SPD " + player1.getActorStats().getSpd());
+	}
+	
+	
+	@Test
+	public void testBuy() {
+		player1 = new Player(name, location, inventory, actorStats, fists, bare);
+		npc1 = new NPC(name,location,inventory, actorStats, "npc", fists, bare, 0, 0, new ConversationTree());
+		Consumable consum = new Consumable("Consum", 100, 0, 0, 0, 0, 0, 0, 0, 0);
+		
+		npc1.pickUp(consum);
+		player1.setCurrency(5);
+		System.out.println("" + player1.getInventory().getConsumables().keySet());
+		System.out.println("Currency" + player1.getCurrency());
+		assertFalse(player1.buy(npc1, consum));
+		player1.addCurrency(500);
+		assertTrue(player1.buy(npc1, consum));
+		System.out.println("Currency" + player1.getCurrency());
+		System.out.println("" + player1.getInventory().getConsumables().keySet());
+		
+		
+	}
+	
+	@Test
+	public void testSell() {
+		player1 = new Player(name, location, inventory, actorStats, fists, bare);
+		npc1 = new NPC(name,location,inventory, actorStats, "npc", fists, bare, 0, 0, new ConversationTree());
+		Consumable consum = new Consumable("Consum", 100, 0, 0, 0, 0, 0, 0, 0, 0);
+		
+		player1.pickUp(consum);
+		npc1.setCurrency(5);
+		System.out.println("" + npc1.getInventory().getConsumables().keySet());
+		System.out.println("Currency" + player1.getCurrency());
+		assertFalse(player1.sell(npc1, consum));
+		npc1.addCurrency(500);
+		assertTrue(player1.sell(npc1, consum));
+		System.out.println("Currency" + player1.getCurrency());
+		System.out.println("" + npc1.getInventory().getConsumables().keySet());
+		
+		
 	}
 }

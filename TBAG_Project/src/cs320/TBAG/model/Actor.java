@@ -118,6 +118,10 @@ public abstract class Actor{
 		currency += add;
 	}
 	
+	public void subtractCurrency(int subtract) {
+		currency -= subtract;
+	}
+	
 	public boolean isDead() {
 		if(actorStats.getCurHP() <= 0) {
 			return true;

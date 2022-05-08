@@ -2,6 +2,7 @@ package cs320.TBAG.model;
 
 import cs320.TBAG.model.Actions;
 import cs320.TBAG.model.Convo.ConversationTree;
+import cs320.TBAG.model.InteractableObj.Interactable;
 
 public class NPC extends Actor implements ActionsInterface{
 	
@@ -29,6 +30,7 @@ public class NPC extends Actor implements ActionsInterface{
 			Equipment equipped, int aggression,int currency, ConversationTree conversationTree) {
 		this.name = name;
 		this.type = type;
+		this.inventory = inventory;
 		this.location = location;
 		this.actorStats = actorStats;
 		this.eqWeap = eqWeap;
@@ -113,15 +115,14 @@ public class NPC extends Actor implements ActionsInterface{
 	}
 
 	@Override
-	public void move(String direction) {
+	public void move(int direction) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void pickUp(Item item) {
-		// TODO Auto-generated method stub
-		
+		inventory.addItem(item);
 	}
 
 	@Override
@@ -137,15 +138,15 @@ public class NPC extends Actor implements ActionsInterface{
 	}
 
 	@Override
-	public void buy(Item item) {
+	public Boolean buy(NPC npc, Item item) {
 		// TODO Auto-generated method stub
-		
+		return true;
 	}
 
 	@Override
-	public void sell(Item item) {
+	public Boolean sell(NPC npc, Item item) {
 		// TODO Auto-generated method stub
-		
+		return true;
 	}
 
 	@Override
@@ -153,6 +154,12 @@ public class NPC extends Actor implements ActionsInterface{
 		// TODO Auto-generated method stub
 		return null;
 		
+	}
+
+	@Override
+	public String activateObj(String activationStr, Interactable obj) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

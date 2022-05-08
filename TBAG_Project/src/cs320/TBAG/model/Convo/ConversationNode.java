@@ -65,6 +65,23 @@ public class ConversationNode{
 		return null;
 	}
 	
+	public void checkResponses() {
+		for(ConversationResponse resp : responseList) {
+			if(resp instanceof BuyResponse) {
+				if(((BuyResponse) resp).getBought()) {
+					removeResponse(resp);
+				}
+			}
+		}
+	}
+	
+	public ConversationResponse removeResponse(ConversationResponse response) {
+		
+		responseList.remove(response);
+		
+		return response;
+	}
+	
 	public ConversationResponse getResponse(int key) {
 		//return responseMap.get(key);
 		return responseList.get(key - 1);

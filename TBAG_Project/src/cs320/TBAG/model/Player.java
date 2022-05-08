@@ -35,6 +35,7 @@ public class Player extends Actor implements ActionsInterface{
 		this.actorStats = actorStats;
 		this.eqWeap = eqWeap;
 		this.equipped = equipped;
+		currency = 0;
 	}
 	
 	public void setPlayerId(int playerId) {
@@ -165,15 +166,139 @@ public class Player extends Actor implements ActionsInterface{
 	}
 
 	@Override
-	public void buy(Item item) {
+	public Boolean buy(NPC npc, Item item) {
 		// TODO Auto-generated method stub
+		Boolean bought = false;
+		Inventory npcInventory = npc.getInventory();
 		
+		if(currency >= item.getBuyPrice()) {
+			if(item.getType().equals("Weapon")) {
+				if(npcInventory.getWeapons().containsValue(item)) {
+					subtractCurrency(item.getBuyPrice());
+					npc.addCurrency(item.getBuyPrice());
+					
+					inventory.addItem(item);
+					npcInventory.removeItem(item);
+					bought = true;
+				} else {
+					bought = false;
+				}
+			} else if(item.getType().equals("Equipment")) {
+				if(npcInventory.getEquipment().containsValue(item)) {
+					subtractCurrency(item.getBuyPrice());
+					npc.addCurrency(item.getBuyPrice());
+					
+					inventory.addItem(item);
+					npcInventory.removeItem(item);
+					bought = true;
+				} else {
+					bought = false;
+				}
+			} else if(item.getType().equals("Usable")) {
+				if(npcInventory.getUsables().containsValue(item)) {
+					subtractCurrency(item.getBuyPrice());
+					npc.addCurrency(item.getBuyPrice());
+					
+					inventory.addItem(item);
+					npcInventory.removeItem(item);
+					bought = true;
+				} else {
+					bought = false;
+				}
+			} else if(item.getType().equals("Consumable")) {
+				if(npcInventory.getConsumables().containsValue(item)) {
+					subtractCurrency(item.getBuyPrice());
+					npc.addCurrency(item.getBuyPrice());
+					
+					inventory.addItem(item);
+					npcInventory.removeItem(item);
+					bought = true;
+				} else {
+					bought = false;
+				}
+			} else if(item.getType().equals("Treasure")) {
+				if(npcInventory.getTreasures().containsValue(item)) {
+					subtractCurrency(item.getBuyPrice());
+					npc.addCurrency(item.getBuyPrice());
+					
+					inventory.addItem(item);
+					npcInventory.removeItem(item);
+					bought = true;
+				} else {
+					bought = false;
+				}
+			} else {
+				bought = false;
+			}
+		} else {
+			bought = false;
+		}
+		
+		
+		
+		return bought;
 	}
 
 	@Override
-	public void sell(Item item) {
+	public Boolean sell(NPC npc, Item item) {
 		// TODO Auto-generated method stub
+		Boolean sold = false;
+		Inventory npcInventory = npc.getInventory();
 		
+		if(npc.getCurrency() >= item.getSellPrice()) {
+			if(item.getType().equals("Weapon")) {
+				if(inventory.getWeapons().containsValue(item)) {
+					npc.subtractCurrency(item.getSellPrice());
+					addCurrency(item.getSellPrice());
+					
+					inventory.removeItem(item);
+					npcInventory.addItem(item);
+					sold = true;
+				} else {
+					sold = false;
+				}
+			} else if(item.getType().equals("Equipment")) {
+				if(inventory.getEquipment().containsValue(item)) {
+					npc.subtractCurrency(item.getSellPrice());
+					addCurrency(item.getSellPrice());
+					
+					inventory.removeItem(item);
+					npcInventory.addItem(item);
+					sold = true;
+				} else {
+					sold = false;
+				}
+			} else if(item.getType().equals("Usable")) {
+				if(inventory.getUsables().containsValue(item)) {
+					npc.subtractCurrency(item.getSellPrice());
+					addCurrency(item.getSellPrice());
+					
+					inventory.removeItem(item);
+					npcInventory.addItem(item);
+					sold = true;
+				} else {
+					sold = false;
+				}
+			} else if(item.getType().equals("Consumable")) {
+				if(inventory.getConsumables().containsValue(item)) {
+					npc.subtractCurrency(item.getSellPrice());
+					addCurrency(item.getSellPrice());
+					
+					inventory.removeItem(item);
+					npcInventory.addItem(item);
+					sold = true;
+				} else {
+					sold = false;
+				}
+			} else {
+				sold = false;
+			}
+		} else {
+			sold = false;
+		}
+		
+		
+		return sold;
 	}
 
 	@Override
@@ -287,7 +412,7 @@ public class Player extends Actor implements ActionsInterface{
 				while(iter.hasNext()) {
 					Interactable object = iter.next();
 					if(object.getPuzzle() instanceof KeyPuzzle) {
-						KeyPuzzle puzzle = (KeyPuzzle)object.getPuzzle();
+						KeyPuzzle puzzle = ((KeyPuzzle)object.getPuzzle());
 						if(puzzle.getKey() == treasure) {
 							
 							//If the treasure being used is the same as the key needed and

@@ -60,6 +60,7 @@ public class Conversation {
 	
 	public ArrayList<String> displaySelectedNodeMSG() {
 		ArrayList<String> stringList = new ArrayList<String>();
+		selectedNode.checkResponses();
 		System.out.println(selectedNode.getStatement());
 		stringList.add(selectedNode.getStatement());
 		for(int i = 0; i < selectedNode.getResponseList().size(); i++) {
@@ -91,6 +92,16 @@ public class Conversation {
 				
 				player.addCurrency(rewardCurrency);
 				player.getActorStats().addExp(rewardExp);
+			}
+		}
+		
+		if(selectedResponse instanceof PuzzleResponse) {
+			((PuzzleResponse) selectedResponse).checkResultNode();
+		}
+		
+		if(selectedResponse instanceof BuyResponse) {
+			if(!((BuyResponse) selectedResponse).getBought()) {
+				
 			}
 		}
 		

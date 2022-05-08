@@ -11,8 +11,8 @@ public interface ActionsInterface {
 	void equipEquipment(Equipment equipment);
 	void unequipEquipment();
 	void talk(NPC npc);
-	void buy(Item item);
-	void sell(Item item);
+	Boolean buy(NPC npc, Item item);
+	Boolean sell(NPC npc, Item item);
 	String use(Item item);
 	String activateObj(String activationStr, Interactable obj);
 }
