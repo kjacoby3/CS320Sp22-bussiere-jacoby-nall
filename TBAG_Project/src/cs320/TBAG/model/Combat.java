@@ -396,9 +396,14 @@ public class Combat{
 		Inventory actor2Inv = actor2.getInventory();
 		Inventory roomInv = actor1.getLocation().getRoomInv();
 		actor1Stats.addExp(actor2Stats.getCurExp());
+		actor1.addCurrency(actor2.getCurrency());
 		result = "Congrats, you have defeated " + actor2.getName() +
-				"and have earned " + actor2Stats.getCurExp() + " XP!";
-		
+				"and have earned " + actor2Stats.getCurExp() + " XP";
+		if(actor2.getCurrency() > 0) {
+			result = result + " and " + actor2.getCurrency() + " coins!";
+		} else {
+			result = result + "!";
+		}
 		//actor2.getLocation().removeNPCInRoom((NPC) actor2);
 		
 		//Add dropped equipment to actor 1 inventory
