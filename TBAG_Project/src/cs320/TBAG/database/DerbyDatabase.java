@@ -977,7 +977,7 @@ public class DerbyDatabase implements IDatabase {
 					pinPuzzle = conn.prepareStatement( 
 							"create table pinPuzzle ( "
 							+ "pinPuzzleID integer, puzzleID integer, "
-							+ "key varchar(40), complete boolean, hint varchar(100), "
+							+ "keyStr varchar(40), complete boolean, hint varchar(100), "
 							+ "completeMSG varchar(200), currency integer, "
 							+ "exp integer, itemID integer)"
 					);
@@ -1490,7 +1490,7 @@ public class DerbyDatabase implements IDatabase {
 					System.out.println("Sign table successfully populated");
 					
 					try {
-						insertKeyPuzzle = conn.prepareStatement("insert into keyPuzzle (keyPuzzleID, puzzleID, treasureID, complete, hint, completeMSG, currency, exp, rewardItemID)"
+						insertKeyPuzzle = conn.prepareStatement("insert into keyPuzzle (keyPuzzleID, puzzleID, treasureID, complete, hint, completeMSG, currency, exp, itemID)"
 								+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 						for(KeyPuzzle puzzle : keyPuzzleList) {
 							insertKeyPuzzle.setInt(1, puzzle.getKeyPuzzleId());
@@ -1512,7 +1512,7 @@ public class DerbyDatabase implements IDatabase {
 					System.out.println("KeyPuzzle table successfully populated");
 					
 					try {
-						insertPinPuzzle = conn.prepareStatement("insert into pinPuzzle (pinPuzzleID, puzzleID, key, complete, hint, completeMSG, currency, exp, rewardItemID)"
+						insertPinPuzzle = conn.prepareStatement("insert into pinPuzzle (pinPuzzleID, puzzleID, keyStr, complete, hint, completeMSG, currency, exp, itemID)"
 								+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 						for(PinPuzzle puzzle : pinPuzzleList) {
 							insertPinPuzzle.setInt(1, puzzle.getPinPuzzleId());
@@ -1534,7 +1534,7 @@ public class DerbyDatabase implements IDatabase {
 					System.out.println("PinPuzzle table successfully populated");
 					
 					try {
-						insertEnemyPuzzle = conn.prepareStatement("insert into enemyPuzzle (enemyPuzzleID, puzzleID, npcID, complete, hint, completeMSG, currency, exp, rewardItemID)"
+						insertEnemyPuzzle = conn.prepareStatement("insert into enemyPuzzle (enemyPuzzleID, puzzleID, npcID, complete, hint, completeMSG, currency, exp, itemID)"
 								+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 						for(EnemyPuzzle puzzle : enemyPuzzleList) {
 							insertEnemyPuzzle.setInt(1, puzzle.getEnemyPuzzleId());
@@ -1836,12 +1836,19 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement defaultRespStmt = null;
 				PreparedStatement endRespStmt = null;
 				PreparedStatement puzzleRespStmt = null;
+				PreparedStatement rewardRespStmt = null;
+				PreparedStatement buyRespStmt = null;
+				PreparedStatement sellRespStmt = null;
 				
 				ResultSet treeIDSet = null;
 				ResultSet nodeSet = null;
 				ResultSet defaultRespSet = null;
 				ResultSet endRespSet = null;
 				ResultSet puzzleRespSet = null;
+				ResultSet rewardRespSet = null;
+				ResultSet buyRespSet = null;
+				ResultSet sellRespSet = null;
+				
 				ConversationTree convoTree = null;
 				
 				
@@ -1909,8 +1916,9 @@ public class DerbyDatabase implements IDatabase {
 								
 							puzzleRespStmt = conn.prepareStatement(
 									"select response, resultNodeID, puzzleID, completeResultNodeID from PuzzleResponse"
-									+ "where puzzleResponse.convoNodeID = ?");
+									+ "where puzzleResponse.convoNodeID = ? and puzzleResponse.convoTreeID = ?");
 							puzzleRespStmt.setInt(1, convoNodeID);
+							puzzleRespStmt.setInt(2, treeID);
 							
 							puzzleRespSet = puzzleRespStmt.executeQuery();
 							while(puzzleRespSet.next()) {
@@ -1928,6 +1936,93 @@ public class DerbyDatabase implements IDatabase {
 								resp.setResponseStr(response);
 								resp.setPuzzleId(puzzleID);
 								resp.setCompleteResultNode(completeResultNodeID);
+								resp.setPuzzle(getPuzzleByPuzzleID(puzzleID));
+								
+								respList.add(resp);
+							}
+							
+							rewardRespStmt = conn.prepareStatement(
+									"select response, resultNodeID, itemID, currency, exp, collected"
+									+ "from rewardResponse "
+									+ "where rewardResponse.convoNodeID = ? and rewardResponse.convoTreeID = ?");
+							rewardRespStmt.setInt(1, convoNodeID);
+							rewardRespStmt.setInt(2, treeID);
+							
+							rewardRespSet = rewardRespStmt.executeQuery();
+							while(rewardRespSet.next()) {
+								int rewardIndex = 1;
+								String response = rewardRespSet.getString(rewardIndex++);
+								int resultNodeID = rewardRespSet.getInt(rewardIndex++);
+								int itemID = rewardRespSet.getInt(rewardIndex++);
+								int currency = rewardRespSet.getInt(rewardIndex);
+								int exp = rewardRespSet.getInt(rewardIndex++);
+								Boolean collected = rewardRespSet.getBoolean(rewardIndex++);
+								
+								RewardResponse resp = new RewardResponse();
+								resp.setResultNode(resultNodeID);
+								resp.setConvoTreeId(treeID);
+								resp.setNodeId(convoNodeID);
+								resp.setResponseStr(response);
+								resp.setRewardItemId(itemID);
+								resp.setRewardCurrency(currency);
+								resp.setRewardExp(exp);
+								resp.setCollected(collected);
+								
+								respList.add(resp);
+							}
+							
+							buyRespStmt = conn.prepareStatement(
+									"select resultNodeID, itemID, bought, failedResultNodeID"
+									+ "from buyResponse "
+									+ "where buyResponse.convoNodeID = ? and buyResponse.convoTreeID = ?");
+							buyRespStmt.setInt(1, convoNodeID);
+							buyRespStmt.setInt(2, treeID);
+							
+							buyRespSet = buyRespStmt.executeQuery();
+							while(buyRespSet.next()) {
+								int buyIndex = 1;
+							
+								int resultNodeID = buyRespSet.getInt(buyIndex++);
+								int itemID = buyRespSet.getInt(buyIndex++);
+								Boolean bought = buyRespSet.getBoolean(buyIndex++);
+								int failedResultNodeID = buyRespSet.getInt(buyIndex++);
+								
+								BuyResponse resp = new BuyResponse();
+								resp.setResultNode(resultNodeID);
+								resp.setConvoTreeId(treeID);
+								resp.setNodeId(convoNodeID);
+								resp.setBuyItemId(itemID);
+								resp.setFailedNode(failedResultNodeID);
+								resp.setBought(bought);
+								
+								respList.add(resp);
+							}
+							
+							sellRespStmt = conn.prepareStatement(
+									"select resultNodeID, itemID, sold, failedResultNodeID"
+									+ "from sellResponse "
+									+ "where sellResponse.convoNodeID = ? and sellResponse.convoTreeID = ?");
+							sellRespStmt.setInt(1, convoNodeID);
+							sellRespStmt.setInt(2, treeID);
+							
+							sellRespSet = sellRespStmt.executeQuery();
+							while(sellRespSet.next()) {
+								int sellIndex = 1;
+							
+								int resultNodeID = sellRespSet.getInt(sellIndex++);
+								int itemID = sellRespSet.getInt(sellIndex++);
+								Boolean sold = sellRespSet.getBoolean(sellIndex++);
+								int failedResultNodeID = sellRespSet.getInt(sellIndex++);
+								
+								SellResponse resp = new SellResponse();
+								resp.setResultNode(resultNodeID);
+								resp.setConvoTreeId(treeID);
+								resp.setNodeId(convoNodeID);
+								resp.setSellItemId(itemID);
+								resp.setFailedNode(failedResultNodeID);
+								resp.setSold(sold);
+								
+								respList.add(resp);
 							}
 							
 							ConversationNode convoNode = new ConversationNode(statement, respList);
