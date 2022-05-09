@@ -53,4 +53,12 @@ public class Sign extends Interactable {
 	public int getSignId() {
 		return signId;
 	}
+	
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
+	public String getMessage() {
+		return message;
+	}
 }

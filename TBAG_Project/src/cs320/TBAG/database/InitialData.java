@@ -17,12 +17,21 @@ import cs320.TBAG.model.Treasure;
 import cs320.TBAG.model.Trophy;
 import cs320.TBAG.model.Usable;
 import cs320.TBAG.model.Weapon;
+import cs320.TBAG.model.Convo.BuyResponse;
 import cs320.TBAG.model.Convo.ConversationNode;
 import cs320.TBAG.model.Convo.ConversationTree;
 import cs320.TBAG.model.Convo.DefaultResponse;
 import cs320.TBAG.model.Convo.EndResponse;
+import cs320.TBAG.model.Convo.PuzzleResponse;
+import cs320.TBAG.model.Convo.RewardResponse;
+import cs320.TBAG.model.Convo.SellResponse;
+import cs320.TBAG.model.InteractableObj.Chest;
 import cs320.TBAG.model.InteractableObj.Door;
+import cs320.TBAG.model.InteractableObj.Keypad;
+import cs320.TBAG.model.InteractableObj.Sign;
+import cs320.TBAG.model.PuzzleType.EnemyPuzzle;
 import cs320.TBAG.model.PuzzleType.KeyPuzzle;
+import cs320.TBAG.model.PuzzleType.PinPuzzle;
 
 public class InitialData {
 	
@@ -263,7 +272,7 @@ public class InitialData {
 				DefaultResponse resp = new DefaultResponse();
 
 				Integer.parseInt(i.next());
-				resp.setResponseId(responseId++);
+				resp.setDefaultResponseId(responseId++);
 				
 				resp.setConvoTreeId(Integer.parseInt(i.next()));
 				resp.setNodeId(Integer.parseInt(i.next()));
@@ -292,7 +301,7 @@ public class InitialData {
 				EndResponse resp = new EndResponse();
 
 				Integer.parseInt(i.next());
-				resp.setResponseId(responseId++);
+				resp.setEndResponseId(responseId++);
 				
 				resp.setConvoTreeId(Integer.parseInt(i.next()));
 				resp.setNodeId(Integer.parseInt(i.next()));
@@ -304,6 +313,134 @@ public class InitialData {
 			return endResponseList;
 		} finally {
 			readEndResponses.close();
+		}
+	}
+	
+	public static List<PuzzleResponse> getPuzzleResponses() throws IOException {
+		List<PuzzleResponse> puzzleResponseList = new ArrayList<PuzzleResponse>();
+		ReadCSV readPuzzleResponses = new ReadCSV("puzzleResponse.csv");
+		try {
+			int puzzleResponseId = 1;
+			while(true) {
+				List<String> tuple = readPuzzleResponses.next();
+				if(tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				PuzzleResponse resp = new PuzzleResponse();
+				
+				Integer.parseInt(i.next());
+				resp.setPuzzleResponseId(puzzleResponseId++);
+				
+				resp.setConvoTreeId(Integer.parseInt(i.next()));
+				resp.setNodeId(Integer.parseInt(i.next()));
+				resp.setResponseStr(i.next());
+				resp.setResultNode(Integer.parseInt(i.next()));
+				resp.setPuzzleId(Integer.parseInt(i.next()));
+				resp.setCompleteResultNode(Integer.parseInt(i.next()));
+				
+				puzzleResponseList.add(resp);
+			}
+			return puzzleResponseList;
+		} finally {
+			readPuzzleResponses.close();
+		}
+	}
+	
+	public static List<RewardResponse> getRewardResponses() throws IOException {
+		List<RewardResponse> rewardResponseList = new ArrayList<RewardResponse>();
+		ReadCSV readRewardResponses = new ReadCSV("rewardResponse.csv");
+		try {
+			int rewardResponseId = 1;
+			while(true) {
+				List<String> tuple = readRewardResponses.next();
+				if(tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				RewardResponse resp = new RewardResponse();
+				
+				Integer.parseInt(i.next());
+				resp.setRewardResponseId(rewardResponseId++);
+				
+				resp.setConvoTreeId(Integer.parseInt(i.next()));
+				resp.setNodeId(Integer.parseInt(i.next()));
+				resp.setResponseStr(i.next());
+				resp.setResultNode(Integer.parseInt(i.next()));
+				resp.setRewardItemId(Integer.parseInt(i.next()));
+				resp.setRewardCurrency(Integer.parseInt(i.next()));
+				resp.setRewardExp(Integer.parseInt(i.next()));
+				resp.setCollected(Boolean.parseBoolean(i.next()));
+				
+				rewardResponseList.add(resp);
+			}
+			return rewardResponseList;
+		} finally {
+			readRewardResponses.close();
+		}
+	}
+	
+	public static List<BuyResponse> getBuyResponses() throws IOException {
+		List<BuyResponse> buyResponseList = new ArrayList<BuyResponse>();
+		ReadCSV readBuyResponses = new ReadCSV("buyResponse.csv");
+		try {
+			int buyResponseId = 1;
+			while(true) {
+				List<String> tuple = readBuyResponses.next();
+				if(tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				BuyResponse resp = new BuyResponse();
+				
+				Integer.parseInt(i.next());
+				resp.setBuyResponseId(buyResponseId++);
+				
+				resp.setConvoTreeId(Integer.parseInt(i.next()));
+				resp.setNodeId(Integer.parseInt(i.next()));
+				//resp.setResponseStr(i.next());
+				resp.setResultNode(Integer.parseInt(i.next()));
+				resp.setBuyItemId(Integer.parseInt(i.next()));
+				resp.setBought(Boolean.parseBoolean(i.next()));
+				resp.setFailedNode(Integer.parseInt(i.next()));
+				
+				buyResponseList.add(resp);
+			}
+			return buyResponseList;
+		} finally {
+			readBuyResponses.close();
+		}
+	}
+	
+	public static List<SellResponse> getSellResponses() throws IOException {
+		List<SellResponse> sellResponseList = new ArrayList<SellResponse>();
+		ReadCSV readSellResponses = new ReadCSV("sellResponse.csv");
+		try {
+			int sellResponseId = 1;
+			while(true) {
+				List<String> tuple = readSellResponses.next();
+				if(tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				SellResponse resp = new SellResponse();
+				
+				Integer.parseInt(i.next());
+				resp.setSellResponseId(sellResponseId++);
+				
+				resp.setConvoTreeId(Integer.parseInt(i.next()));
+				resp.setNodeId(Integer.parseInt(i.next()));
+				//resp.setResponseStr(i.next());
+				resp.setResultNode(Integer.parseInt(i.next()));
+				resp.setSellItemId(Integer.parseInt(i.next()));
+				resp.setSold(Boolean.parseBoolean(i.next()));
+				resp.setFailedNode(Integer.parseInt(i.next()));
+				
+				sellResponseList.add(resp);
+			}
+			return sellResponseList;
+		} finally {
+			readSellResponses.close();
 		}
 	}
 	
@@ -358,13 +495,14 @@ public class InitialData {
 			readConversationTrees.close();
 		}
 	}
-	
+	/*********************************/
 	
 	/*** Puzzles */
 	public static List<KeyPuzzle> getKeyPuzzles() throws IOException {
 		List<KeyPuzzle> keyPuzzleList = new ArrayList<KeyPuzzle>();
 		ReadCSV readKeyPuzzles = new ReadCSV("keyPuzzle.csv");
 		try {
+			int keyPuzzleId = 1;
 			while(true) {
 				List<String> tuple = readKeyPuzzles.next();
 				if (tuple == null) {
@@ -372,10 +510,17 @@ public class InitialData {
 				}
 				Iterator<String> i = tuple.iterator();
 				KeyPuzzle puzzle = new KeyPuzzle();
+				Integer.parseInt(i.next());
+				puzzle.setKeyPuzzleId(keyPuzzleId++);
 
 				puzzle.setPuzzleId(Integer.parseInt(i.next()));
-				puzzle.setInteractableId(Integer.parseInt(i.next()));
 				puzzle.setTreasureId(Integer.parseInt(i.next()));
+				puzzle.setComplete(Boolean.parseBoolean(i.next()));
+				puzzle.setHint(i.next());
+				puzzle.setCompleteMSG(i.next());
+				puzzle.setCurrencyReward(Integer.parseInt(i.next()));
+				puzzle.setExpReward(Integer.parseInt(i.next()));
+				puzzle.setRewardItemId(Integer.parseInt(i.next()));
 				
 				keyPuzzleList.add(puzzle);
 			}
@@ -385,6 +530,71 @@ public class InitialData {
 		}
 	}
 	
+	public static List<PinPuzzle> getPinPuzzles() throws IOException {
+		List<PinPuzzle> pinPuzzleList = new ArrayList<PinPuzzle>();
+		ReadCSV readPinPuzzles = new ReadCSV("pinPuzzle.csv");
+		try {
+			int pinPuzzleId = 1;
+			while(true) {
+				List<String> tuple = readPinPuzzles.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				PinPuzzle puzzle = new PinPuzzle();
+				Integer.parseInt(i.next());
+				puzzle.setPinPuzzleId(pinPuzzleId++);
+
+				puzzle.setPuzzleId(Integer.parseInt(i.next()));
+				//puzzle.setTreasureId(Integer.parseInt(i.next()));
+				puzzle.setKey(i.next());
+				puzzle.setComplete(Boolean.parseBoolean(i.next()));
+				puzzle.setHint(i.next());
+				puzzle.setCompleteMSG(i.next());
+				puzzle.setCurrencyReward(Integer.parseInt(i.next()));
+				puzzle.setExpReward(Integer.parseInt(i.next()));
+				puzzle.setRewardItemId(Integer.parseInt(i.next()));
+				
+				pinPuzzleList.add(puzzle);
+			}
+			return pinPuzzleList;
+		} finally {
+			readPinPuzzles.close();
+		}
+	}
+	
+	public static List<EnemyPuzzle> getEnemyPuzzles() throws IOException {
+		List<EnemyPuzzle> enemyPuzzleList = new ArrayList<EnemyPuzzle>();
+		ReadCSV readEnemyPuzzles = new ReadCSV("enemyPuzzle.csv");
+		try {
+			int enemyPuzzleId = 1;
+			while(true) {
+				List<String> tuple = readEnemyPuzzles.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				EnemyPuzzle puzzle = new EnemyPuzzle();
+				Integer.parseInt(i.next());
+				puzzle.setEnemyPuzzleId(enemyPuzzleId++);
+
+				puzzle.setPuzzleId(Integer.parseInt(i.next()));
+				puzzle.setNPCId(Integer.parseInt(i.next()));
+				puzzle.setComplete(Boolean.parseBoolean(i.next()));
+				puzzle.setHint(i.next());
+				puzzle.setCompleteMSG(i.next());
+				puzzle.setCurrencyReward(Integer.parseInt(i.next()));
+				puzzle.setExpReward(Integer.parseInt(i.next()));
+				puzzle.setRewardItemId(Integer.parseInt(i.next()));
+				
+				enemyPuzzleList.add(puzzle);
+			}
+			return enemyPuzzleList;
+		} finally {
+			readEnemyPuzzles.close();
+		}
+	}
+	/*******************************/
 	/*** Interactable Objects */
 	public static List<Door> getDoors() throws IOException {
 		List<Door> doorList = new ArrayList<Door>();
@@ -401,11 +611,13 @@ public class InitialData {
 				Integer.parseInt(i.next());
 				door.setDoorId(doorId++);
 				
+				door.setInteractableId(Integer.parseInt(i.next()));
 				door.setName(i.next());
 				door.setDescription(i.next());
 				door.setActivated(Boolean.parseBoolean(i.next()));
 				door.setRoomId(Integer.parseInt(i.next()));
 				door.setPuzzleId(Integer.parseInt(i.next()));
+				door.setDirection(i.next());
 				
 				doorList.add(door);
 			}
@@ -414,6 +626,99 @@ public class InitialData {
 			readDoors.close();
 		}
 	}
+	
+	public static List<Chest> getChests() throws IOException {
+		List<Chest> chestList = new ArrayList<Chest>();
+		ReadCSV readChests = new ReadCSV("chest.csv");
+		try {
+			int chestId = 1;
+			while(true) {
+				List<String> tuple = readChests.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				Chest chest = new Chest();
+				Integer.parseInt(i.next());
+				chest.setChestId(chestId++);
+				
+				chest.setInteractableId(Integer.parseInt(i.next()));
+				chest.setName(i.next());
+				chest.setDescription(i.next());
+				chest.setActivated(Boolean.parseBoolean(i.next()));
+				chest.setRoomId(Integer.parseInt(i.next()));
+				chest.setPuzzleId(Integer.parseInt(i.next()));
+				
+				chestList.add(chest);
+			}
+			return chestList;
+		} finally {
+			readChests.close();
+		}
+	}
+	
+	public static List<Keypad> getKeypads() throws IOException {
+		List<Keypad> keypadList = new ArrayList<Keypad>();
+		ReadCSV readKeypads = new ReadCSV("keypad.csv");
+		try {
+			int keypadId = 1;
+			while(true) {
+				List<String> tuple = readKeypads.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				Keypad keypad = new Keypad();
+				Integer.parseInt(i.next());
+				keypad.setKeypadId(keypadId++);
+				
+				keypad.setInteractableId(Integer.parseInt(i.next()));
+				keypad.setName(i.next());
+				keypad.setDescription(i.next());
+				keypad.setActivated(Boolean.parseBoolean(i.next()));
+				keypad.setRoomId(Integer.parseInt(i.next()));
+				keypad.setPuzzleId(Integer.parseInt(i.next()));
+				
+				keypadList.add(keypad);
+			}
+			return keypadList;
+		} finally {
+			readKeypads.close();
+		}
+	}
+	
+	public static List<Sign> getSigns() throws IOException {
+		List<Sign> signList = new ArrayList<Sign>();
+		ReadCSV readSigns = new ReadCSV("sign.csv");
+		try {
+			int signId = 1;
+			while(true) {
+				List<String> tuple = readSigns.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				Sign sign = new Sign();
+				Integer.parseInt(i.next());
+				sign.setSignId(signId++);
+				
+				sign.setInteractableId(Integer.parseInt(i.next()));
+				sign.setName(i.next());
+				sign.setDescription(i.next());
+				sign.setActivated(Boolean.parseBoolean(i.next()));
+				sign.setMessage(i.next());
+				sign.setRoomId(Integer.parseInt(i.next()));
+				sign.setPuzzleId(Integer.parseInt(i.next()));
+				
+				signList.add(sign);
+			}
+			return signList;
+		} finally {
+			readSigns.close();
+		}
+	}
+	
+	/*************************/
 	
 	public static List<Weapon> getWeapons() throws IOException {
 		List<Weapon> weaponList = new ArrayList<Weapon>();

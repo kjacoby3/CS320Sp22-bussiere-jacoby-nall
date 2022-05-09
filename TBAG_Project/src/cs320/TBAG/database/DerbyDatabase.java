@@ -1125,7 +1125,7 @@ public class DerbyDatabase implements IDatabase {
 						insertDefaultResp = conn.prepareStatement("insert into defaultResponse (defaultResponseID, convoTreeID, convoNodeID, response, resultNodeID)"
 								+ "values (?, ?, ?, ?, ?)");
 						for(DefaultResponse defaultResp : defaultRespList) {
-							insertDefaultResp.setInt(1, defaultResp.getResponseId());
+							insertDefaultResp.setInt(1, defaultResp.getDefaultResponseId());
 							insertDefaultResp.setInt(2, defaultResp.getConvoTreeId());
 							insertDefaultResp.setInt(3, defaultResp.getNodeId());
 							insertDefaultResp.setString(4, defaultResp.getResponseStr());
@@ -1139,7 +1139,7 @@ public class DerbyDatabase implements IDatabase {
 						insertEndResp = conn.prepareStatement("insert into endResponse (endResponseID, convoTreeID, convoNodeID, response, resultNodeID)"
 								+ "values (?, ?, ?, ?, ?)");
 						for(EndResponse endResp : endRespList) {
-							insertEndResp.setInt(1, endResp.getResponseId());
+							insertEndResp.setInt(1, endResp.getEndResponseId());
 							insertEndResp.setInt(2, endResp.getConvoTreeId());
 							insertEndResp.setInt(3, endResp.getNodeId());
 							insertEndResp.setString(4, endResp.getResponseStr());

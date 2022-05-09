@@ -3,8 +3,9 @@ package cs320.TBAG.model.PuzzleType;
 import cs320.TBAG.model.NPC;
 
 public class EnemyPuzzle extends Puzzle{
-	NPC npc;
-	int enemyPuzzleId;
+	private NPC npc;
+	private int enemyPuzzleId;
+	private int npcId;
 	
 	public EnemyPuzzle() {
 		complete = false;
@@ -47,5 +48,13 @@ public class EnemyPuzzle extends Puzzle{
 	
 	public int getEnemyPuzzleId() {
 		return enemyPuzzleId;
+	}
+	
+	public void setNPCId(int npcId) {
+		this.npcId = npcId;
+	}
+	
+	public int getNPCId() {
+		return npcId;
 	}
 }

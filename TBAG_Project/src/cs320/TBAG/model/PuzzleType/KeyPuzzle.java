@@ -51,4 +51,12 @@ public class KeyPuzzle extends Puzzle {
 	public void setInteractableId(int interactableId) {
 		this.interactableId = interactableId;
 	}
+	
+	public void setKeyPuzzleId(int keyPuzzleId) {
+		this.keyPuzzleId = keyPuzzleId;
+	}
+	
+	public int getKeyPuzzleId() {
+		return keyPuzzleId;
+	}
 }

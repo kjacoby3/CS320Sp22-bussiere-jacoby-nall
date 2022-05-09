@@ -5,7 +5,7 @@ public abstract class ConversationResponse{
 	int resultNode;
 	int convoTreeId;
 	int nodeId;
-	int responseId;
+	//int responseId;
 	
 	public String getResponseStr() {
 		return response;
@@ -37,13 +37,5 @@ public abstract class ConversationResponse{
 	
 	public int getNodeId() {
 		return nodeId;
-	}
-	
-	public void setResponseId(int responseId) {
-		this.responseId = responseId;
-	}
-	
-	public int getResponseId() {
-		return responseId;
 	}
 }

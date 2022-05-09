@@ -10,6 +10,7 @@ public abstract class Puzzle {
 	int expReward;
 	Item rewardItem;
 	int puzzleId;
+	int rewardItemId;
 	
 	public abstract String checkConditions();
 	
@@ -67,5 +68,13 @@ public abstract class Puzzle {
 	
 	public void setPuzzleId(int puzzleId) {
 		this.puzzleId = puzzleId;
+	}
+	
+	public void setRewardItemId(int rewardItemId) {
+		this.rewardItemId = rewardItemId;
+	}
+	
+	public int getRewardItemId() {
+		return rewardItemId;
 	}
 }

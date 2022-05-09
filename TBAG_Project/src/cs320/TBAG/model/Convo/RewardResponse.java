@@ -3,10 +3,12 @@ package cs320.TBAG.model.Convo;
 import cs320.TBAG.model.Item;
 
 public class RewardResponse extends ConversationResponse {
+	private int rewardResponseId;
 	private Item rewardItem;
 	private int rewardCurrency;
 	private int rewardExp;
 	private Boolean collected;
+	private int rewardItemId;
 	
 	
 	public RewardResponse() {
@@ -55,6 +57,30 @@ public class RewardResponse extends ConversationResponse {
 			return collected;
 		}
 		
+	}
+	
+	public void setRewardResponseId(int rewardResponseId) {
+		this.rewardResponseId = rewardResponseId;
+	}
+	
+	public int getRewardResponseId() {
+		return rewardResponseId;
+	}
+	
+	public void setRewardItemId(int rewardItemId) {
+		this.rewardItemId = rewardItemId;
+	}
+	
+	public int getRewardItemId() {
+		return rewardItemId;
+	}
+	
+	public void setCollected(Boolean collected) {
+		this.collected = collected;
+	}
+	
+	public Boolean getCollected() {
+		return collected;
 	}
 	
 }

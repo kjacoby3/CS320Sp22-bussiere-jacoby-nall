@@ -12,6 +12,7 @@ public abstract class Interactable {
 	protected Puzzle puzzleLock;
 	protected int roomId;
 	protected int puzzleId;
+	protected int interactableId;
 	
 	public abstract String activateObj();
 	
@@ -78,5 +79,13 @@ public abstract class Interactable {
 	
 	public int getPuzzleId() {
 		return puzzleId;
+	}
+	
+	public void setInteractableId(int interactableId) {
+		this.interactableId = interactableId;
+	}
+	
+	public int getInteractableId() {
+		return interactableId;
 	}
 }

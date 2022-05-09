@@ -1,14 +1,15 @@
 package cs320.TBAG.model.Convo;
 
-import cs320.TBAG.model.Inventory;
 import cs320.TBAG.model.Item;
 import cs320.TBAG.model.Weapon;
 
 public class BuyResponse extends ConversationResponse {
+	private int buyResponseId;
 	private Item buyItem;
 	private int price;
 	private Boolean bought;
 	private int failedNode;
+	private int buyItemId;
 	
 	public BuyResponse() {
 		resultNode = 0;
@@ -66,5 +67,21 @@ public class BuyResponse extends ConversationResponse {
 			node = failedNode;
 		}
 		return node;
+	}
+	
+	public void setBuyResponseId(int buyResponseId) {
+		this.buyResponseId = buyResponseId;
+	}
+	
+	public int getBuyResponseId() {
+		return buyResponseId;
+	}
+	
+	public void setBuyItemId(int buyItemId) {
+		this.buyItemId = buyItemId;
+	}
+	
+	public int getBuyItemId() {
+		return buyItemId;
 	}
 }

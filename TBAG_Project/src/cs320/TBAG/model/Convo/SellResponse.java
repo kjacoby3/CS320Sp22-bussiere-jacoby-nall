@@ -4,10 +4,12 @@ import cs320.TBAG.model.Item;
 import cs320.TBAG.model.Weapon;
 
 public class SellResponse extends ConversationResponse {
+	private int sellResponseId;
 	private Item sellItem;
 	private int price;
 	private Boolean sold;
 	private int failedNode;
+	private int sellItemId;
 	
 	public SellResponse() {
 		resultNode = 0;
@@ -61,5 +63,21 @@ public class SellResponse extends ConversationResponse {
 			node = failedNode;
 		}
 		return node;
+	}
+	
+	public void setSellResponseId(int sellResponseId) {
+		this.sellResponseId = sellResponseId;
+	}
+	
+	public int getSellResponseId() {
+		return sellResponseId;
+	}
+	
+	public void setSellItemId(int sellItemId) {
+		this.sellItemId = sellItemId;
+	}
+	
+	public int getSellItemId() {
+		return sellItemId;
 	}
 }

@@ -3,6 +3,7 @@ package cs320.TBAG.model.PuzzleType;
 public class PinPuzzle extends Puzzle{
 	String key;
 	int interactableId;
+	int pinPuzzleId;
 	
 	public PinPuzzle() {
 		key = "1234";
@@ -41,4 +42,11 @@ public class PinPuzzle extends Puzzle{
 		return interactableId;
 	}
 	
+	public void setPinPuzzleId(int pinPuzzleId) {
+		this.pinPuzzleId = pinPuzzleId;
+	}
+	
+	public int getPinPuzzleId() {
+		return pinPuzzleId;
+	}
 }
