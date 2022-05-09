@@ -732,7 +732,7 @@ public class InitialData {
 				Iterator<String> i = tuple.iterator();
 				
 				//Integer.parseInt(i.next());
-				
+				int itemID = Integer.parseInt(i.next());
 				String name = i.next();
 				int price = Integer.parseInt(i.next());
 				int damage = Integer.parseInt(i.next());
@@ -741,7 +741,7 @@ public class InitialData {
 				int npcID = Integer.parseInt(i.next());
 				boolean equipped = Boolean.parseBoolean(i.next());
 				
-				weaponList.add(new Weapon(name, price, damage, playerID, roomID, npcID, equipped));
+				weaponList.add(new Weapon(itemID, name, price, damage, playerID, roomID, npcID, equipped));
 			}
 			return weaponList;
 		} finally {
@@ -761,6 +761,7 @@ public class InitialData {
 				
 				//Integer.parseInt(i.next());
 				
+				int itemID = Integer.parseInt(i.next());
 				String name = i.next();
 				int price = Integer.parseInt(i.next());
 				int defenseMod = Integer.parseInt(i.next());
@@ -771,7 +772,7 @@ public class InitialData {
 				int npcID = Integer.parseInt(i.next());
 				boolean equipped = Boolean.parseBoolean(i.next());
 				
-				equipmentList.add(new Equipment(name, price, defenseMod,hpMod, speedMod, playerID, roomID, npcID, equipped));
+				equipmentList.add(new Equipment(itemID, name, price, defenseMod,hpMod, speedMod, playerID, roomID, npcID, equipped));
 			}
 			return equipmentList;
 		} finally {
@@ -790,14 +791,14 @@ public class InitialData {
 				Iterator<String> i = tuple.iterator();
 				
 				//Integer.parseInt(i.next());
-				
+				int itemID = Integer.parseInt(i.next());
 				String name = i.next();
 				int price = Integer.parseInt(i.next());
 				int playerID = Integer.parseInt(i.next());
 				int roomID = Integer.parseInt(i.next());
 				int npcID = Integer.parseInt(i.next());
 				
-				usableList.add(new Usable(name, price, playerID, roomID, npcID));
+				usableList.add(new Usable(itemID, name, price, playerID, roomID, npcID));
 			}
 			return usableList;
 		} finally {
@@ -816,7 +817,7 @@ public class InitialData {
 				Iterator<String> i = tuple.iterator();
 				
 				//Integer.parseInt(i.next());
-				
+				int itemID = Integer.parseInt(i.next());
 				String name = i.next();
 				int price = Integer.parseInt(i.next());
 				int curHPMod = Integer.parseInt(i.next());
@@ -828,7 +829,7 @@ public class InitialData {
 				int roomID = Integer.parseInt(i.next());
 				int npcID = Integer.parseInt(i.next());
 				
-				consumableList.add(new Consumable(name, price, curHPMod, maxHPMod, dmgMod, defMod, spdMod, playerID, roomID, npcID));
+				consumableList.add(new Consumable(itemID, name, price, curHPMod, maxHPMod, dmgMod, defMod, spdMod, playerID, roomID, npcID));
 			}
 			return consumableList;
 		} finally {
@@ -847,7 +848,7 @@ public class InitialData {
 				Iterator<String> i = tuple.iterator();
 				
 				//Integer.parseInt(i.next());
-				
+				int itemID = Integer.parseInt(i.next());
 				String name = i.next();
 				String num = i.next();
 				System.out.println(num);
@@ -859,7 +860,7 @@ public class InitialData {
 				int roomID = Integer.parseInt(i.next());
 				int npcID = Integer.parseInt(i.next());
 				
-				treasureList.add(new Treasure(name, price, playerID, roomID, npcID));
+				treasureList.add(new Treasure(itemID, name, price, playerID, roomID, npcID));
 			}
 			return treasureList;
 		} finally {
@@ -878,14 +879,14 @@ public class InitialData {
 				Iterator<String> i = tuple.iterator();
 				
 				//Integer.parseInt(i.next());
-				
+				int itemID = Integer.parseInt(i.next());
 				String name = i.next();
 				int price = Integer.parseInt(i.next());
 				int playerID = Integer.parseInt(i.next());
 				int roomID = Integer.parseInt(i.next());
 				int npcID = Integer.parseInt(i.next());
 				
-				trophyList.add(new Trophy(name, price, playerID, roomID, npcID));
+				trophyList.add(new Trophy(itemID, name, price, playerID, roomID, npcID));
 			}
 			return trophyList;
 		} finally {

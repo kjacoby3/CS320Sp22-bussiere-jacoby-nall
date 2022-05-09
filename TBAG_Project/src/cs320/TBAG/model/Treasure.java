@@ -6,7 +6,8 @@ public class Treasure extends Item{
 	int spdMod;
 	int dmgMod;*/
 	
-	public Treasure(String name, int price, int playerID, int roomID, int npcID) {
+	public Treasure(int itemID, String name, int price, int playerID, int roomID, int npcID) {
+		this.itemID=itemID;
 		this.name = name;
 		type = "Treasure";
 		this.price = price;

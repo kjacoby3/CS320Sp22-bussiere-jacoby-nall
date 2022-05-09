@@ -22,9 +22,9 @@ public class Player extends Actor implements ActionsInterface{
 		location = new Room();
 		inventory = new Inventory(100);
 		actorStats = new ActorStats();
-		inventory.addItem(new Equipment("Cloth Armor", 10, 50, 50, 50,1,0,0,true));
-		eqWeap = new Weapon("Fists", 10, 10, 0, 0, 0,true);
-		equipped = new Equipment("Bare",0, 10, 10, 0,1,0,0,true);
+		inventory.addItem(new Equipment(0,"Cloth Armor", 10, 50, 50, 50,1,0,0,true));
+		eqWeap = new Weapon(0,"Fists", 10, 10, 0, 0, 0,true);
+		equipped = new Equipment(0,"Bare",0, 10, 10, 0,1,0,0,true);
 		roomId = 1;
 	}
 	
@@ -126,7 +126,7 @@ public class Player extends Actor implements ActionsInterface{
 	public void unequipWeapon() {
 		Weapon curWeapon = getEqWeap();
 		inventory.addItem(curWeapon);
-		setEqWeap(new Weapon("Fists", 10, 100, 0, 0, 0, true));
+		setEqWeap(new Weapon(0,"Fists", 10, 100, 0, 0, 0, true));
 		
 	}
 	
@@ -148,7 +148,7 @@ public class Player extends Actor implements ActionsInterface{
 	public void unequipEquipment() {
 		Equipment curEquipment = getEquipped();
 		inventory.addItem(curEquipment);
-		setEquipped(new Equipment("Bare",0, 100, 10, 0, 0, 0, 0, true));
+		setEquipped(new Equipment(0,"Bare",0, 100, 10, 0, 0, 0, 0, true));
 	}
 
 	@Override

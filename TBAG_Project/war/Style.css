@@ -1,6 +1,6 @@
 .gridContainer{
     display: grid;
-    grid-template-columns: 50vh auto 50vh;
+    grid-template-columns: 30vw 40vw 30vw;
     gap: 10px;
     background-color: #11013b;
     width:auto;

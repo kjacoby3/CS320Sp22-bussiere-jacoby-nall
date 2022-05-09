@@ -4,7 +4,8 @@ public class Weapon extends Item{
 		int damage;
 		boolean equipped;
 		
-		public Weapon(String name, int damage, int price, int playerID, int roomID, int npcID, boolean equipped) {
+		public Weapon(int itemID, String name, int damage, int price, int playerID, int roomID, int npcID, boolean equipped) {
+			this.itemID = itemID;
 			this.name = name;
 			this.price = price;
 			this.type = "Weapon";
