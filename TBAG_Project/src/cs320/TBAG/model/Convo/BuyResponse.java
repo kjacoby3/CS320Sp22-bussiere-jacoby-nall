@@ -13,7 +13,7 @@ public class BuyResponse extends ConversationResponse {
 	public BuyResponse() {
 		resultNode = 0;
 		failedNode = 0;
-		buyItem = new Weapon("Weapon", 0, 0, 0, 0, 0, false);
+		buyItem = new Weapon(0,"Weapon", 0, 0, 0, 0, 0, false);
 		price = buyItem.getBuyPrice();
 		bought = false;
 		response = "Buy: " + buyItem.getName() + " for " + price + " coins.";

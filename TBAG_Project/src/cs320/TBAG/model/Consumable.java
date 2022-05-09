@@ -7,7 +7,8 @@ public class Consumable extends Item{
 	private int defMod;
 	private int spdMod;
 	
-	public Consumable(String name, int price, int curHPMod, int maxHPMod, int dmgMod, int defMod, int spdMod, int playerID, int roomID, int npcID) {
+	public Consumable(int itemID, String name, int price, int curHPMod, int maxHPMod, int dmgMod, int defMod, int spdMod, int playerID, int roomID, int npcID) {
+		this.itemID=itemID;
 		this.name = name;
 		this.price = price;
 		this.type = "Consumable";

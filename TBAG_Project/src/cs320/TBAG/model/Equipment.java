@@ -6,7 +6,8 @@ public class Equipment extends Item{
 	int speedMod;
 	boolean equipped;
 	
-	public Equipment(String name, int price, int defenseMod, int hpMod, int speedMod, int playerID, int roomID, int npcID, Boolean equipped) {
+	public Equipment(int itemID, String name, int price, int defenseMod, int hpMod, int speedMod, int playerID, int roomID, int npcID, Boolean equipped) {
+		this.itemID=itemID;
 		this.name = name;
 		this.type = "Equipment";
 		this.defenseMod = defenseMod;

@@ -2,7 +2,8 @@
 
 <html>
 	<head>
-		<title>Login</title>
+		<title>Login</title>\
+        <link rel="stylesheet" href="Style.css">
         <style type="text/css">
             .error{
                 color: red
@@ -19,7 +20,7 @@
 
     
 
-	<body>
+	<body class="gridContainer">
         <div class="title">Text Based Adventure Game</div>
         <c:if test="${! empty errorMessage}">
 			<div class = error>${errorMessage}</div>

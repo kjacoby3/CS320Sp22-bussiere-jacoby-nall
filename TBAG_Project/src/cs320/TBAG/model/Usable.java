@@ -1,7 +1,8 @@
 package cs320.TBAG.model;
 
 public class Usable extends Item{
-	public Usable(String name, int price, int playerID, int roomID, int npcID) {
+	public Usable(int itemID, String name, int price, int playerID, int roomID, int npcID) {
+		this.itemID=itemID;
 		this.name = name;
 		this.price = price;
 		this.type = "Usable";
