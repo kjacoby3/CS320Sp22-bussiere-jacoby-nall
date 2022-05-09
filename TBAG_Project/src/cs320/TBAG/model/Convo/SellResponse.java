@@ -14,7 +14,7 @@ public class SellResponse extends ConversationResponse {
 	public SellResponse() {
 		resultNode = 0;
 		failedNode = 0;
-		sellItem = new Weapon("Weapon", 0, 0, 0, 0, 0, false);
+		sellItem = new Weapon(0,"Weapon", 0, 0, 0, 0, 0, false);
 		price = sellItem.getSellPrice();
 		sold = false;
 		response = "Sell: " + sellItem.getName() + " for " + price + " coins.";

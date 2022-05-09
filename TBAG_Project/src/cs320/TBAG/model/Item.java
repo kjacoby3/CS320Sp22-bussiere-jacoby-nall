@@ -7,6 +7,7 @@ public abstract class Item {
 	int playerID;
 	int roomID;
 	int npcID;
+	int itemID;
 	
 	
 	public String getName() {
@@ -33,6 +34,10 @@ public abstract class Item {
 	
 	public void setPrice(int price) {
 		this.price = price;
+	}
+	
+	public int getItemID() {
+		return itemID;
 	}
 	
 	public int getPlayerID(){

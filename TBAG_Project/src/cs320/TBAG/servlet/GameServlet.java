@@ -114,7 +114,7 @@ public class GameServlet extends HttpServlet{
 			input = input.toLowerCase();
 		}*/
 
-		Consumable healthPotion = new Consumable("Health Potion", 0, 10, 20, 0, 0, 0, 0, 0, 0);
+		Consumable healthPotion = new Consumable(0,"Health Potion", 0, 10, 20, 0, 0, 0, 0, 0, 0);
 		player.setActorStats(new ActorStats());
 		player.getInventory().addItem(healthPotion);
 		System.out.println("" + input);
@@ -252,7 +252,7 @@ public class GameServlet extends HttpServlet{
 			}
 			
 			else if(input.equalsIgnoreCase("pickup")) {
-				player.getInventory().addItem(new Weapon("banana", 1000000, 1000000,1,0,0, true));
+				player.getInventory().addItem(new Weapon(0,"banana", 1000000, 1000000,1,0,0, true));
 				updateHistory(input);
 				//req.setAttribute("roomMessage", map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req,resp);

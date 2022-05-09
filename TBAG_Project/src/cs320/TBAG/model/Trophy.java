@@ -1,7 +1,8 @@
 package cs320.TBAG.model;
 
 public class Trophy extends Item{
-	public Trophy(String name, int price, int playerID, int roomID, int npcID) {
+	public Trophy(int itemID, String name, int price, int playerID, int roomID, int npcID) {
+		this.itemID = itemID;
 		this.name = name;
 		this.price = price;
 		type = "Trophy";
