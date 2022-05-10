@@ -549,7 +549,7 @@ public class DerbyDatabase implements IDatabase {
 						
 						while(consumableSet.next()) {
 							int index =1;
-							int itemID = usableSet.getInt(index++);
+							int itemID = consumableSet.getInt(index++);
 							String name = consumableSet.getString(index++);
 							int price = consumableSet.getInt(index++);
 							int curHPMod = consumableSet.getInt(index++);
@@ -773,6 +773,7 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement players = null;
 				PreparedStatement rooms = null;
 				PreparedStatement npcs = null;
+				PreparedStatement actorStats = null;
 				PreparedStatement connections = null;
 				PreparedStatement accounts = null;
 				
@@ -1011,6 +1012,14 @@ public class DerbyDatabase implements IDatabase {
 					);
 					enemyPuzzle.executeUpdate();
 					
+					actorStats = conn.prepareStatement(
+							"create table actorStats ( "
+							+ "statsID integer, curHP integer, maxHP integer, "
+							+ "dmg integer, def integer, spd integer, curExp integer,"
+							+ " maxExp integer, curLvl integer)"
+					);
+					actorStats.executeUpdate();
+					
 					return true;
 				} finally {
 					//DBUtil.closeQuietly(stmt1);
@@ -1056,6 +1065,7 @@ public class DerbyDatabase implements IDatabase {
 					
 					List<Player> playerList;
 					List<NPC> npcList;
+					List<ActorStats> statsList;
 					try {
 
 						
@@ -1087,6 +1097,7 @@ public class DerbyDatabase implements IDatabase {
 						
 						playerList = InitialData.getPlayers();
 						npcList = InitialData.getNPCs();
+						statsList = InitialData.getActorStats();
 						
 						roomList = InitialData.getRooms();
 						roomConnectionList = InitialData.getRoomConnections();
@@ -1126,6 +1137,7 @@ public class DerbyDatabase implements IDatabase {
 					
 					PreparedStatement insertPlayer = null;
 					PreparedStatement insertNPC = null;
+					PreparedStatement insertActorStats = null;
 					
 					try {
 						// populate Rooms table 
@@ -1624,6 +1636,30 @@ public class DerbyDatabase implements IDatabase {
 						DBUtil.closeQuietly(insertNPC);
 					}
 					System.out.println("NPC table successfully populated");
+					
+					try {
+						insertActorStats = conn.prepareStatement("insert into actorStats (statsID, curHP, maxHP, dmg, def, spd, curExp, maxExp, curLvl)"
+								+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+						for(ActorStats stats : statsList) {
+							//insertNPC.setInt(1, npc.getNPCId());
+							insertActorStats.setInt(1, stats.getStatsId());
+							insertActorStats.setInt(2, stats.getCurHP());
+							insertActorStats.setInt(3, stats.getMaxHP());
+							insertActorStats.setInt(4, stats.getDmg());
+							insertActorStats.setInt(5, stats.getDef());
+							insertActorStats.setInt(6, stats.getSpd());
+							insertActorStats.setInt(7,  stats.getCurExp());
+							insertActorStats.setInt(8,  stats.getMaxExp());
+							insertActorStats.setInt(9,  stats.getCurLvl());
+							
+							insertActorStats.addBatch();
+						}
+						insertActorStats.executeBatch();
+					} finally {
+						DBUtil.closeQuietly(insertActorStats);
+					}
+					System.out.println("ActorStats table successfully populated");
+					
 					return true;
 				}
 					
@@ -1775,8 +1811,8 @@ public class DerbyDatabase implements IDatabase {
 				
 				try {
 					statStmt = conn.prepareStatement(
-							"select actorStats.* from actorStats, player "
-							+ "where actorStats.statsID = player.statsID and player.playerID = ?"
+							"select actorStats.* from actorStats, players "
+							+ "where actorStats.statsID = players.statsID and players.playerID = ?"
 				);
 				statStmt.setInt(1, playerId);
 				
@@ -1812,8 +1848,8 @@ public class DerbyDatabase implements IDatabase {
 				
 				try {
 					statStmt = conn.prepareStatement(
-							"select actorStats.* from actorStats, npc "
-							+ "where actorStats.statsID = npc.statsID and npc.npcID = ?"
+							"select actorStats.* from actorStats, npcs "
+							+ "where actorStats.statsID = npcs.statsID and npcs.npcID = ?"
 				);
 				statStmt.setInt(1, npcId);
 				
@@ -2280,7 +2316,7 @@ public class DerbyDatabase implements IDatabase {
 				
 				try {
 					doorStmt = conn.prepareStatement(
-						"select door.* from door "
+						"select * from door "
 						+ "where door.roomID = ?"	
 					);
 					doorStmt.setInt(1, roomId);
@@ -2312,7 +2348,7 @@ public class DerbyDatabase implements IDatabase {
 					}
 					
 					keypadStmt = conn.prepareStatement(
-							"select keypad.* from keypad "
+							"select * from keypad "
 							+ "where keypad.roomID = ?");
 					keypadStmt.setInt(1, roomId);
 					
@@ -2341,7 +2377,7 @@ public class DerbyDatabase implements IDatabase {
 					}
 					
 					chestStmt = conn.prepareStatement(
-							"select chest.* from chest "
+							"select * from chest "
 							+ "where chest.roomID = ?");
 					chestStmt.setInt(1, roomId);
 					
@@ -2370,7 +2406,7 @@ public class DerbyDatabase implements IDatabase {
 					}
 					
 					signStmt = conn.prepareStatement(
-							"select sign.* from sign "
+							"select * from sign "
 							+ "where sign.roomID = ?");
 					signStmt.setInt(1, roomId);
 					
@@ -2428,7 +2464,7 @@ public class DerbyDatabase implements IDatabase {
 				
 				try {
 					keyPuzzleStmt = conn.prepareStatement(
-						"select keyPuzzle.* from keyPuzzle "
+						"select * from keyPuzzle "
 						+ "where keyPuzzle.puzzleID = ?"	
 					);
 					keyPuzzleStmt.setInt(1, puzzleID);
@@ -2461,7 +2497,7 @@ public class DerbyDatabase implements IDatabase {
 					}
 					
 					pinPuzzleStmt = conn.prepareStatement(
-							"select pinPuzzle.* from pinPuzzle "
+							"select * from pinPuzzle "
 							+ "where pinPuzzle.puzzleID = ?");
 					pinPuzzleStmt.setInt(1, puzzleID);
 					
@@ -2493,7 +2529,7 @@ public class DerbyDatabase implements IDatabase {
 					}
 					
 					enemyPuzzleStmt = conn.prepareStatement(
-							"select enemyPuzzle.* from enemyPuzzle "
+							"select * from enemyPuzzle "
 							+ "where enemyPuzzle.puzzleID = ?");
 					enemyPuzzleStmt.setInt(1, puzzleID);
 					
@@ -2550,8 +2586,8 @@ public class DerbyDatabase implements IDatabase {
 				
 				try {
 					playerStmt = conn.prepareStatement(
-							"select player.* from player"
-							+ "where player.playerID = ?"
+							"select * from players "
+							+ "where players.playerID = ?"
 				);
 				playerStmt.setInt(1, playerID);
 				
