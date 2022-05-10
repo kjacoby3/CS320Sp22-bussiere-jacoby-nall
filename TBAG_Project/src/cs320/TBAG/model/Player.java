@@ -26,6 +26,7 @@ public class Player extends Actor implements ActionsInterface{
 		eqWeap = new Weapon(0,"Fists", 10, 10, 0, 0, 0,true);
 		equipped = new Equipment(0,"Bare",0, 10, 10, 0,1,0,0,true);
 		roomId = 1;
+		prevRoomID = 1;
 	}
 	
 	public Player(String name, Room location, Inventory inventory, ActorStats actorStats,
@@ -451,7 +452,7 @@ public class Player extends Actor implements ActionsInterface{
 		
 		if (activatedCheck = true) {
 			if(newRoom > 0) {
-				int prevRoomID = actorRoom;
+				prevRoomID = actorRoom;
 				//setPrevRoomId(prevRoomID); //actor needs a get/setPrevRoomID(int) method
 				int actorCurrRoom = newRoom;
 				Room connectedRoom = null;//db.getRoomByID(actorCurrRoom);
