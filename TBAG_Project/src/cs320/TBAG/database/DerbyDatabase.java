@@ -548,7 +548,7 @@ public class DerbyDatabase implements IDatabase {
 						
 						while(consumableSet.next()) {
 							int index =1;
-							int itemID = usableSet.getInt(index++);
+							int itemID = consumableSet.getInt(index++);
 							String name = consumableSet.getString(index++);
 							int price = consumableSet.getInt(index++);
 							int curHPMod = consumableSet.getInt(index++);
@@ -992,14 +992,14 @@ public class DerbyDatabase implements IDatabase {
 					);
 					keyPuzzle.executeUpdate();
 					
-					pinPuzzle = conn.prepareStatement( 
+					/*pinPuzzle = conn.prepareStatement( 
 							"create table pinPuzzle ( "
 							+ "pinPuzzleID integer, puzzleID integer, "
 							+ "key varchar(40), complete boolean, hint varchar(100), "
 							+ "completeMSG varchar(200), currency integer, "
 							+ "exp integer, itemID integer)"
 					);
-					pinPuzzle.executeUpdate();
+					pinPuzzle.executeUpdate();*/
 					
 					enemyPuzzle = conn.prepareStatement( 
 							"create table enemyPuzzle ( "
@@ -1070,7 +1070,7 @@ public class DerbyDatabase implements IDatabase {
 						convoNodeList = InitialData.getConversationNodes();
 						defaultRespList = InitialData.getDefaultResponses();
 						endRespList = InitialData.getEndResponses();
-						puzzleResponseList = InitialData.getPuzzleResponses();
+						/*puzzleResponseList = InitialData.getPuzzleResponses();
 						rewardResponseList = InitialData.getRewardResponses();
 						buyResponseList = InitialData.getBuyResponses();
 						sellResponseList = InitialData.getSellResponses();
@@ -1082,7 +1082,7 @@ public class DerbyDatabase implements IDatabase {
 						
 						keyPuzzleList = InitialData.getKeyPuzzles();
 						pinPuzzleList = InitialData.getPinPuzzles();
-						enemyPuzzleList = InitialData.getEnemyPuzzles();
+						enemyPuzzleList = InitialData.getEnemyPuzzles();*/
 						
 						playerList = InitialData.getFullPlayers();
 						npcList = InitialData.getFullNPCs();
@@ -1355,7 +1355,7 @@ public class DerbyDatabase implements IDatabase {
 					}
 					System.out.println("EndResponse table successfully populated");
 					
-					try {
+					/*try {
 						insertPuzzleResp = conn.prepareStatement("insert into puzzleResponse (puzzleResponseID, convoTreeID, convoNodeID, response, resultNodeID, puzzleID, completeResultNodeID)"
 								+ "values (?, ?, ?, ?, ?, ?, ?)");
 						for(PuzzleResponse puzzleResp : puzzleResponseList) {
@@ -1582,7 +1582,7 @@ public class DerbyDatabase implements IDatabase {
 						insertEnemyPuzzle.executeBatch();
 					} finally {
 						DBUtil.closeQuietly(insertEnemyPuzzle);
-					}
+					}*/
 					System.out.println("EnemyPuzzle table successfully populated");
 					
 					return true;

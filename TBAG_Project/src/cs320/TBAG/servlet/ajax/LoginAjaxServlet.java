@@ -1,4 +1,4 @@
-package cs320.TBAG.servlet;
+package cs320.TBAG.servlet.ajax;
 
 import java.io.IOException;
 
@@ -10,13 +10,13 @@ import javax.servlet.http.HttpSession;
 
 import cs320.TBAG.database.DerbyDatabase;
 
-public class LoginServlet extends HttpServlet{
+public class LoginAjaxServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	HttpSession session;
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
-		System.out.println("loginServletdoGet");
+		System.out.println("doGet");
 		session = req.getSession();
 		req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
 	}
@@ -25,21 +25,29 @@ public class LoginServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException{
-		System.out.println("loginServletdoPost");
+		System.out.println("loginAjaxServlet doPost");
 		session = req.getSession();
-		System.out.println(session.getAttribute("saveUsername"));
-		System.out.println(session.getAttribute("savePassword"));
-		if(req.getParameter("username") != null && req.getParameter("password") != null) {
+		//System.out.println(session.getAttribute("saveUsername"));
+		//System.out.println(session.getAttribute("savePassword"));
+		String username = req.getParameter("username");
+		String password = req.getParameter("password");
+		System.out.println(username);
+		System.out.println(password);
+		if(username != null && password != null) {
 			DerbyDatabase db = new DerbyDatabase();
-			String compare=db.selectAccountFromUsername(req.getParameter("username"));
-			
-			if(req.getParameter("password").equals(compare)) {
+			String compare=db.selectAccountFromUsername(username);
+			System.out.println(compare);
+			if(password.equals(compare)) {
 				//req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
-				resp.sendRedirect("/TBAG/game");
+				//resp.sendRedirect("/TBAG/game");
+				resp.setContentType("text/plain");
+				resp.getWriter().write(username);
+				resp.getWriter().close();
 			}
 			else {
-				req.setAttribute("errorMessage", "Incorrect Username or Password");
-				req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
+				resp.setContentType("text/plain");
+				resp.getWriter().write("failure");
+				resp.getWriter().close();
 			}
 			
 			
@@ -61,10 +69,9 @@ public class LoginServlet extends HttpServlet{
 		}
 		
 		else {
-			System.out.println("else2");
-			req.setAttribute("errorMessage", "Enter a Username and Password");
-			
-			req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
+			resp.setContentType("text/plain");
+			resp.getWriter().write("failure");
+			resp.getWriter().close();
 		}
 		
 	}

@@ -7,6 +7,11 @@
 
   <!-- Servlets -->
   <servlet>
+    <servlet-name>LoginAjaxServlet</servlet-name>
+    <servlet-class>cs320.TBAG.servlet.ajax.LoginAjaxServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
     <servlet-name>LoginServlet</servlet-name>
     <servlet-class>cs320.TBAG.servlet.LoginServlet</servlet-class>
   </servlet>
@@ -34,6 +39,10 @@
 
   <!-- Servlet mappings -->
   <servlet-mapping>
+    <servlet-name>LoginAjaxServlet</servlet-name>
+    <url-pattern>/loginAjax</url-pattern>
+  </servlet-mapping>
+   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/login</url-pattern>
   </servlet-mapping>
