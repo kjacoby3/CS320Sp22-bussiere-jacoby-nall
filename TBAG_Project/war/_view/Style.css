@@ -1,6 +1,6 @@
 .gridContainer{
     display: grid;
-    grid-template-columns: 50vh auto 50vh;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
     background-color: #11013b;
     width:auto;
@@ -17,9 +17,10 @@
 }
 
 .terminal{
+    grid-column: 2;
     background-color: black;
     text-align:left;
-    overflow: scroll;
+    overflow-y: scroll;
     font-size: 100%;
 }
 .script{

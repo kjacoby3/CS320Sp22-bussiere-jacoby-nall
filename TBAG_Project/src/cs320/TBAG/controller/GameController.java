@@ -57,9 +57,11 @@ public class GameController {
 		
 		player = db.getPlayerByPlayerID(playerID);
 		ActorStats stats = db.findActorStatsByPlayerId(playerID);
+
 		player.setActorStats(stats);
 		Inventory inv = invCreator.getPlayerInventory(playerID);
 		player.setInventory(inv);
+
 			
 			for(Weapon weap : inv.getWeapons().values()) {
 				if(weap.getEquipped()) {

@@ -52,8 +52,16 @@ public class GameServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		System.out.println("doGet");
+		session = req.getSession();
+		System.out.println(session.getAttribute("playerID"));
+		if(session.getAttribute("playerID")==null) {
+			playerID = 1;
+		}
+		else {
+			playerID = Integer.parseInt((String) session.getAttribute("playerID"));
+		}
+		playerID=1;
 		gameID = 1;
-		playerID = 1;
 		controller = new GameController();
 		model = new Game();
 		controller.setModel(model);
@@ -65,12 +73,17 @@ public class GameServlet extends HttpServlet{
 		player = model.getPlayer();
 		map = model.getMap();
 		
-		session = req.getSession();
+		
 		session.setAttribute("controller", controller);
 		session.setAttribute("model", model);
 		session.setAttribute("player", player);
 		session.setAttribute("gameID", gameID);
 		session.setAttribute("history", new ArrayList<String>());
+		
+		req.setAttribute("weapon", player.getEqWeap());
+		req.setAttribute("equipment", player.getEquipped());
+		req.setAttribute("playerStats", player.getActorStats());
+		req.setAttribute("roomName", map.getRoom(player.getRoomId()));
 		
 		forwardRoomDesc(player, player.getRoomId(), null, req, resp);
 		
@@ -706,6 +719,13 @@ public class GameServlet extends HttpServlet{
 	public void forwardRoomDesc (Player player, int directionCheck, String input, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//player.move(directionCheck);
 		Room newRoom = map.getRoom(directionCheck);
+		req.setAttribute("weapon", player.getEqWeap());
+		req.setAttribute("equipment", player.getEquipped());
+		req.setAttribute("playerStats", player.getActorStats());
+		req.setAttribute("play", player);
+		req.setAttribute("roomName", map.getRoom(player.getRoomId()).getRoomName());
+		//System.out.println(player.getActorStats().getCurExp());
+		//System.out.println(player.getActorStats().getDmg());
 		if(newRoom == null) {
 			System.out.println("newRoom");
 		}
