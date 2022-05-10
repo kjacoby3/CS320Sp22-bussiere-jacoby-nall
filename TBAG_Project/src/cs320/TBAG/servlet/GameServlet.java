@@ -112,7 +112,12 @@ public class GameServlet extends HttpServlet{
 		
 		player = (Player) session.getAttribute("player");
 		map = model.getMap();
-		
+		//
+		req.setAttribute("weapon", player.getEqWeap());
+		req.setAttribute("equipment", player.getEquipped());
+		req.setAttribute("playerStats", player.getActorStats());
+		req.setAttribute("roomName", map.getRoom(player.getRoomId()));
+		//
 		System.out.println(player.getRoomId());
 		
 		Boolean objActivated = (Boolean) session.getAttribute("objActivated");
@@ -127,9 +132,9 @@ public class GameServlet extends HttpServlet{
 			input = input.toLowerCase();
 		}*/
 
-		Consumable healthPotion = new Consumable(0,"Health Potion", 0, 10, 20, 0, 0, 0, 0, 0, 0);
-		player.setActorStats(new ActorStats());
-		player.getInventory().addItem(healthPotion);
+		//Consumable healthPotion = new Consumable(0,"Health Potion", 0, 10, 20, 0, 0, 0, 0, 0, 0);
+		//player.setActorStats(new ActorStats());
+		//player.getInventory().addItem(healthPotion);
 		System.out.println("" + input);
 		
 		//Player player= model.getPlayer();
@@ -384,6 +389,7 @@ public class GameServlet extends HttpServlet{
 						for(Equipment i : player.getInventory().getEquipment().values()) {
 							if (equipName.equalsIgnoreCase(i.getName())) {
 								player.equipEquipment(i);
+								System.out.println(player.getInventory().getEquipment());
 								itemWasEquipped = true;
 								equippedItem = i;
 							}
@@ -436,6 +442,8 @@ public class GameServlet extends HttpServlet{
 						updateHistory("The item of " + str + " is not equipped. Try checking your spelling.");
 					}
 				}
+				System.out.println(player.getInventory().getWeapons());
+				System.out.println(player.getInventory().getEquipment());
 				//req.setAttribute("roomMessage", map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
@@ -616,6 +624,8 @@ public class GameServlet extends HttpServlet{
 					for(Consumable item : player.getInventory().getConsumables().values()) {
 						if(item.getName().equalsIgnoreCase(useItem)) {
 							updateHistory(player.use(item));
+							System.out.println(player.getActorStats().getMaxHP());
+							System.out.println(player.getActorStats().getCurHP());
 							break;
 						}
 					}
@@ -626,6 +636,8 @@ public class GameServlet extends HttpServlet{
 						}
 					}
 				}
+				System.out.println("Servlet MaxHP: " + player.getActorStats().getMaxHP());
+				System.out.println("Servlet CurHP: " + player.getActorStats().getCurHP());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 			else {
@@ -643,7 +655,7 @@ public class GameServlet extends HttpServlet{
 			req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			//resp.getWriter().write("Nothing Happens");
 		}
-		
+		session.setAttribute("player", player);
 	}
 	
 	/*public void updateHistory(String input, String output) {

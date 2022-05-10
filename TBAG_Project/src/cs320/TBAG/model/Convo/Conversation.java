@@ -60,12 +60,16 @@ public class Conversation {
 	
 	public ArrayList<String> displaySelectedNodeMSG() {
 		ArrayList<String> stringList = new ArrayList<String>();
-		selectedNode.checkResponses();
-		System.out.println(selectedNode.getStatement());
-		stringList.add(selectedNode.getStatement());
-		for(int i = 0; i < selectedNode.getResponseList().size(); i++) {
-			System.out.println("" + (i + 1) + "| " + selectedNode.getResponseList().get(i).getResponseStr());
-			stringList.add("" + (i + 1) + "| " + selectedNode.getResponseList().get(i).getResponseStr());
+		if(selectedNode == null) {
+			stringList.add("Sorry, no conversation here!");
+		} else {
+			selectedNode.checkResponses();
+			System.out.println(selectedNode.getStatement());
+			stringList.add(selectedNode.getStatement());
+			for(int i = 0; i < selectedNode.getResponseList().size(); i++) {
+				System.out.println("" + (i + 1) + "| " + selectedNode.getResponseList().get(i).getResponseStr());
+				stringList.add("" + (i + 1) + "| " + selectedNode.getResponseList().get(i).getResponseStr());
+			}
 		}
 		
 //		for(int i : selectedNode.getResponseMap().keySet()) {

@@ -331,7 +331,7 @@ public class Player extends Actor implements ActionsInterface{
 								
 				if(consum.getCurHPMod() != 0) {
 					//actorStats.setCurHP((int)(actorStats.getCurHP() * (1 + (double) (consum.getCurHPMod() / 100))));
-					actorStats.setCurHP(actorStats.getCurHP() + consum.getCurHPMod());
+					actorStats.addHP(consum.getCurHPMod());
 					if(actorStats.getCurHP() > actorStats.getMaxHP()) {
 						actorStats.setCurHP(actorStats.getMaxHP());
 					}
