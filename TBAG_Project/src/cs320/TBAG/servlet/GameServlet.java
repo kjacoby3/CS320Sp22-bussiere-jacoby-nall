@@ -58,7 +58,7 @@ public class GameServlet extends HttpServlet{
 			playerID = 1;
 		}
 		else {
-			playerID = Integer.parseInt((String) session.getAttribute("playerID"));
+			playerID = (int) session.getAttribute("playerID");
 		}
 		playerID=1;
 		gameID = 1;
