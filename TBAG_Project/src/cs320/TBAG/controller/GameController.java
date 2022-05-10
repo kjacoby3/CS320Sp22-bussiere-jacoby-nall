@@ -54,6 +54,7 @@ public class GameController {
 		player = new Player();
 		player.setRoomId(1);
 		ActorStats stats = db.findActorStatsByPlayerId(playerID);
+		
 			player.setActorStats(stats);
 			Inventory inv = invCreator.getPlayerInventory(playerID);
 			player.setInventory(inv);
