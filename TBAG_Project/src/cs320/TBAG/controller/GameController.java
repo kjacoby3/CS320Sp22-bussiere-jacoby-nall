@@ -46,13 +46,15 @@ public class GameController {
 	
 	
 	public void createPlayers(int playerID) {
-		List<Player> playerList = db.findAllPlayers();
+		//List<Player> playerList = db.findAllPlayers();
 		//Iterator<Player> iterator = playerList.iterator();
 		//while (iterator.hasNext()) {
 			//Player player = iterator.next();
 		//for(Player player : playerList) {
-		player = new Player();
-		player.setRoomId(1);
+		//player = new Player();
+		//player.setRoomId(1);
+		
+		player = db.getPlayerByPlayerID(playerID);
 		ActorStats stats = db.findActorStatsByPlayerId(playerID);
 			player.setActorStats(stats);
 			Inventory inv = invCreator.getPlayerInventory(playerID);
@@ -110,15 +112,15 @@ public class GameController {
 		this.model = model;
 	}
 
-	public void newGame() {
-		model.addEmptyPlayer();
-		model.addEmptyNPC();
-	}
-	
-	public void saveGame() {
-		model.getSave().setActorsList(model.getActorsList());
-		model.getSave().setInventories(model.getInventories());
-		model.getSave().setMap(model.getMap());
-		
-	}
+//	public void newGame() {
+//		model.addEmptyPlayer();
+//		model.addEmptyNPC();
+//	}
+//	
+//	public void saveGame() {
+//		model.getSave().setActorsList(model.getActorsList());
+//		model.getSave().setInventories(model.getInventories());
+//		model.getSave().setMap(model.getMap());
+//		
+//	}
 }

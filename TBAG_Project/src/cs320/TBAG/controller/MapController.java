@@ -54,6 +54,7 @@ public class MapController {
 			Inventory inv = invCreator.getRoomInventory(room.getRoomID());
 			room.setRoomInv(inv);
 			
+			room.setRoomInteractables(db.getInteractablesByRoomID(room.getRoomID()));
 			//for (room : roomList) {
 			//ArrayList<Integer> exit = new ArrayList<Integer>();
 			room.setRoomConnections(i.next());
