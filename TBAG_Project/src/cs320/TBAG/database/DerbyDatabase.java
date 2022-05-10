@@ -42,6 +42,7 @@ import cs320.TBAG.model.Convo.RewardResponse;
 import cs320.TBAG.model.Convo.SellResponse;
 import cs320.TBAG.model.InteractableObj.Chest;
 import cs320.TBAG.model.InteractableObj.Door;
+import cs320.TBAG.model.InteractableObj.Interactable;
 import cs320.TBAG.model.InteractableObj.Keypad;
 import cs320.TBAG.model.InteractableObj.Sign;
 import cs320.TBAG.model.PuzzleType.EnemyPuzzle;
@@ -772,6 +773,7 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement players = null;
 				PreparedStatement rooms = null;
 				PreparedStatement npcs = null;
+				PreparedStatement actorStats = null;
 				PreparedStatement connections = null;
 				PreparedStatement accounts = null;
 				
@@ -798,7 +800,7 @@ public class DerbyDatabase implements IDatabase {
 					players = conn.prepareStatement(
 						"create table players ("
 						+ " playerID integer primary key generated always as identity (start with 0, increment by 1),"
-						+ "currency integer, level integer)"
+						+ "name varchar(40), roomID integer, statsID integer, currency integer, level integer)"
 						);
 					players.executeUpdate();
 					
@@ -815,7 +817,7 @@ public class DerbyDatabase implements IDatabase {
 							"create table npcs ("
 							+ "npcID integer primary key generated always as identity (start with 0, increment by 1),"
 							+ "name varchar(40), type varchar(40),"
-							+ "roomID integer, currency integer, stats integer, aggression integer)"
+							+ "roomID integer, statsID integer, aggression integer, convoTreeID integer, currency integer)"
 							);
 						npcs.executeUpdate();
 					
@@ -986,7 +988,7 @@ public class DerbyDatabase implements IDatabase {
 					keyPuzzle = conn.prepareStatement( 
 							"create table keyPuzzle ( "
 							+ "keyPuzzleID integer, puzzleID integer, "
-							+ "treasureID integer, complete boolean, hint varchar(100), "
+							+ "keyItemID integer, complete boolean, hint varchar(100), "
 							+ "completeMSG varchar(200), currency integer, "
 							+ "exp integer, itemID integer)"
 					);
@@ -995,7 +997,7 @@ public class DerbyDatabase implements IDatabase {
 					/*pinPuzzle = conn.prepareStatement( 
 							"create table pinPuzzle ( "
 							+ "pinPuzzleID integer, puzzleID integer, "
-							+ "key varchar(40), complete boolean, hint varchar(100), "
+							+ "keyStr varchar(40), complete boolean, hint varchar(100), "
 							+ "completeMSG varchar(200), currency integer, "
 							+ "exp integer, itemID integer)"
 					);
@@ -1009,6 +1011,14 @@ public class DerbyDatabase implements IDatabase {
 							+ "exp integer, itemID integer)"
 					);
 					enemyPuzzle.executeUpdate();
+					
+					actorStats = conn.prepareStatement(
+							"create table actorStats ( "
+							+ "statsID integer, curHP integer, maxHP integer, "
+							+ "dmg integer, def integer, spd integer, curExp integer,"
+							+ " maxExp integer, curLvl integer)"
+					);
+					actorStats.executeUpdate();
 					
 					return true;
 				} finally {
@@ -1055,6 +1065,7 @@ public class DerbyDatabase implements IDatabase {
 					
 					List<Player> playerList;
 					List<NPC> npcList;
+					List<ActorStats> statsList;
 					try {
 
 						
@@ -1084,8 +1095,9 @@ public class DerbyDatabase implements IDatabase {
 						pinPuzzleList = InitialData.getPinPuzzles();
 						enemyPuzzleList = InitialData.getEnemyPuzzles();*/
 						
-						playerList = InitialData.getFullPlayers();
-						npcList = InitialData.getFullNPCs();
+						playerList = InitialData.getPlayers();
+						npcList = InitialData.getNPCs();
+						statsList = InitialData.getActorStats();
 						
 						roomList = InitialData.getRooms();
 						roomConnectionList = InitialData.getRoomConnections();
@@ -1125,6 +1137,7 @@ public class DerbyDatabase implements IDatabase {
 					
 					PreparedStatement insertPlayer = null;
 					PreparedStatement insertNPC = null;
+					PreparedStatement insertActorStats = null;
 					
 					try {
 						// populate Rooms table 
@@ -1520,12 +1533,12 @@ public class DerbyDatabase implements IDatabase {
 					System.out.println("Sign table successfully populated");
 					
 					try {
-						insertKeyPuzzle = conn.prepareStatement("insert into keyPuzzle (keyPuzzleID, puzzleID, treasureID, complete, hint, completeMSG, currency, exp, rewardItemID)"
+						insertKeyPuzzle = conn.prepareStatement("insert into keyPuzzle (keyPuzzleID, puzzleID, keyItemID, complete, hint, completeMSG, currency, exp, itemID)"
 								+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 						for(KeyPuzzle puzzle : keyPuzzleList) {
 							insertKeyPuzzle.setInt(1, puzzle.getKeyPuzzleId());
 							insertKeyPuzzle.setInt(2, puzzle.getPuzzleId());
-							insertKeyPuzzle.setInt(3, puzzle.getTreasureId());
+							insertKeyPuzzle.setInt(3, puzzle.getItemId());
 							insertKeyPuzzle.setBoolean(4, puzzle.getComplete());
 							insertKeyPuzzle.setString(5, puzzle.getHint());
 							insertKeyPuzzle.setString(6, puzzle.getCompleteMSG());
@@ -1542,7 +1555,7 @@ public class DerbyDatabase implements IDatabase {
 					System.out.println("KeyPuzzle table successfully populated");
 					
 					try {
-						insertPinPuzzle = conn.prepareStatement("insert into pinPuzzle (pinPuzzleID, puzzleID, key, complete, hint, completeMSG, currency, exp, rewardItemID)"
+						insertPinPuzzle = conn.prepareStatement("insert into pinPuzzle (pinPuzzleID, puzzleID, keyStr, complete, hint, completeMSG, currency, exp, itemID)"
 								+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 						for(PinPuzzle puzzle : pinPuzzleList) {
 							insertPinPuzzle.setInt(1, puzzle.getPinPuzzleId());
@@ -1564,7 +1577,7 @@ public class DerbyDatabase implements IDatabase {
 					System.out.println("PinPuzzle table successfully populated");
 					
 					try {
-						insertEnemyPuzzle = conn.prepareStatement("insert into enemyPuzzle (enemyPuzzleID, puzzleID, npcID, complete, hint, completeMSG, currency, exp, rewardItemID)"
+						insertEnemyPuzzle = conn.prepareStatement("insert into enemyPuzzle (enemyPuzzleID, puzzleID, npcID, complete, hint, completeMSG, currency, exp, itemID)"
 								+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 						for(EnemyPuzzle puzzle : enemyPuzzleList) {
 							insertEnemyPuzzle.setInt(1, puzzle.getEnemyPuzzleId());
@@ -1584,6 +1597,68 @@ public class DerbyDatabase implements IDatabase {
 						DBUtil.closeQuietly(insertEnemyPuzzle);
 					}*/
 					System.out.println("EnemyPuzzle table successfully populated");
+					
+					try {
+						insertPlayer = conn.prepareStatement("insert into players (name, roomID, statsID, currency)"
+								+ "values (?, ?, ?, ?)");
+						for(Player player : playerList) {
+							//insertPlayer.setInt(1, player.getPlayerId());
+							insertPlayer.setString(1, player.getName());
+							insertPlayer.setInt(2, player.getRoomId());
+							insertPlayer.setInt(3, player.getStatsId());
+							insertPlayer.setInt(4,  player.getCurrency());
+							
+							insertPlayer.addBatch();
+						}
+						insertPlayer.executeBatch();
+					} finally {
+						DBUtil.closeQuietly(insertPlayer);
+					}
+					System.out.println("Player table successfully populated");
+					
+					try {
+						insertNPC = conn.prepareStatement("insert into npcs (name, type, roomID, statsID, aggression, convoTreeID, currency)"
+								+ "values (?, ?, ?, ?, ?, ?, ?)");
+						for(NPC npc : npcList) {
+							//insertNPC.setInt(1, npc.getNPCId());
+							insertNPC.setString(1, npc.getName());
+							insertNPC.setString(2, npc.getType());
+							insertNPC.setInt(3, npc.getRoomId());
+							insertNPC.setInt(4, npc.getStatsId());
+							insertNPC.setInt(5, npc.getAggression());
+							insertNPC.setInt(6, npc.getConversationTreeId());
+							insertNPC.setInt(7,  npc.getCurrency());
+							
+							insertNPC.addBatch();
+						}
+						insertNPC.executeBatch();
+					} finally {
+						DBUtil.closeQuietly(insertNPC);
+					}
+					System.out.println("NPC table successfully populated");
+					
+					try {
+						insertActorStats = conn.prepareStatement("insert into actorStats (statsID, curHP, maxHP, dmg, def, spd, curExp, maxExp, curLvl)"
+								+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+						for(ActorStats stats : statsList) {
+							//insertNPC.setInt(1, npc.getNPCId());
+							insertActorStats.setInt(1, stats.getStatsId());
+							insertActorStats.setInt(2, stats.getCurHP());
+							insertActorStats.setInt(3, stats.getMaxHP());
+							insertActorStats.setInt(4, stats.getDmg());
+							insertActorStats.setInt(5, stats.getDef());
+							insertActorStats.setInt(6, stats.getSpd());
+							insertActorStats.setInt(7,  stats.getCurExp());
+							insertActorStats.setInt(8,  stats.getMaxExp());
+							insertActorStats.setInt(9,  stats.getCurLvl());
+							
+							insertActorStats.addBatch();
+						}
+						insertActorStats.executeBatch();
+					} finally {
+						DBUtil.closeQuietly(insertActorStats);
+					}
+					System.out.println("ActorStats table successfully populated");
 					
 					return true;
 				}
@@ -1605,15 +1680,76 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public List<Player> findAllPlayers() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Player> findAllPlayers() {
+		return executeTransaction(new Transaction<ArrayList<Player>>() {
+			@Override
+			public ArrayList<Player> execute(Connection conn) throws SQLException {
+				PreparedStatement playerStmt = null;
+				ResultSet playerSet = null;
+				ArrayList<Player> playerList = new ArrayList<Player>();
+				try {
+					playerStmt = conn.prepareStatement(
+							"select player.* from player"
+				);
+					
+				playerSet = playerStmt.executeQuery();
+					
+				while(playerSet.next()) {
+					Player player = new Player();
+					player.setPlayerId(playerSet.getInt(1));
+					player.setName(playerSet.getString(2));
+					player.setRoomId(playerSet.getInt(3));
+					player.setStatsId(playerSet.getInt(4));
+					player.setCurrency(playerSet.getInt(5));
+					
+					playerList.add(player);
+				}
+					
+				return playerList;
+				} finally {
+					DBUtil.closeQuietly(playerStmt);
+				}
+				
+			}
+		});
 	}
 
 	@Override
-	public List<NPC> findAllNPCs() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<NPC> findAllNPCs() {
+		return executeTransaction(new Transaction<ArrayList<NPC>>() {
+			@Override
+			public ArrayList<NPC> execute(Connection conn) throws SQLException {
+				PreparedStatement npcStmt = null;
+				ResultSet npcSet = null;
+				ArrayList<NPC> npcList = new ArrayList<NPC>();
+				try {
+					npcStmt = conn.prepareStatement(
+							"select npc.* from npc"
+				);
+					
+				npcSet = npcStmt.executeQuery();
+					
+				while(npcSet.next()) {
+					NPC npc = new NPC();
+					npc.setNPCId(npcSet.getInt(1));
+					npc.setName(npcSet.getString(2));
+					npc.setType(npcSet.getString(3));
+					npc.setRoomId(npcSet.getInt(4));
+					npc.setStatsId(npcSet.getInt(5));
+					npc.setAggression(npcSet.getInt(6));
+					npc.setConversationTreeId(7);
+					npc.setCurrency(npcSet.getInt(8));
+					
+					npcList.add(npc);
+				}
+					
+				return npcList;
+				} finally {
+					DBUtil.closeQuietly(npcStmt);
+				}
+				
+			}
+		});
 	}
 
 	@Override
@@ -1666,14 +1802,76 @@ public class DerbyDatabase implements IDatabase {
 
 	@Override
 	public ActorStats findActorStatsByPlayerId(int playerId) {
-		// TODO Auto-generated method stub
-		return null;
+		return executeTransaction(new Transaction<ActorStats>() {
+			@Override
+			public ActorStats execute(Connection conn) throws SQLException {
+				PreparedStatement statStmt = null;
+				ResultSet statSet = null;
+				ActorStats stats = new ActorStats();
+				
+				try {
+					statStmt = conn.prepareStatement(
+							"select actorStats.* from actorStats, players "
+							+ "where actorStats.statsID = players.statsID and players.playerID = ?"
+				);
+				statStmt.setInt(1, playerId);
+				
+				statSet = statStmt.executeQuery();
+				
+				while(statSet.next()) {
+					stats.setCurHP(statSet.getInt(2));
+					stats.setMaxHP(statSet.getInt(3));
+					stats.setDmg(statSet.getInt(4));
+					stats.setDef(statSet.getInt(5));
+					stats.setSpd(statSet.getInt(6));
+					stats.setCurExp(statSet.getInt(7));
+					stats.setMaxExp(statSet.getInt(8));
+					stats.setCurLvl(statSet.getInt(9));
+				}
+					
+				return stats;
+				}finally {
+					DBUtil.closeQuietly(statStmt);
+				}
+			}
+		});
 	}
 
 	@Override
 	public ActorStats findActorStatsByNPCId(int npcId) {
-		// TODO Auto-generated method stub
-		return null;
+		return executeTransaction(new Transaction<ActorStats>() {
+			@Override
+			public ActorStats execute(Connection conn) throws SQLException {
+				PreparedStatement statStmt = null;
+				ResultSet statSet = null;
+				ActorStats stats = new ActorStats();
+				
+				try {
+					statStmt = conn.prepareStatement(
+							"select actorStats.* from actorStats, npcs "
+							+ "where actorStats.statsID = npcs.statsID and npcs.npcID = ?"
+				);
+				statStmt.setInt(1, npcId);
+				
+				statSet = statStmt.executeQuery();
+				
+				while(statSet.next()) {
+					stats.setCurHP(statSet.getInt(2));
+					stats.setMaxHP(statSet.getInt(3));
+					stats.setDmg(statSet.getInt(4));
+					stats.setDef(statSet.getInt(5));
+					stats.setSpd(statSet.getInt(6));
+					stats.setCurExp(statSet.getInt(7));
+					stats.setMaxExp(statSet.getInt(8));
+					stats.setCurLvl(statSet.getInt(9));
+				}
+					
+				return stats;
+				}finally {
+					DBUtil.closeQuietly(statStmt);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -1756,7 +1954,7 @@ public class DerbyDatabase implements IDatabase {
 					
 						return roomList;
 				} 
-					
+	
 					finally {
 					//DBUtil.closeQuietly(resultSet);
 					//DBUtil.closeQuietly(stmt);
@@ -1857,7 +2055,6 @@ public class DerbyDatabase implements IDatabase {
 
 	@Override
 	public ConversationTree constructConversationTreeByNPCID(int npcID) {
-		// TODO Auto-generated method stub
 		return executeTransaction(new Transaction<ConversationTree>() {
 			@Override
 			public ConversationTree execute(Connection conn) throws SQLException {
@@ -1866,12 +2063,19 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement defaultRespStmt = null;
 				PreparedStatement endRespStmt = null;
 				PreparedStatement puzzleRespStmt = null;
+				PreparedStatement rewardRespStmt = null;
+				PreparedStatement buyRespStmt = null;
+				PreparedStatement sellRespStmt = null;
 				
 				ResultSet treeIDSet = null;
 				ResultSet nodeSet = null;
 				ResultSet defaultRespSet = null;
 				ResultSet endRespSet = null;
 				ResultSet puzzleRespSet = null;
+				ResultSet rewardRespSet = null;
+				ResultSet buyRespSet = null;
+				ResultSet sellRespSet = null;
+				
 				ConversationTree convoTree = null;
 				
 				
@@ -1939,8 +2143,9 @@ public class DerbyDatabase implements IDatabase {
 								
 							puzzleRespStmt = conn.prepareStatement(
 									"select response, resultNodeID, puzzleID, completeResultNodeID from PuzzleResponse"
-									+ "where puzzleResponse.convoNodeID = ?");
+									+ "where puzzleResponse.convoNodeID = ? and puzzleResponse.convoTreeID = ?");
 							puzzleRespStmt.setInt(1, convoNodeID);
+							puzzleRespStmt.setInt(2, treeID);
 							
 							puzzleRespSet = puzzleRespStmt.executeQuery();
 							while(puzzleRespSet.next()) {
@@ -1958,6 +2163,93 @@ public class DerbyDatabase implements IDatabase {
 								resp.setResponseStr(response);
 								resp.setPuzzleId(puzzleID);
 								resp.setCompleteResultNode(completeResultNodeID);
+								resp.setPuzzle(getPuzzleByPuzzleID(puzzleID));
+								
+								respList.add(resp);
+							}
+							
+							rewardRespStmt = conn.prepareStatement(
+									"select response, resultNodeID, itemID, currency, exp, collected"
+									+ "from rewardResponse "
+									+ "where rewardResponse.convoNodeID = ? and rewardResponse.convoTreeID = ?");
+							rewardRespStmt.setInt(1, convoNodeID);
+							rewardRespStmt.setInt(2, treeID);
+							
+							rewardRespSet = rewardRespStmt.executeQuery();
+							while(rewardRespSet.next()) {
+								int rewardIndex = 1;
+								String response = rewardRespSet.getString(rewardIndex++);
+								int resultNodeID = rewardRespSet.getInt(rewardIndex++);
+								int itemID = rewardRespSet.getInt(rewardIndex++);
+								int currency = rewardRespSet.getInt(rewardIndex);
+								int exp = rewardRespSet.getInt(rewardIndex++);
+								Boolean collected = rewardRespSet.getBoolean(rewardIndex++);
+								
+								RewardResponse resp = new RewardResponse();
+								resp.setResultNode(resultNodeID);
+								resp.setConvoTreeId(treeID);
+								resp.setNodeId(convoNodeID);
+								resp.setResponseStr(response);
+								resp.setRewardItemId(itemID);
+								resp.setRewardCurrency(currency);
+								resp.setRewardExp(exp);
+								resp.setCollected(collected);
+								
+								respList.add(resp);
+							}
+							
+							buyRespStmt = conn.prepareStatement(
+									"select resultNodeID, itemID, bought, failedResultNodeID"
+									+ "from buyResponse "
+									+ "where buyResponse.convoNodeID = ? and buyResponse.convoTreeID = ?");
+							buyRespStmt.setInt(1, convoNodeID);
+							buyRespStmt.setInt(2, treeID);
+							
+							buyRespSet = buyRespStmt.executeQuery();
+							while(buyRespSet.next()) {
+								int buyIndex = 1;
+							
+								int resultNodeID = buyRespSet.getInt(buyIndex++);
+								int itemID = buyRespSet.getInt(buyIndex++);
+								Boolean bought = buyRespSet.getBoolean(buyIndex++);
+								int failedResultNodeID = buyRespSet.getInt(buyIndex++);
+								
+								BuyResponse resp = new BuyResponse();
+								resp.setResultNode(resultNodeID);
+								resp.setConvoTreeId(treeID);
+								resp.setNodeId(convoNodeID);
+								resp.setBuyItemId(itemID);
+								resp.setFailedNode(failedResultNodeID);
+								resp.setBought(bought);
+								
+								respList.add(resp);
+							}
+							
+							sellRespStmt = conn.prepareStatement(
+									"select resultNodeID, itemID, sold, failedResultNodeID"
+									+ "from sellResponse "
+									+ "where sellResponse.convoNodeID = ? and sellResponse.convoTreeID = ?");
+							sellRespStmt.setInt(1, convoNodeID);
+							sellRespStmt.setInt(2, treeID);
+							
+							sellRespSet = sellRespStmt.executeQuery();
+							while(sellRespSet.next()) {
+								int sellIndex = 1;
+							
+								int resultNodeID = sellRespSet.getInt(sellIndex++);
+								int itemID = sellRespSet.getInt(sellIndex++);
+								Boolean sold = sellRespSet.getBoolean(sellIndex++);
+								int failedResultNodeID = sellRespSet.getInt(sellIndex++);
+								
+								SellResponse resp = new SellResponse();
+								resp.setResultNode(resultNodeID);
+								resp.setConvoTreeId(treeID);
+								resp.setNodeId(convoNodeID);
+								resp.setSellItemId(itemID);
+								resp.setFailedNode(failedResultNodeID);
+								resp.setSold(sold);
+								
+								respList.add(resp);
 							}
 							
 							ConversationNode convoNode = new ConversationNode(statement, respList);
@@ -1976,6 +2268,11 @@ public class DerbyDatabase implements IDatabase {
 						DBUtil.closeQuietly(treeStmt);
 						DBUtil.closeQuietly(nodeStmt);
 						DBUtil.closeQuietly(defaultRespStmt);
+						DBUtil.closeQuietly(endRespStmt);
+						DBUtil.closeQuietly(puzzleRespStmt);
+						DBUtil.closeQuietly(rewardRespStmt);
+						DBUtil.closeQuietly(buyRespStmt);
+						DBUtil.closeQuietly(sellRespStmt);
 				}
 				//return null;
 			}
@@ -2000,6 +2297,157 @@ public class DerbyDatabase implements IDatabase {
 		return descrip;
 	}
 	
+	@Override
+	public ArrayList<Interactable> getInteractablesByRoomID(int roomId) {
+		return executeTransaction(new Transaction<ArrayList<Interactable>>() {
+			@Override
+			public ArrayList<Interactable> execute(Connection conn) throws SQLException {
+				ArrayList<Interactable> objList = new ArrayList<Interactable>();
+				
+				PreparedStatement doorStmt = null;
+				PreparedStatement keypadStmt = null;
+				PreparedStatement chestStmt = null;
+				PreparedStatement signStmt = null;
+				
+				ResultSet doorSet = null;
+				ResultSet keypadSet = null;
+				ResultSet chestSet = null;
+				ResultSet signSet = null;
+				
+				try {
+					doorStmt = conn.prepareStatement(
+						"select * from door "
+						+ "where door.roomID = ?"	
+					);
+					doorStmt.setInt(1, roomId);
+					
+					doorSet = doorStmt.executeQuery();
+					while(doorSet.next()) {
+						int index = 1;
+						int doorID = doorSet.getInt(index++);
+						int interactableID = doorSet.getInt(index++);
+						String name = doorSet.getString(index++);
+						String description = doorSet.getString(index++);
+						Boolean activated = doorSet.getBoolean(index++);
+						index++;
+						int puzzleID = doorSet.getInt(index++);
+						String direction = doorSet.getString(index++);
+						
+						Door door = new Door();
+						door.setDoorId(doorID);
+						door.setInteractableId(interactableID);
+						door.setName(name);
+						door.setDescription(description);
+						door.setActivated(activated);
+						door.setRoomId(roomId);
+						door.setPuzzleId(puzzleID);
+						door.setDirection(direction);
+						door.setPuzzle(getPuzzleByPuzzleID(puzzleID));
+						
+						objList.add(door);
+					}
+					
+					keypadStmt = conn.prepareStatement(
+							"select * from keypad "
+							+ "where keypad.roomID = ?");
+					keypadStmt.setInt(1, roomId);
+					
+					keypadSet = keypadStmt.executeQuery();
+					while(keypadSet.next()) {
+						int index = 1;
+						int keypadID = keypadSet.getInt(index++);
+						int interactableID = keypadSet.getInt(index++);
+						String name = keypadSet.getString(index++);
+						String description = keypadSet.getString(index++);
+						Boolean activated = keypadSet.getBoolean(index++);
+						index++;
+						int puzzleID = keypadSet.getInt(index++);
+						
+						Keypad keypad = new Keypad();
+						keypad.setKeypadId(keypadID);
+						keypad.setInteractableId(interactableID);
+						keypad.setName(name);
+						keypad.setDescription(description);
+						keypad.setActivated(activated);
+						keypad.setRoomId(roomId);
+						keypad.setPuzzleId(puzzleID);
+						keypad.setPuzzle(getPuzzleByPuzzleID(puzzleID));
+						
+						objList.add(keypad);
+					}
+					
+					chestStmt = conn.prepareStatement(
+							"select * from chest "
+							+ "where chest.roomID = ?");
+					chestStmt.setInt(1, roomId);
+					
+					chestSet = chestStmt.executeQuery();
+					while(chestSet.next()) {
+						int index = 1;
+						int chestID = chestSet.getInt(index++);
+						int interactableID = chestSet.getInt(index++);
+						String name = chestSet.getString(index++);
+						String description = chestSet.getString(index++);
+						Boolean activated = chestSet.getBoolean(index++);
+						index++;
+						int puzzleID = chestSet.getInt(index++);
+						
+						Chest chest = new Chest();
+						chest.setChestId(chestID);
+						chest.setInteractableId(interactableID);
+						chest.setName(name);
+						chest.setDescription(description);
+						chest.setActivated(activated);
+						chest.setRoomId(roomId);
+						chest.setPuzzleId(puzzleID);
+						chest.setPuzzle(getPuzzleByPuzzleID(puzzleID));
+						
+						objList.add(chest);
+					}
+					
+					signStmt = conn.prepareStatement(
+							"select * from sign "
+							+ "where sign.roomID = ?");
+					signStmt.setInt(1, roomId);
+					
+					signSet = signStmt.executeQuery();
+					while(signSet.next()) {
+						int index = 1;
+						int signID = signSet.getInt(index++);
+						int interactableID = signSet.getInt(index++);
+						String name = signSet.getString(index++);
+						String description = signSet.getString(index++);
+						Boolean activated = signSet.getBoolean(index++);
+						index++;
+						int puzzleID = signSet.getInt(index++);
+						
+						Sign sign = new Sign();
+						sign.setSignId(signID);
+						sign.setInteractableId(interactableID);
+						sign.setName(name);
+						sign.setDescription(description);
+						sign.setActivated(activated);
+						sign.setRoomId(roomId);
+						sign.setPuzzleId(puzzleID);
+						sign.setPuzzle(getPuzzleByPuzzleID(puzzleID));
+						
+						objList.add(sign);
+					}
+					
+				}
+				
+				finally {
+					DBUtil.closeQuietly(doorStmt);
+					DBUtil.closeQuietly(keypadStmt);
+					DBUtil.closeQuietly(chestStmt);
+					DBUtil.closeQuietly(signStmt);
+				}
+				return objList;
+			}
+		});
+	}
+	
+	@Override
 	public Puzzle getPuzzleByPuzzleID(int puzzleID) {
 		return executeTransaction(new Transaction<Puzzle>() {
 			@Override
@@ -2016,7 +2464,7 @@ public class DerbyDatabase implements IDatabase {
 				
 				try {
 					keyPuzzleStmt = conn.prepareStatement(
-						"select keyPuzzle.* from keyPuzzle "
+						"select * from keyPuzzle "
 						+ "where keyPuzzle.puzzleID = ?"	
 					);
 					keyPuzzleStmt.setInt(1, puzzleID);
@@ -2026,7 +2474,7 @@ public class DerbyDatabase implements IDatabase {
 						int index = 1;
 						int keyPuzzleID = keyPuzzleSet.getInt(index++);
 						index++;
-						int treasureID = keyPuzzleSet.getInt(index++);
+						int keyItemID = keyPuzzleSet.getInt(index++);
 						Boolean complete = keyPuzzleSet.getBoolean(index++);
 						String hint = keyPuzzleSet.getString(index++);
 						String completeMSG = keyPuzzleSet.getString(index++);
@@ -2037,7 +2485,7 @@ public class DerbyDatabase implements IDatabase {
 						KeyPuzzle keyPuzzle = new KeyPuzzle();
 						keyPuzzle.setKeyPuzzleId(keyPuzzleID);
 						keyPuzzle.setPuzzleId(puzzleID);
-						keyPuzzle.setTreasureId(treasureID);
+						keyPuzzle.setItemId(keyItemID);
 						keyPuzzle.setComplete(complete);
 						keyPuzzle.setHint(hint);
 						keyPuzzle.setCompleteMSG(completeMSG);
@@ -2049,7 +2497,7 @@ public class DerbyDatabase implements IDatabase {
 					}
 					
 					pinPuzzleStmt = conn.prepareStatement(
-							"select pinPuzzle.* from pinPuzzle "
+							"select * from pinPuzzle "
 							+ "where pinPuzzle.puzzleID = ?");
 					pinPuzzleStmt.setInt(1, puzzleID);
 					
@@ -2081,7 +2529,7 @@ public class DerbyDatabase implements IDatabase {
 					}
 					
 					enemyPuzzleStmt = conn.prepareStatement(
-							"select enemyPuzzle.* from enemyPuzzle "
+							"select * from enemyPuzzle "
 							+ "where enemyPuzzle.puzzleID = ?");
 					enemyPuzzleStmt.setInt(1, puzzleID);
 					
@@ -2126,14 +2574,40 @@ public class DerbyDatabase implements IDatabase {
 		});
 	}
 	/*--------------------- IDatabase Methods ------------------------*/
-	
-	
-	
-	
-	
-	
-	
-	
+
+	@Override
+	public Player getPlayerByPlayerID(int playerID) {
+		return executeTransaction(new Transaction<Player>() {
+			@Override
+			public Player execute(Connection conn) throws SQLException {
+				PreparedStatement playerStmt = null;
+				ResultSet playerSet = null;
+				Player player = new Player();
+				
+				try {
+					playerStmt = conn.prepareStatement(
+							"select * from players "
+							+ "where players.playerID = ?"
+				);
+				playerStmt.setInt(1, playerID);
+				
+				playerSet = playerStmt.executeQuery();
+				
+				while(playerSet.next()) {
+					player.setPlayerId(playerID);
+					player.setName(playerSet.getString(2));
+					player.setRoomId(playerSet.getInt(3));
+					player.setStatsId(playerSet.getInt(4));
+					player.setCurrency(playerSet.getInt(5));
+				}
+					
+				return player;
+				}finally {
+					DBUtil.closeQuietly(playerStmt);
+				}
+			}
+		});
+	}
 	
 	
 	/*----------------------------------------------------------------*/

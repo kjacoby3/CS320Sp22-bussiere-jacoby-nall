@@ -16,11 +16,13 @@ import cs320.TBAG.model.Convo.ConversationTree;
 import cs320.TBAG.model.Convo.DefaultResponse;
 import cs320.TBAG.model.Convo.EndResponse;
 import cs320.TBAG.model.InteractableObj.Door;
+import cs320.TBAG.model.InteractableObj.Interactable;
 import cs320.TBAG.model.PuzzleType.KeyPuzzle;
+import cs320.TBAG.model.PuzzleType.Puzzle;
 
 public interface IDatabase {
-	public List<Player> findAllPlayers();
-	public List<NPC> findAllNPCs();
+	public ArrayList<Player> findAllPlayers();
+	public ArrayList<NPC> findAllNPCs();
 	public List<ActorStats> findAllActorStats();
 	public ConversationTree findConvoTreeByNPCId(int NPCId);
 	public List<ConversationNode> findConvoNodesByConvoTreeId(int conversationTreeId);
@@ -41,4 +43,7 @@ public interface IDatabase {
 	public ConversationTree constructConversationTreeByNPCID(int npcID);
 	public String constructDescripByRoomID(int ID);
 	public List<Room> findAllRooms();
+	public ArrayList<Interactable> getInteractablesByRoomID(int roomId);
+	public Puzzle getPuzzleByPuzzleID(int puzzleID);
+	public Player getPlayerByPlayerID(int playerID);
 }

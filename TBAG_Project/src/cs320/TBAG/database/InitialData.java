@@ -147,113 +147,64 @@ public class InitialData {
 		}
 	}
 	
-	public static List<Player> getPartialPlayers() throws IOException {
-		List<Player> partialPlayerList = new ArrayList<Player>();
+	public static List<Player> getPlayers() throws IOException {
+		List<Player> playerList = new ArrayList<Player>();
 		ReadCSV readPlayers = new ReadCSV("player.csv");
 		try {
-			Integer playerId = 1;
+			int playerID = 1;
 			while(true) {
 				List<String> tuple = readPlayers.next();
-				if (tuple == null) {
+				if(tuple == null) {
 					break;
 				}
 				Iterator<String> i = tuple.iterator();
 				Player player = new Player();
 				
+				player.setPlayerId(playerID++);
 				Integer.parseInt(i.next());
-				player.setPlayerId(playerId++);
 				
 				player.setName(i.next());
+				player.setRoomId(Integer.parseInt(i.next()));
+				player.setStatsId(Integer.parseInt(i.next()));
 				player.setCurrency(Integer.parseInt(i.next()));
 				
-				partialPlayerList.add(player);
+				playerList.add(player);
 			}
-			return partialPlayerList;
+			return playerList;
 		} finally {
 			readPlayers.close();
 		}
 	}
 	
-	public static List<Player> getFullPlayers() throws IOException {
-		List<Player> fullPlayerList = new ArrayList<Player>();
-		ReadCSV readFullPlayers = new ReadCSV("fullPlayer.csv");
-		try {
-			while(true) {
-				List<String> tuple = readFullPlayers.next();
-				if (tuple == null) {
-					break;
-				}
-				Iterator<String> i = tuple.iterator();
-				Player player = new Player();
-				
-				player.setPlayerId(Integer.parseInt(i.next()));
-				player.setRoomId(Integer.parseInt(i.next()));
-				player.setEqWeapId(Integer.parseInt(i.next()));
-				player.setEquippedId(Integer.parseInt(i.next()));
-				player.setStatsId(Integer.parseInt(i.next()));
-				
-				
-				fullPlayerList.add(player);
-			}
-			return fullPlayerList;
-		} finally {
-			readFullPlayers.close();
-		}
-	}
-	
-	public static List<NPC> getPartialNPCs() throws IOException {
-		List<NPC> partialNPCList = new ArrayList<NPC>();
+	public static List<NPC> getNPCs() throws IOException {
+		List<NPC> npcList = new ArrayList<NPC>();
 		ReadCSV readNPCs = new ReadCSV("npc.csv");
 		try {
-			Integer NPCId = 1;
+			int npcID = 1;
 			while(true) {
 				List<String> tuple = readNPCs.next();
-				if (tuple == null) {
+				if(tuple == null) {
 					break;
 				}
 				Iterator<String> i = tuple.iterator();
 				NPC npc = new NPC();
 				
+				npc.setNPCId(npcID++);
 				Integer.parseInt(i.next());
-				npc.setNPCId(NPCId++);
 				
 				npc.setName(i.next());
 				npc.setType(i.next());
+				npc.setRoomId(Integer.parseInt(i.next()));
+				npc.setStatsId(Integer.parseInt(i.next()));
 				npc.setAggression(Integer.parseInt(i.next()));
+				npc.setConversationTreeId(Integer.parseInt(i.next()));
 				npc.setCurrency(Integer.parseInt(i.next()));
 				
-				partialNPCList.add(npc);
+				npcList.add(npc);
 			}
-			return partialNPCList;
+			return npcList;
 		} finally {
 			readNPCs.close();
-		}
-	}
-	
-	public static List<NPC> getFullNPCs() throws IOException {
-		List<NPC> partialNPCList = new ArrayList<NPC>();
-		ReadCSV readFullNPCs = new ReadCSV("fullNPC.csv");
-		try {
-			while(true) {
-				List<String> tuple = readFullNPCs.next();
-				if (tuple == null) {
-					break;
-				}
-				Iterator<String> i = tuple.iterator();
-				NPC npc = new NPC();
-
-				npc.setNPCId(Integer.parseInt(i.next()));
-				npc.setRoomId(Integer.parseInt(i.next()));
-				npc.setEqWeapId(Integer.parseInt(i.next()));
-				npc.setEquippedId(Integer.parseInt(i.next()));
-				npc.setStatsId(Integer.parseInt(i.next()));
-				npc.setConversationTreeId(Integer.parseInt(i.next()));
-				
-				partialNPCList.add(npc);
-			}
-			return partialNPCList;
-		} finally {
-			readFullNPCs.close();
 		}
 	}
 	
@@ -514,7 +465,7 @@ public class InitialData {
 				puzzle.setKeyPuzzleId(keyPuzzleId++);
 
 				puzzle.setPuzzleId(Integer.parseInt(i.next()));
-				puzzle.setTreasureId(Integer.parseInt(i.next()));
+				puzzle.setItemId(Integer.parseInt(i.next()));
 				puzzle.setComplete(Boolean.parseBoolean(i.next()));
 				puzzle.setHint(i.next());
 				puzzle.setCompleteMSG(i.next());

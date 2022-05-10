@@ -5,7 +5,7 @@ import cs320.TBAG.model.Treasure;
 public class KeyPuzzle extends Puzzle {
 	Treasure key;
 	int keyPuzzleId;
-	int treasureId;
+	int itemId;
 	int interactableId;
 	
 	public KeyPuzzle() {
@@ -36,12 +36,12 @@ public class KeyPuzzle extends Puzzle {
 		this.key = key;
 	}
 	
-	public int getTreasureId() {
-		return treasureId;
+	public int getItemId() {
+		return itemId;
 	}
 	
-	public void setTreasureId(int treasureId) {
-		this.treasureId = treasureId;
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
 	}
 	
 	public int getInteractableId() {
