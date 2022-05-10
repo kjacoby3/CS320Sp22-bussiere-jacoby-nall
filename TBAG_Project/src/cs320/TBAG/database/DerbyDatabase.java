@@ -2574,14 +2574,6 @@ public class DerbyDatabase implements IDatabase {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	/*----------------------------------------------------------------*/
 
 }

@@ -56,9 +56,9 @@ public class GameController {
 		
 		player = db.getPlayerByPlayerID(playerID);
 		ActorStats stats = db.findActorStatsByPlayerId(playerID);
-			player.setActorStats(stats);
-			Inventory inv = invCreator.getPlayerInventory(playerID);
-			player.setInventory(inv);
+		player.setActorStats(stats);
+		Inventory inv = invCreator.getPlayerInventory(playerID);
+		player.setInventory(inv);
 			
 			for(Weapon weap : inv.getWeapons().values()) {
 				if(weap.getEquipped()) {
@@ -72,8 +72,9 @@ public class GameController {
 				}
 			}
 			
+		player.setLocation(db.getRoomByID(player.getRoomId()));	
 			//Add player to game list
-			model.setPlayer(player);
+		model.setPlayer(player);
 		//}
 	}
 	
@@ -102,6 +103,8 @@ public class GameController {
 			ConversationTree convoTree = db.constructConversationTreeByNPCID(npc.getNPCId());
 			npc.setConversationTree(convoTree);
 			
+			npc.setLocation(db.getRoomByID(npc.getRoomId()));
+			npc.getLocation().addNPCInRoom(npc);
 			//Add npc to game list
 			model.addNPC(npc);
 		}
