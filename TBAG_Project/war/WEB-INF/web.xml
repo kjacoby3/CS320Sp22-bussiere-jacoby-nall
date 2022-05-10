@@ -10,6 +10,20 @@
     <servlet-name>LoginAjaxServlet</servlet-name>
     <servlet-class>cs320.TBAG.servlet.ajax.LoginAjaxServlet</servlet-class>
   </servlet>
+   <servlet>
+    <servlet-name>CreateAccountAjaxServlet</servlet-name>
+    <servlet-class>cs320.TBAG.servlet.ajax.CreateAccountAjaxServlet</servlet-class>
+  </servlet>
+   <servlet>
+    <servlet-name>LoadGameAjaxServlet</servlet-name>
+    <servlet-class>cs320.TBAG.servlet.ajax.LoadGameAjaxServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>MainMenuServlet</servlet-name>
+    <servlet-class>cs320.TBAG.servlet.MainMenuServlet</servlet-class>
+  </servlet>
+  
   
   <servlet>
     <servlet-name>LoginServlet</servlet-name>
@@ -42,6 +56,20 @@
     <servlet-name>LoginAjaxServlet</servlet-name>
     <url-pattern>/loginAjax</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CreateAccountAjaxServlet</servlet-name>
+    <url-pattern>/createAccountAjax</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LoadGameAjaxServlet</servlet-name>
+    <url-pattern>/loadGameAjax</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>MainMenuServlet</servlet-name>
+    <url-pattern>/mainMenu</url-pattern>
+  </servlet-mapping>
+  
    <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/login</url-pattern>

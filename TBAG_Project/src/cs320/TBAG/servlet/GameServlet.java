@@ -52,6 +52,8 @@ public class GameServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		System.out.println("doGet");
+		session = req.getSession();
+		System.out.println(session.getAttribute("playerID"));
 		gameID = 1;
 		playerID = 1;
 		controller = new GameController();
@@ -65,7 +67,7 @@ public class GameServlet extends HttpServlet{
 		player = model.getPlayer();
 		map = model.getMap();
 		
-		session = req.getSession();
+		
 		session.setAttribute("controller", controller);
 		session.setAttribute("model", model);
 		session.setAttribute("player", player);

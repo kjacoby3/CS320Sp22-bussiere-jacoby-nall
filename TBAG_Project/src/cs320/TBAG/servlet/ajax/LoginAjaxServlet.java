@@ -40,6 +40,7 @@ public class LoginAjaxServlet extends HttpServlet{
 			if(password.equals(compare)) {
 				//req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 				//resp.sendRedirect("/TBAG/game");
+				session.setAttribute("playerID", 1);
 				resp.setContentType("text/plain");
 				resp.getWriter().write(username);
 				resp.getWriter().close();

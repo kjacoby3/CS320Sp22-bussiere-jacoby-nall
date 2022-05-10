@@ -12,42 +12,97 @@
         
         
         
-        
+        <style>
+            #equipped{
+                grid-column:1/2;
+                display:grid;
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(16, 50px);
+                align-items: center;
+                vertical-align: center;
+                justify-items: center;
+            }
+            #playerDetails{
+                grid-column:8/10;
+                display:grid;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: repeat (20, 50px);
+                align-items: center;
+                vertical-align: center;
+                justify-items: center;
+            }
+            #sectionTitle{
+                grid-column: 1 / -1;
+                grid-row:1/2;
+                font-size:200%;
+                color:white;
+
+            }
+            #weapon{
+                vertical-align: center;
+                justify-items: top;
+                grid-row:4;
+                font-size:150%;
+                color:hsl(208, 100%, 48%);
+            }
+            #stats1{
+                grid-row:5;
+                color:hsl(208, 85%, 48%);
+            }
+            #weaponDamage{
+                grid-row:6; 
+                color:hsl(208, 85%, 48%);
+            }
+            #weaponPrice{
+                grid-row:7;
+                color:hsl(208, 85%, 48%);
+            }
+            #equipment{
+                vertical-align: center;
+                justify-items: top;
+                grid-row:10;
+                font-size:150%;
+                color:hsl(208, 100%, 48%);
+            }
+            #stats2{
+                grid-row:11;
+                color:hsl(208, 85%, 48%);
+            }
+            #equipmentName{
+                grid-row: 12;
+                color:hsl(208, 85%, 48%);
+            }
+            #equipmentPrice{
+                grid-row: 12;
+                color:hsl(208, 85%, 48%);
+            }
+            #equipmentDefenseMod{
+                grid-row: 13;
+                color:hsl(208, 85%, 48%);
+            }
+            #equipmentHPMod{
+                grid-row: 14;
+                color:hsl(208, 85%, 48%);
+            }
+            #equipmentSpeedMod{
+                grid-row: 15;
+                color:hsl(208, 85%, 48%);
+            }
         </style>
     </head>
     <body class="gridContainer">
-        <!--<c:if test="${empty roomMessage}">
-            <div class="roomMessage">Welcome to the Game! <br> Press The Button to Begin</div>
-            <form action="${pageContext.servletContext.contextPath}/game" method="get">
-                <input type="Submit" name = "enter" value ="Begin!">
-            </form>
-        </c:if>-->
-
-        <!--<c:if test="${! empty roomMessage}">
-            <div class="roomMessage">${roomMessage}</div>
-            
-        
-            <form action="${pageContext.servletContext.contextPath}/game" method="post">
-                <table>
-                    <tr>
-                        <td class="label">User Input: </td> <br>
-                        <td><input type ="text" name = "command" size="12" value="${command}"></td>
-                    </tr>
-                    
-                </table>
-                <div class="error">${errorMessage}</div>
-            
-                <input type="Submit" name="submit" value = "Enter">
-            </form>
-
-            <div class = "history"> Input History:<br>
-                ${sessionScope['commandHistory']}
-            </div>
-
-        </c:if>-->
-    
-            <div class = "equipped">
-
+            <div id = "equipped">
+                <div id="sectionTitle">Equipped Items</div>
+                <div id="weapon">Equipped Weapon: Sword</div>
+                <div id="stats1">Stats</div>
+                <div id="weaponDamage">Damage: 150</div>
+                <div id="weaponPrice">Price: 750</div>
+                <div id="equipment">Equipped Equipment: Cloth Armor</div>
+                <div id="stats2">Stats</div>
+                <div id="equipmentDefenseMod">150 Armor</div>
+                <div id="equipmentHPMod">+150 HP</div>
+                <div id="equipmentSpeedMod">+10 Speed</div>
+                <div id="equipmentPrice">Price: 1000</div>
             </div>
             <div class = "terminal">
                 <div>
@@ -65,7 +120,10 @@
             </form>
 
             </div>
-            <div class = "playerDetails"></div>
+            <div class = "playerDetails">
+
+
+            </div>
             
 
 

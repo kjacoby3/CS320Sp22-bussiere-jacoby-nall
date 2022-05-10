@@ -170,6 +170,10 @@
             </div>
             </form>
         </div>
+        <form action="/TBAG/game" method="get">
+
+            <button type="submit">go to game</button>
+        </form>
         
         <script>
 
