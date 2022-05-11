@@ -844,16 +844,64 @@ public class DerbyDatabase implements IDatabase {
 			return executeTransaction(new Transaction<Boolean>() {
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement npcAgression = null;
+					PreparedStatement eqweaponstmt = null;
+					PreparedStatement eqequipmentstmt = null;
+					PreparedStatement npceqweaponstmt = null;
+					PreparedStatement npcequipmentstmt = null;
 					PreparedStatement weaponstmt = null;
 					PreparedStatement equipmentstmt = null;
 					PreparedStatement usablestmt = null;
 					PreparedStatement treasurestmt = null;
 					PreparedStatement trophystmt = null;
 					PreparedStatement consumablestmt = null;
+					
 					ResultSet resultSet = null;
 					int playerID = player.getPlayerId();
 					
 					try {
+						
+						npcAgression = conn.prepareStatement(
+								"update npcs set aggression = ? where npcs.npcId = ?");
+						
+						npceqweaponstmt = conn.prepareStatement(
+								"update weapons set playerID = 0, roomID = 0, NPCID = ?, equipped = true where weapons.name = ?");
+						
+						npcequipmentstmt = conn.prepareStatement(
+								"update equipment set playerID = 0, roomID = 0, NPCID = ?, equipped = true where equipment.name = ?");
+						
+						
+						
+						for(NPC npc : npcs) {
+							npceqweaponstmt.setInt(1, npc.getNPCId());
+							npceqweaponstmt.setString(2, npc.getEqWeap().getName());
+							npceqweaponstmt.addBatch();
+							
+							npcequipmentstmt.setInt(1, npc.getNPCId());
+							npcequipmentstmt.setString(2, npc.getEquipped().getName());
+							npcequipmentstmt.addBatch();
+							
+							npcAgression.setInt(1, npc.getAggression());
+							npcAgression.setInt(2, npc.getNPCId());
+							npcAgression.addBatch();
+						}
+						
+						npceqweaponstmt.executeBatch();
+						npcequipmentstmt.executeBatch();
+						npcAgression.executeBatch();
+								
+						eqweaponstmt = conn.prepareStatement(
+								"update weapons set playerID = ?, roomID = 0, NPCID = 0, equipped = true where weapons.name = ?");
+						eqweaponstmt.setInt(1, player.getPlayerId());
+						eqweaponstmt.setString(2, player.getEqWeap().getName());
+						eqweaponstmt.executeUpdate();
+						
+						eqequipmentstmt = conn.prepareStatement(
+								"update equipment set playerID = ?, roomID = 0, NPCID = 0, equipped = true where equipment.name = ?");
+						eqequipmentstmt.setInt(1, player.getPlayerId());
+						eqequipmentstmt.setString(2, player.getEquipped().getName());
+						eqequipmentstmt.executeUpdate();
+						
 						weaponstmt = conn.prepareStatement(
 								"update weapons set playerID = ?, roomID = 0, NPCID = 0, equipped = false where weapons.name = ?");
 						for(Weapon weapon : player.getInventory().getWeapons().values()) {
@@ -1002,6 +1050,8 @@ public class DerbyDatabase implements IDatabase {
 								
 							}
 							consumablestmt.executeBatch();
+							
+							
 						}
 						
 						for(Room room : rooms) {
