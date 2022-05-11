@@ -733,15 +733,40 @@ public class GameServlet extends HttpServlet{
 				}
 				int count = 0;
 				Interactable Obj = null;
-				
-				//This block of code is for testing only, will be deleted later
-//				Door ob = new Door();
-//				Obj = ob;
-//				player.getLocation().addInteractable(ob);
-				//---------------------------------//
-				
+
 				for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
 					if(obj.getActivationKeyword().equalsIgnoreCase("open")) {
+						Obj = obj;
+						count++;
+					}
+				}
+				if(count == 1) {
+					updateHistory(player.activateObj(activation, Obj));
+					objActivated = true;
+					session.setAttribute("objActivated", objActivated);
+					System.out.println("First activated obj");
+					activeObj = Obj;
+					session.setAttribute("activeObj", activeObj);
+				} else if(count < 1) {
+					updateHistory(input + " does not work here.");
+				} else if (count > 1) {
+					updateHistory("What object are you trying to interact with?");
+				}
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+			} else if (input.startsWith("read")) {
+				String activation;
+				
+				if(input.equalsIgnoreCase("read")) {
+					activation = input;
+				} else {
+					String[] splitStr = input.split(" ");
+					activation = splitStr[0];
+				}
+				int count = 0;
+				Interactable Obj = null;
+
+				for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
+					if(obj.getActivationKeyword().equalsIgnoreCase("read")) {
 						Obj = obj;
 						count++;
 					}
@@ -762,7 +787,7 @@ public class GameServlet extends HttpServlet{
 			} else if (input.startsWith("look")) {
 				if(input.equalsIgnoreCase("look")) {
 					ArrayList<String> strList = new ArrayList<String>();
-					Room location = player.getLocation();
+					Room location = map.getRoom(player.getRoomId());
 					
 					/* To be deleted */
 					//NPC npc = new NPC();
