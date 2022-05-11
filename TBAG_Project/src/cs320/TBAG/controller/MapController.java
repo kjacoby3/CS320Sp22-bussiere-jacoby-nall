@@ -76,8 +76,18 @@ public class MapController {
 							}
 						}
 					}
+					for(Room r : roomList) {
+						for(Interactable obj2 : r.getRoomInteractables()) {
+							if(obj2.getPuzzle() != null) {
+								if(obj.getPuzzleId() == obj2.getPuzzleId()) {
+									obj2.setPuzzle(obj.getPuzzle());
+								}
+							}
+						}
+					}
 				}
 			}
+			
 			
 			/*exit.add(conn.getNorth());
 			exit.add(conn.getEast());

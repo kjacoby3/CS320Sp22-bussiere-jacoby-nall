@@ -3065,7 +3065,7 @@ public class DerbyDatabase implements IDatabase {
 						String name = signSet.getString(index++);
 						String description = signSet.getString(index++);
 						Boolean activated = signSet.getBoolean(index++);
-						index++;
+						String message = signSet.getString(index++);
 						int puzzleID = signSet.getInt(index++);
 						
 						Sign sign = new Sign();
@@ -3075,6 +3075,7 @@ public class DerbyDatabase implements IDatabase {
 						sign.setDescription(description);
 						sign.setActivated(activated);
 						sign.setRoomId(roomId);
+						sign.setMessage(message);
 						sign.setPuzzleId(puzzleID);
 						sign.setPuzzle(getPuzzleByPuzzleID(puzzleID));
 						
