@@ -179,7 +179,7 @@
             <form action="${pageContext.servletContext.contextPath}/game" method = get id="startNewGame"><button type= "submit" id="startNewGame">Create New Game</button></form>
             <form action="/TBAG/game" method="get" id="goToGame">
 
-            <button type="submit" id ="goToGame">go to game</button>
+            <!--<button type="submit" id ="goToGame">go to game</button>-->
             <div id="space2"></div>
             <div id="serverResponse"></div>
         </form>
@@ -275,7 +275,6 @@
                     $.post(this.action, {username: $("#username").val(), password: $("#password").val()},
                     function(data){
                         //$("#resultID").html("Payment Successful");
-                        alert(data);
                         if(data === "failure"){
                             $("#failureMessage").text("Incorrect Username or Password");
                         }
@@ -296,7 +295,6 @@
                         $.post(this.action, {username: $("#createUsername").val(), password: $("#createPassword").val(), confirmPassword: $("#confirmPassword").val()},
                         function(data){
                             //$("#resultID").html("Payment Successful");
-                            alert(data);
                             /*if(data === "match"){
                                 $("#failureCreateMessage").text("Username and Password do not Match");
                             }
