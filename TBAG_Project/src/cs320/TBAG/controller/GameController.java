@@ -4,6 +4,8 @@ import cs320.TBAG.model.Game;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import cs320.TBAG.model.Actor;
@@ -101,9 +103,10 @@ public class GameController {
 		player.setActorStats(stats);
 		Inventory inv = invCreator.getPlayerInventory(playerID);
 		player.setInventory(inv);
-
+			HashMap<String, Weapon> weapons = inv.getWeapons();
 			
-			for(Weapon weap : inv.getWeapons().values()) {
+			for(String key : weapons.keySet()) {
+				Weapon weap = weapons.get(key);
 				if(weap.getEquipped()) {
 					player.equipWeapon(weap);
 				}

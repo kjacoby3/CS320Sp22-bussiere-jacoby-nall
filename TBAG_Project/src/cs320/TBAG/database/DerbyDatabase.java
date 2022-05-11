@@ -691,6 +691,7 @@ public class DerbyDatabase implements IDatabase {
 						//DBUtil.closeQuietly(resultSet);
 						//DBUtil.closeQuietly(stmt);
 							DBUtil.closeQuietly(account);
+							DBUtil.closeQuietly(pass);
 					}
 					
 				}
@@ -797,6 +798,9 @@ public class DerbyDatabase implements IDatabase {
 						finally {
 						//DBUtil.closeQuietly(resultSet);
 						//DBUtil.closeQuietly(stmt);
+							DBUtil.closeQuietly(playerStmt);
+							DBUtil.closeQuietly(insertActorStats);
+							DBUtil.closeQuietly(statsIDQ);
 							DBUtil.closeQuietly(pass);
 					}
 					
@@ -1137,6 +1141,17 @@ public class DerbyDatabase implements IDatabase {
 						
 						return true;
 					} finally {
+						DBUtil.closeQuietly(npcAgression); 
+						DBUtil.closeQuietly(eqweaponstmt); 
+						DBUtil.closeQuietly(eqequipmentstmt);
+						DBUtil.closeQuietly(npceqweaponstmt);
+						DBUtil.closeQuietly(npcequipmentstmt);
+						DBUtil.closeQuietly(weaponstmt);
+						DBUtil.closeQuietly(equipmentstmt);
+						DBUtil.closeQuietly(usablestmt);
+						DBUtil.closeQuietly(treasurestmt); 
+						DBUtil.closeQuietly(trophystmt);
+						DBUtil.closeQuietly(consumablestmt); 
 						DBUtil.closeQuietly(resultSet);
 					}
 				}
@@ -1206,6 +1221,10 @@ public class DerbyDatabase implements IDatabase {
 						}
 						return true;
 					} finally {
+						DBUtil.closeQuietly(doorstmt);
+						DBUtil.closeQuietly(cheststmt);
+						DBUtil.closeQuietly(keypadstmt);
+						DBUtil.closeQuietly(signstmt);
 						DBUtil.closeQuietly(resultSet);
 					}
 				}
@@ -1240,6 +1259,7 @@ public class DerbyDatabase implements IDatabase {
 						return true;
 					} finally {
 						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(playerstmt);
 						//DBUtil.closeQuietly(stmt);
 					}
 				}
@@ -1274,6 +1294,9 @@ public class DerbyDatabase implements IDatabase {
 						insert.executeBatch();
 						return true;
 					} finally {
+						DBUtil.closeQuietly(delete);
+						DBUtil.closeQuietly(create);
+						DBUtil.closeQuietly(insert);	
 						DBUtil.closeQuietly(resultSet);
 						//DBUtil.closeQuietly(stmt);
 					}
@@ -1306,6 +1329,7 @@ public class DerbyDatabase implements IDatabase {
 							return history;
 						}
 					} finally {
+						DBUtil.closeQuietly(stmt);
 						DBUtil.closeQuietly(resultSet);
 						//DBUtil.closeQuietly(stmt);
 					}
@@ -1653,8 +1677,35 @@ public class DerbyDatabase implements IDatabase {
 					
 					return true;
 				} finally {
-					//DBUtil.closeQuietly(stmt1);
-					//DBUtil.closeQuietly(stmt2);
+					DBUtil.closeQuietly(equipment);
+					DBUtil.closeQuietly(weapons);
+					DBUtil.closeQuietly(usables);
+					DBUtil.closeQuietly(consumables);
+					DBUtil.closeQuietly(treasures);
+					DBUtil.closeQuietly(trophies);
+					DBUtil.closeQuietly(players);
+					DBUtil.closeQuietly(rooms);
+					DBUtil.closeQuietly(npcs);
+					DBUtil.closeQuietly(actorStats); 
+					DBUtil.closeQuietly(connections);
+					DBUtil.closeQuietly(accounts);
+					DBUtil.closeQuietly(accountPlayers);
+					DBUtil.closeQuietly(convoTree);
+					DBUtil.closeQuietly(convoNode);
+					DBUtil.closeQuietly(defaultResp);
+					DBUtil.closeQuietly(endResp);
+					DBUtil.closeQuietly(puzzleResp); 
+					DBUtil.closeQuietly(rewardResp);
+					DBUtil.closeQuietly(buyResp);
+					DBUtil.closeQuietly(sellResp);
+					DBUtil.closeQuietly(door);
+					DBUtil.closeQuietly(chest);
+					DBUtil.closeQuietly(keypad);
+					DBUtil.closeQuietly(sign);
+					DBUtil.closeQuietly(keyPuzzle);
+					DBUtil.closeQuietly(pinPuzzle);
+					DBUtil.closeQuietly(enemyPuzzle);
+					DBUtil.closeQuietly(createTable);
 				}
 			}
 		});
@@ -2277,7 +2328,7 @@ public class DerbyDatabase implements IDatabase {
 					try {
 						insertActorStats = conn.prepareStatement("insert into actorStats (statsID, curHP, maxHP, dmg, def, spd, curExp, maxExp, curLvl)"
 								+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-						for(ActorStats stats : statsList) {
+						for(ActorStats stats : statsList) {buyresp=
 							//insertNPC.setInt(1, npc.getNPCId());
 							insertActorStats.setInt(1, stats.getStatsId());
 							insertActorStats.setInt(2, stats.getCurHP());
@@ -2294,6 +2345,34 @@ public class DerbyDatabase implements IDatabase {
 						insertActorStats.executeBatch();
 					} finally {
 						DBUtil.closeQuietly(insertActorStats);
+						DBUtil.closeQuietly(insertRoom); //PreparedStatement needs to be imported?
+						DBUtil.closeQuietly(insertRoomConnections);
+						DBUtil.closeQuietly(insertWeapon);
+						DBUtil.closeQuietly(insertEquipment);
+						DBUtil.closeQuietly(insertUsable);
+						DBUtil.closeQuietly(insertConsumable);
+						DBUtil.closeQuietly(insertTreasure);
+						DBUtil.closeQuietly(insertTrophy);
+						DBUtil.closeQuietly(insertAccount);
+						DBUtil.closeQuietly(insertConvoTree);
+						DBUtil.closeQuietly(insertConvoNode);
+						DBUtil.closeQuietly(insertDefaultResp);
+						DBUtil.closeQuietly(insertEndResp);
+						DBUtil.closeQuietly(insertPuzzleResp);
+						DBUtil.closeQuietly(insertRewardResp);
+						DBUtil.closeQuietly(insertBuyResp);
+						DBUtil.closeQuietly(insertSellResp);
+						DBUtil.closeQuietly(insertDoor);
+						DBUtil.closeQuietly(insertChest);
+						DBUtil.closeQuietly(insertKeypad);
+						DBUtil.closeQuietly(insertSign);
+						DBUtil.closeQuietly(insertKeyPuzzle);
+						DBUtil.closeQuietly(insertPinPuzzle);
+						DBUtil.closeQuietly(insertEnemyPuzzle);
+						DBUtil.closeQuietly(insertPlayer);
+						DBUtil.closeQuietly(insertNPC);
+						DBUtil.closeQuietly(insertActorStats);
+						DBUtil.closeQuietly(insertAccountPlayers);
 					}
 					System.out.println("ActorStats table successfully populated");
 					
@@ -2345,6 +2424,7 @@ public class DerbyDatabase implements IDatabase {
 					
 				return playerList;
 				} finally {
+					DBUtil.closeQuietly(playerSet);
 					DBUtil.closeQuietly(playerStmt);
 				}
 				
@@ -2383,6 +2463,7 @@ public class DerbyDatabase implements IDatabase {
 					
 				return npcList;
 				} finally {
+					DBUtil.closeQuietly(npcSet);
 					DBUtil.closeQuietly(npcStmt);
 				}
 				
@@ -2469,6 +2550,7 @@ public class DerbyDatabase implements IDatabase {
 					
 				return stats;
 				}finally {
+					DBUtil.closeQuietly(statSet);
 					DBUtil.closeQuietly(statStmt);
 				}
 			}
@@ -2506,6 +2588,7 @@ public class DerbyDatabase implements IDatabase {
 					
 				return stats;
 				}finally {
+					DBUtil.closeQuietly(statSet);
 					DBUtil.closeQuietly(statStmt);
 				}
 			}

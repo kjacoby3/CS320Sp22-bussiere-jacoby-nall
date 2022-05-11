@@ -152,6 +152,16 @@
             #equipped > div{
                 font-size:200%;
             }
+        #button {
+          background-color:transparent;
+          color: white;
+          padding: 14px 20px;
+          margin: 8px 0;
+          border: none;
+          cursor: pointer;
+          width: 100%;
+          font-size:100%;
+        }
 
         </style>
     </head>
@@ -181,6 +191,10 @@
                         ${input}<br>
 
                     </c:forEach></div>
+                    <form action = "${pageContext.servletContext.contextPath}/mainMenu" method = "get" id="button">
+
+                        <button type="submit" id="button">Main Menu</button>
+                    </form>
             </form>
 
             </div>
