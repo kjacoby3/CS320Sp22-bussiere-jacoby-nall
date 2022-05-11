@@ -201,5 +201,42 @@ public class Room extends Map{
 		System.out.println(strList);
 		return strList;
 	}
+	
+	public ArrayList<String> getObjDescription(){
+		ArrayList<String> strList = new ArrayList<String>();
+		String objStr;
+		String locked = null;
+		
+		for(int i = 0; i < roomInteractables.size(); i++) {
+			objStr = null;
+			if(!roomInteractables.get(i).getActivated()) {
+				if(roomInteractables.get(i).getPuzzle() != null) {
+					if(!roomInteractables.get(i).getPuzzle().getComplete()) {
+						locked = "a locked";
+					} else {
+						locked = "an unlocked";
+					}
+				} else {
+					locked = "a closed";
+				}
+			} else {
+				locked = "an open";
+			}
+			if(strList.size() == 0) {
+				objStr = "There is ";
+			} else {
+				objStr = "";
+			}
+			objStr = objStr + locked + " " + roomInteractables.get(i).getName();
+			
+			if(i < roomInteractables.size() - 1) {
+				objStr = objStr + ", ";
+			} else {
+				objStr = objStr + ".";
+			}
+			strList.add(objStr);
+		}
+		return strList;
+	}
 }
 

@@ -32,6 +32,7 @@ public class Door extends Interactable {
 		Boolean unlocked;
 		if(activated == false) {
 			if(puzzleLock != null) {
+				System.out.println("Puzzle complete in door " + puzzleLock.getComplete());
 				unlocked = puzzleLock.getComplete();
 			} else {
 				unlocked = true;
@@ -39,7 +40,9 @@ public class Door extends Interactable {
 			
 			if(unlocked) {
 				result = "You opened the door";
+				activated = true;
 			} else {
+				activated = false;
 				result = puzzleLock.getHint();
 			}
 		} else {

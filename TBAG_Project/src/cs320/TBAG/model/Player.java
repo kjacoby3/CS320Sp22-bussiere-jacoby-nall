@@ -409,22 +409,26 @@ public class Player extends Actor implements ActionsInterface{
 		
 		for(Treasure treasure : inventory.getTreasures().values()) {
 			if(item == treasure) {
-				Iterator<Interactable> iter = location.getRoomInteractables().iterator(); //Need getInteractables method in Room
-				while(iter.hasNext()) {
-					Interactable object = iter.next();
+				//Iterator<Interactable> iter = location.getRoomInteractables().iterator(); //Need getInteractables method in Room
+				//while(iter.hasNext()) {
+				for(Interactable object : location.getRoomInteractables()) {
+					//Interactable object = iter.next();
+					System.out.println("Object: " + object.getPuzzle());
 					if(object.getPuzzle() instanceof KeyPuzzle) {
+						System.out.println("Is key puzzle");
 						KeyPuzzle puzzle = ((KeyPuzzle)object.getPuzzle());
-						if(puzzle.getKey() == treasure) {
-							
+						if(puzzle.getKey().getItemID() == item.getItemID()) {
+							System.out.print("key works");
 							//If the treasure being used is the same as the key needed and
 							//puzzle is not already solved, complete the puzzle and remove treasure from inventory.
+							result = puzzle.checkConditions();
 							if(!puzzle.getComplete()) {
 								puzzle.setComplete(true);
-								inventory.removeItem(treasure);
+								//inventory.removeItem(treasure);
 							}
 							
 							//Return condition statement of puzzle.
-							result = puzzle.checkConditions();
+							return result;
 						} else {
 							//Treasure item does not match required key item.
 							result = "That does not work here 1.";
