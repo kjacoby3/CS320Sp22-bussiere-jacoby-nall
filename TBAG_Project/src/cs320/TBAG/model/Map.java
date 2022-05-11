@@ -40,7 +40,9 @@ public class Map{
 				
 				if(aggroInRoom == false) {
 					if(room.getDoor(direction) != null){
+						System.out.println("Door Open? " + room.getDoor(direction).getActivated());
 						if(room.getDoor(direction).getActivated()) {
+							
 							prevRoomID = roomID;
 							newRoom = roomConnection.getNorth();
 						} else {
@@ -53,6 +55,7 @@ public class Map{
 					}
 				} else if(aggroInRoom == true && prevRoomConnection.getSouth() == roomID){
 					if(room.getDoor(direction) != null){
+						System.out.println("Door Open? " + room.getDoor(direction).getActivated());
 						if(room.getDoor(direction).getActivated()) {
 							prevRoomID = roomID;
 							newRoom = roomConnection.getNorth();
@@ -80,6 +83,7 @@ public class Map{
 				//return newRoom;
 				if(aggroInRoom == false) {
 					if(room.getDoor(direction) != null){
+						System.out.println("Door Open? " + room.getDoor(direction).getActivated());
 						if(room.getDoor(direction).getActivated()) {
 							prevRoomID = roomID;
 							newRoom = roomConnection.getEast();
@@ -93,6 +97,7 @@ public class Map{
 					}
 				} else if(aggroInRoom == true && prevRoomConnection.getWest() == roomID) {
 					if(room.getDoor(direction) != null){
+						System.out.println("Door Open? " + room.getDoor(direction).getActivated());
 						if(room.getDoor(direction).getActivated()) {
 							prevRoomID = roomID;
 							newRoom = roomConnection.getEast();
@@ -119,6 +124,7 @@ public class Map{
 				//return newRoom;
 				if(aggroInRoom == false) {
 					if(room.getDoor(direction) != null){
+						System.out.println("Door Open? " + room.getDoor(direction).getActivated());
 						if(room.getDoor(direction).getActivated()) {
 							prevRoomID = roomID;
 							newRoom = roomConnection.getSouth();
@@ -132,6 +138,7 @@ public class Map{
 					}
 				} else if(aggroInRoom == true && prevRoomConnection.getNorth() == roomID) {
 					if(room.getDoor(direction) != null){
+						System.out.println("Door Open? " + room.getDoor(direction).getActivated());
 						if(room.getDoor(direction).getActivated()) {
 							prevRoomID = roomID;
 							newRoom = roomConnection.getSouth();
@@ -159,6 +166,7 @@ public class Map{
 				//return newRoom;
 				if(aggroInRoom == false) {
 					if(room.getDoor(direction) != null){
+						System.out.println("Door Open? " + room.getDoor(direction).getActivated());
 						if(room.getDoor(direction).getActivated()) {
 							prevRoomID = roomID;
 							newRoom = roomConnection.getWest();
@@ -172,6 +180,7 @@ public class Map{
 					}
 				} else if(aggroInRoom == true && prevRoomConnection.getEast() == roomID) {
 					if(room.getDoor(direction) != null){
+						System.out.println("Door Open? " + room.getDoor(direction).getActivated());
 						if(room.getDoor(direction).getActivated()) {
 							prevRoomID = roomID;
 							newRoom = roomConnection.getWest();

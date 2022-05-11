@@ -14,7 +14,10 @@ import cs320.TBAG.model.Map;
 import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Room;
 import cs320.TBAG.model.RoomConnection;
+import cs320.TBAG.model.Treasure;
 import cs320.TBAG.model.Weapon;
+import cs320.TBAG.model.InteractableObj.Interactable;
+import cs320.TBAG.model.PuzzleType.KeyPuzzle;
 
 public class MapController {
 	private Map map;
@@ -58,7 +61,23 @@ public class MapController {
 			//for (room : roomList) {
 			//ArrayList<Integer> exit = new ArrayList<Integer>();
 			room.setRoomConnections(i.next());
-			
+			for(Interactable obj : room.getRoomInteractables()) {
+				if(obj.getPuzzle() != null) {
+					if(obj.getPuzzle() instanceof KeyPuzzle) {
+						for(Room r : roomList) {
+							if(r.getRoomInv() != null) {
+								if(r.getRoomInv().getTreasures().size() != 0) {
+									for(Treasure item : r.getRoomInv().getTreasures().values()) {
+										if(item.getItemID() == ((KeyPuzzle)obj.getPuzzle()).getItemId()) {
+											((KeyPuzzle)obj.getPuzzle()).setKey(item);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 			
 			/*exit.add(conn.getNorth());
 			exit.add(conn.getEast());
