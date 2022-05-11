@@ -36,7 +36,7 @@ public class Player extends Actor implements ActionsInterface{
 		this.actorStats = actorStats;
 		this.eqWeap = eqWeap;
 		this.equipped = equipped;
-		currency = 0;
+		currency = 20;
 	}
 	
 	public void setPlayerId(int playerId) {
