@@ -13,6 +13,7 @@ public class EnemyPuzzle extends Puzzle{
 		currencyReward = 0;
 		expReward = 0;
 		rewardItem = null;
+		npc = null;
 	}
 	
 	
@@ -35,6 +36,7 @@ public class EnemyPuzzle extends Puzzle{
 		} else {
 			result = completeMSG;
 		}
+		System.out.println("EnemyPuzzle getComplete: " + complete);
 		return result;
 	}
 	

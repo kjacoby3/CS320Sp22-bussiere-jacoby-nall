@@ -2123,7 +2123,7 @@ public class DerbyDatabase implements IDatabase {
 						insertPlayer.executeBatch();
 						
 						insertAccountPlayers = conn.prepareStatement("insert into accountPlayers (accountID, playerID)"
-								+ "values (0,0)");
+								+ "values (0,1)");
 						insertAccountPlayers.executeUpdate();
 					} finally {
 						DBUtil.closeQuietly(insertPlayer);
@@ -2992,7 +2992,7 @@ public class DerbyDatabase implements IDatabase {
 						+ "where keyPuzzle.puzzleID = ?"	
 					);
 					keyPuzzleStmt.setInt(1, puzzleID);
-					
+					KeyPuzzle keyPuzzle = null;
 					keyPuzzleSet = keyPuzzleStmt.executeQuery();
 					while(keyPuzzleSet.next()) {
 						int index = 1;
@@ -3006,7 +3006,7 @@ public class DerbyDatabase implements IDatabase {
 						int exp = keyPuzzleSet.getInt(index++);
 						int itemID = keyPuzzleSet.getInt(index++);
 						
-						KeyPuzzle keyPuzzle = new KeyPuzzle();
+						keyPuzzle = new KeyPuzzle();
 						keyPuzzle.setKeyPuzzleId(keyPuzzleID);
 						keyPuzzle.setPuzzleId(puzzleID);
 						keyPuzzle.setItemId(keyItemID);
@@ -3025,6 +3025,7 @@ public class DerbyDatabase implements IDatabase {
 							+ "where pinPuzzle.puzzleID = ?");
 					pinPuzzleStmt.setInt(1, puzzleID);
 					
+					PinPuzzle pinPuzzle = null;
 					pinPuzzleSet = pinPuzzleStmt.executeQuery();
 					while(pinPuzzleSet.next()) {
 						int index = 1;
@@ -3038,7 +3039,7 @@ public class DerbyDatabase implements IDatabase {
 						int exp = pinPuzzleSet.getInt(index++);
 						int itemID = pinPuzzleSet.getInt(index++);
 						
-						PinPuzzle pinPuzzle = new PinPuzzle();
+						pinPuzzle = new PinPuzzle();
 						pinPuzzle.setPinPuzzleId(pinPuzzleID);
 						pinPuzzle.setPuzzleId(puzzleID);
 						pinPuzzle.setKey(key);
@@ -3056,6 +3057,7 @@ public class DerbyDatabase implements IDatabase {
 							"select * from enemyPuzzle "
 							+ "where enemyPuzzle.puzzleID = ?");
 					enemyPuzzleStmt.setInt(1, puzzleID);
+					EnemyPuzzle enemyPuzzle = null;
 					
 					enemyPuzzleSet = enemyPuzzleStmt.executeQuery();
 					while(enemyPuzzleSet.next()) {
@@ -3070,7 +3072,7 @@ public class DerbyDatabase implements IDatabase {
 						int exp = enemyPuzzleSet.getInt(index++);
 						int itemID = enemyPuzzleSet.getInt(index++);
 						
-						EnemyPuzzle enemyPuzzle = new EnemyPuzzle();
+						enemyPuzzle = new EnemyPuzzle();
 						enemyPuzzle.setEnemyPuzzleId(enemyPuzzleID);
 						enemyPuzzle.setPuzzleId(puzzleID);
 						enemyPuzzle.setNPCId(npcID);;
@@ -3080,6 +3082,8 @@ public class DerbyDatabase implements IDatabase {
 						enemyPuzzle.setCurrencyReward(currency);
 						enemyPuzzle.setExpReward(exp);
 						enemyPuzzle.setRewardItemId(itemID);
+						
+						//enemyPuzzle.setNPC(getNPCByNPCID(npcID));
 						
 						result = enemyPuzzle;
 					}
@@ -3134,7 +3138,79 @@ public class DerbyDatabase implements IDatabase {
 		});
 	}
 	
+	@Override
+	public NPC getNPCByNPCID(int npcID) {
+		return executeTransaction(new Transaction<NPC>() {
+			@Override
+			public NPC execute(Connection conn) throws SQLException {
+				PreparedStatement npcStmt = null;
+				ResultSet npcSet = null;
+				NPC npc = new NPC();
+				
+				try {
+					npcStmt = conn.prepareStatement(
+							"select * from npcs "
+							+ "where npcs.npcID = ?"
+				);
+					npcStmt.setInt(1, npcID);
+				
+					npcSet = npcStmt.executeQuery();
+				
+				while(npcSet.next()) {
+					npc.setNPCId(npcID);
+					npc.setName(npcSet.getString(2));
+					npc.setType(npcSet.getString(3));
+					npc.setRoomId(npcSet.getInt(4));
+					npc.setStatsId(npcSet.getInt(5));
+					npc.setAggression(npcSet.getInt(6));
+					npc.setConversationTreeId(npcSet.getInt(7));
+					npc.setCurrency(npcSet.getInt(8));
+				}
+					
+				return npc;
+				}finally {
+					DBUtil.closeQuietly(npcStmt);
+				}
+			}
+		});
+	}
 	
+	@Override
+	public NPC getNPCByNPCID(int npcID) {
+		return executeTransaction(new Transaction<NPC>() {
+			@Override
+			public NPC execute(Connection conn) throws SQLException {
+				PreparedStatement npcStmt = null;
+				ResultSet npcSet = null;
+				NPC npc = new NPC();
+				
+				try {
+					npcStmt = conn.prepareStatement(
+							"select * from npcs "
+							+ "where npcs.npcID = ?"
+				);
+					npcStmt.setInt(1, npcID);
+				
+					npcSet = npcStmt.executeQuery();
+				
+				while(npcSet.next()) {
+					npc.setNPCId(npcID);
+					npc.setName(npcSet.getString(2));
+					npc.setType(npcSet.getString(3));
+					npc.setRoomId(npcSet.getInt(4));
+					npc.setStatsId(npcSet.getInt(5));
+					npc.setAggression(npcSet.getInt(6));
+					npc.setConversationTreeId(npcSet.getInt(7));
+					npc.setCurrency(npcSet.getInt(8));
+				}
+					
+				return npc;
+				}finally {
+					DBUtil.closeQuietly(npcStmt);
+				}
+			}
+		});
+	}
 	/*----------------------------------------------------------------*/
 
 }

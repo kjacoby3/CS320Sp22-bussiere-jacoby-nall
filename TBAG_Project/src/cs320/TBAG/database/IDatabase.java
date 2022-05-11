@@ -46,4 +46,5 @@ public interface IDatabase {
 	public ArrayList<Interactable> getInteractablesByRoomID(int roomId);
 	public Puzzle getPuzzleByPuzzleID(int puzzleID);
 	public Player getPlayerByPlayerID(int playerID);
+	public NPC getNPCByNPCID(int npcID);
 }

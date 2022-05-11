@@ -7,9 +7,11 @@ public class PuzzleResponse extends ConversationResponse {
 	private int completeResultNode;
 	private int puzzleResponseId;
 	private int puzzleId;
+	private int defaultResultNode;
 	
 	public PuzzleResponse() {
 		resultNode = 0;
+		defaultResultNode = resultNode;
 		completeResultNode = 1;
 		response = "I'm finished";
 		puzzleLock = null;
@@ -24,16 +26,17 @@ public class PuzzleResponse extends ConversationResponse {
 	}
 	
 	public int checkResultNode() {
-		int node = resultNode;
+		resultNode = defaultResultNode;
 		if(puzzleLock != null) {
 			puzzleLock.checkConditions();
 			if(puzzleLock.getComplete()) {
-				node = completeResultNode;
+				System.out.println("PuzzleResponse getComplete: " + puzzleLock.getComplete());
+				resultNode = completeResultNode;
 			} else {
-				node = resultNode;
+				resultNode = defaultResultNode;
 			}
 		}
-		return node;
+		return resultNode;
 	}
 	
 	public void setPuzzleResponseId(int puzzleResponseId) {

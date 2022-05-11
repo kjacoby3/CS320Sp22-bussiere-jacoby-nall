@@ -1,3 +1,4 @@
+-2|Dump|THIS PLACE IS A DUMP|THIS PLACE IS A DUMP|0|false|1|null
 1|Your Cabin|This is your cabin.  Your cabinmate still isn't here|You awaken to sound of explosions and the rocking of the ship.  You shoot up out of bed and notice that your cabinmate is not in their bed.  There is a door leading out into the hall|1|false|1|null
 2|Hallway A|This is the hall outside of your cabin|You enter the hall outside of your cabin.  There are shiphands running to various locations.  Everyone seems too focused to talk.  The hallway goes left (Northward) or right (Southward)|1|false|1|null
 3|Hallway B|This hallway leads to the infirmary or your cabin.  There is a cabin on this corner|The hallway comes to a corner and heads Eastward to the infirmary or Southward toward your cabin.  There is a cabin on the corner Westward|1|false|1|null
@@ -14,9 +15,9 @@
 14|Navigation|The ship's Navigation|The ship's Navigation Room.  Clarx and Larris are focusing on their consoles|1|false|1|null
 15|Armory|The ship's Armory|The ship's Armory.  There are plenty of weapons in here|1|false|1|null
 16|Hallway G|The hallway outside of the Bridge.  The hallway leads to the Drop Pods or Navigation/Armory|The hallway comes to a T-Intersection.  To the North is the ship's Bridge.  To the West are Navigation and the Armory.  To the South are the Drop Pods|1|false|1|null
-17|Bridge|The ship's Bridge|You enter the ship's Bridge.   DeRock and Zandr are lying slaughtered on the floor.  You see an alien figure snap the neck of the Captain and solemnly lay him on the ground. He closes his eyes, whispers something, and looks to you. There is a terminal that is displaying the security code to the escape pods as 2603|1|false|1|null
+17|Bridge|The ship's Bridge. There is a computer terminal illuminating the grisly scene|You enter the ship's Bridge.   DeRock and Zandr are lying slaughtered on the floor.  You see an alien figure snap the neck of the Captain and solemnly lay him on the ground. He closes his eyes, whispers something, and looks to you. There is a computer terminal illuminating the grisly scene|1|false|1|null
 18|Hallway H|The hallway outside the Drop Pods.  The hallway also leads back toward the bridge|The hallway continues on toward the Drop Pods|1|false|1|null
-19|Drop Pods|The ship's Drop Pods. Is it time to escape?|The ship's Drop Pods. It needs a security code to activate|1|false|1|null
-20|Drop Pods|The ship's Drop Pods. Is it time to escape?|The ship's Drop Pods. Is it time to escape?|1|false|1|null
+19|Drop Pods|The ship's Drop Pods. There is a keypad that is requesting a security code to activate|The ship's Drop Pods. There is a keypad that is requesting a security code to activate|1|false|1|null
+20|Drop Pods|The ship's Drop Pods have been activated. Is it time to escape?|The ship's Drop Pods have been activated. Is it time to escape?|1|false|1|null
 201|Crash Site|This is the crash site|The landing was rough, and that's putting it nicely.  You find yourself in the middle of a strange forest.  There is a clearing to the North which you can see because the Drop Pod took out the trees on the way in|2|false|1|null
 202|Valley Clearing|This is the valley clearing by the drop pod landing site. There is a path leading Westward to the mountains, Northward to a path along the stream, and an Eastward path into the forest|The clearing opens to reveal a valley, cut by a large stream. There is a path leading Westward to the mountains, Northward to a path along the stream, and an Eastward path into the forest|2|false|1|null

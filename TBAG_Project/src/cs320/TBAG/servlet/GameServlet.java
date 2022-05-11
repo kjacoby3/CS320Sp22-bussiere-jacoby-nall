@@ -29,6 +29,7 @@ import cs320.TBAG.model.LevelUp;
 import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Room;
 import cs320.TBAG.model.Treasure;
+import cs320.TBAG.model.Usable;
 import cs320.TBAG.model.Weapon;
 import cs320.TBAG.model.Convo.Conversation;
 import cs320.TBAG.model.InteractableObj.Door;
@@ -190,7 +191,10 @@ public class GameServlet extends HttpServlet{
 					}
 					
 					if(!conversation.getEnded()) {
-						updateHistory(conversation.getDisplayList());
+						//updateHistory(conversation.getDisplayList());
+						ArrayList<String> strList = conversation.getDisplayList();
+						Collections.reverse(strList);
+						updateHistory(strList);
 					} else {
 						updateHistory("The conversation is over.");
 					}
@@ -303,9 +307,107 @@ public class GameServlet extends HttpServlet{
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req,resp);
 			}
 			
-			else if(input.equalsIgnoreCase("pickup")) {
-				player.getInventory().addItem(new Weapon(0,"banana", 1000000, 1000000,1,0,0, true));
-				updateHistory(input);
+			else if(input.startsWith("pickup")) {
+				Inventory roomInv = map.getRoom(player.getRoomId()).getRoomInv();
+				if(input.equalsIgnoreCase("pickup")) {
+					if(roomInv.getConsumables().size()+roomInv.getEquipment().size()+
+							roomInv.getTreasures().size()+roomInv.getWeapons().size()+roomInv.getUsables().size() == 1) {
+						if(roomInv.getConsumables().size() == 1) {
+							for(Consumable item : roomInv.getConsumables().values()) {
+								player.pickUp(item);
+								updateHistory(input, "You picked up " + item.getName());
+							}
+						} else if(roomInv.getUsables().size() == 1) {
+							for(Usable item : roomInv.getUsables().values()) {
+								player.pickUp(item);
+								updateHistory(input, "You picked up " + item.getName());
+							}
+						} else if(roomInv.getWeapons().size() == 1) {
+							for(Weapon item : roomInv.getWeapons().values()) {
+								player.pickUp(item);
+								updateHistory(input, "You picked up " + item.getName());
+							}
+						} else if(roomInv.getEquipment().size() == 1) {
+							for(Equipment item : roomInv.getEquipment().values()) {
+								player.pickUp(item);
+								updateHistory(input, "You picked up " + item.getName());
+							}
+						} else if(roomInv.getTreasures().size() == 1) {
+							for(Treasure item : roomInv.getTreasures().values()) {
+								System.out.println("Player Treasures: " + player.getInventory().getTreasures());
+								player.pickUp(item);
+								updateHistory(input, "You picked up " + item.getName());
+							}
+						}
+					} else if (roomInv.getConsumables().size()+roomInv.getEquipment().size()+
+							roomInv.getTreasures().size()+roomInv.getWeapons().size()+roomInv.getUsables().size() == 0) {
+						updateHistory(input, "There are no items to pickup.");
+					} else if (roomInv.getConsumables().size()+roomInv.getEquipment().size()+
+							roomInv.getTreasures().size()+roomInv.getWeapons().size()+roomInv.getUsables().size() > 1) {
+						updateHistory(input, "Please specify what you want to pickup");
+					}
+				} else {
+					String[] splitStr = input.split(" ", 2);
+					String str = splitStr[1];
+					int count = 0;
+					Item item = null;
+					
+					for(String name : roomInv.getConsumables().keySet()) {
+						if(str.equalsIgnoreCase(name)) {
+							player.pickUp(roomInv.getConsumables().get(name));
+							count++;
+							item = roomInv.removeItem(roomInv.getConsumables().get(name));
+							//map.getRoom(-2).getRoomInv().addItem(item);
+							updateHistory(input, "You picked up " + name);
+						}
+					}
+					
+					for(String name : roomInv.getUsables().keySet()) {
+						if(str.equalsIgnoreCase(name)) {
+							player.pickUp(roomInv.getUsables().get(name));
+							count++;
+							item = roomInv.removeItem(roomInv.getUsables().get(name));
+							//map.getRoom(-2).getRoomInv().addItem(item);
+							updateHistory(input, "You picked up " + name);
+						}
+					}
+					
+					for(String name : roomInv.getWeapons().keySet()) {
+						if(str.equalsIgnoreCase(name)) {
+							player.pickUp(roomInv.getWeapons().get(name));
+							count++;
+							item = roomInv.removeItem(roomInv.getWeapons().get(name));
+							//map.getRoom(-2).getRoomInv().addItem(item);
+							updateHistory(input, "You picked up " + name);
+						}
+					}
+					
+					for(String name : roomInv.getEquipment().keySet()) {
+						if(str.equalsIgnoreCase(name)) {
+							player.pickUp(roomInv.getEquipment().get(name));
+							count++;
+							item = roomInv.removeItem(roomInv.getEquipment().get(name));
+							//map.getRoom(-2).getRoomInv().addItem(item);
+							updateHistory(input, "You picked up " + name);
+						}
+					}
+					
+					for(String name : roomInv.getTreasures().keySet()) {
+						if(str.equalsIgnoreCase(name)) {
+							player.pickUp(roomInv.getTreasures().get(name));
+							count++;
+							item = roomInv.removeItem(roomInv.getTreasures().get(name));
+							//map.getRoom(-2).getRoomInv().addItem(item);
+							System.out.println("Player Treasures: " + player.getInventory().getTreasures());
+							updateHistory(input, "You picked up " + name);
+						}
+					}
+					
+					if(count == 0) {
+						updateHistory(input, "There is no item named " + str + " to pick up");
+					}
+				}
+				//player.getInventory().addItem(new Weapon(0,"banana", 1000000, 1000000,1,0,0, true));
 				//req.setAttribute("roomMessage", map.getRoomDescription());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req,resp);
 			}
@@ -318,48 +420,105 @@ public class GameServlet extends HttpServlet{
 				//req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 				//terminalWriter.write(map.getRoomDescription());
 			}
-			else if(input.equalsIgnoreCase("attack")) {
-				updateHistory(input);
-				req.setAttribute("game", model);
-				
-				//For purposes of testing, I am foregoing this test and creating a blank enemy
-				//if(player.getLocation().getActorsInRoom().size() == 1) {
-				
-					//Gets only NPC from Room to be Actor2 in the Combat Model
+			else if(input.startsWith("attack")) {
+				if(input.equalsIgnoreCase("attack")) {
+					updateHistory(input);
+					req.setAttribute("game", model);
 					
-					NPC enemy = new NPC();/* (NPC) player.getLocation().getActorsInRoom().get(0)*/;
+					//For purposes of testing, I am foregoing this test and creating a blank enemy
+					if(map.getRoom(player.getRoomId()).getNPCsInRoom().size() == 1) {
+						
+						//Gets only NPC from Room to be Actor2 in the Combat Model
+						
+						NPC enemy = map.getRoom(player.getRoomId()).getNPCsInRoom().get(0);
+						
+						//Creates a new combat model to pass to CombatServlet
+						Combat combatMod = new Combat(player, enemy);
+						session.setAttribute("combatMod", combatMod);
+						//Sets initial attributes for CombatServlet
+						req.setAttribute("player", combatMod.getActor1().getName());
+						req.setAttribute("enemy", combatMod.getActor2().getName());
+						
+						req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
+						req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
+						
+						req.setAttribute("enemyDMG", combatMod.getActor2().getActorStats().getDmg());
+						req.setAttribute("playerDMG", combatMod.getActor1().getActorStats().getDmg());
+						
+						req.setAttribute("enemyDEF", combatMod.getActor2().getActorStats().getDef());
+						req.setAttribute("playerDEF", combatMod.getActor1().getActorStats().getDef());
+						
+						req.setAttribute("enemySPD", combatMod.getActor2().getActorStats().getSpd());
+						req.setAttribute("playerSPD", combatMod.getActor1().getActorStats().getSpd());
+						
+						req.setAttribute("enemyWeapon", combatMod.getActor2().getEqWeap().getName());
+						req.setAttribute("playerWeapon", combatMod.getActor1().getEqWeap().getName());
+						
+						req.setAttribute("playerLVL", combatMod.getActor1().getActorStats().getCurLvl());
+						req.setAttribute("playerEXP", combatMod.getActor1().getActorStats().getCurExp());
+						req.setAttribute("playerMaxEXP", combatMod.getActor1().getActorStats().getMaxExp());
+						
+						updateHistory(input, "Attacking " + enemy.getName());
+						req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
+					} else if(map.getRoom(player.getRoomId()).getNPCsInRoom().size() > 1) {
+						//Return message asking for clarification of who should be attacked
+						updateHistory(input, "Please specify who you want to attack");
+					}
+				} else {
+					String[] splitStr = input.split(" ", 2);
+					String str = splitStr[1];
+					int count = 0;
+					NPC enemy = null;
+					if(map.getRoom(player.getRoomId()).getNPCsInRoom().size() != 0) {
+						for(NPC npc : map.getRoom(player.getRoomId()).getNPCsInRoom()) {
+							if(str.equalsIgnoreCase(npc.getName()) || str.equalsIgnoreCase(npc.getType())) {
+								count++;
+								enemy = npc;
+							}
+						}
+						if(count == 1) {
+							if(enemy.getAggression() <= 0) {
+								Combat combatMod = new Combat(player, enemy);
+								session.setAttribute("combatMod", combatMod);
+								//Sets initial attributes for CombatServlet
+								req.setAttribute("player", combatMod.getActor1().getName());
+								req.setAttribute("enemy", combatMod.getActor2().getName());
+								
+								req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
+								req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
+								
+								req.setAttribute("enemyDMG", combatMod.getActor2().getActorStats().getDmg());
+								req.setAttribute("playerDMG", combatMod.getActor1().getActorStats().getDmg());
+								
+								req.setAttribute("enemyDEF", combatMod.getActor2().getActorStats().getDef());
+								req.setAttribute("playerDEF", combatMod.getActor1().getActorStats().getDef());
+								
+								req.setAttribute("enemySPD", combatMod.getActor2().getActorStats().getSpd());
+								req.setAttribute("playerSPD", combatMod.getActor1().getActorStats().getSpd());
+								
+								req.setAttribute("enemyWeapon", combatMod.getActor2().getEqWeap().getName());
+								req.setAttribute("playerWeapon", combatMod.getActor1().getEqWeap().getName());
+								
+								req.setAttribute("playerLVL", combatMod.getActor1().getActorStats().getCurLvl());
+								req.setAttribute("playerEXP", combatMod.getActor1().getActorStats().getCurExp());
+								req.setAttribute("playerMaxEXP", combatMod.getActor1().getActorStats().getMaxExp());
+								
+								updateHistory(input, "Attacking " + enemy.getName());
+								req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
+							} else if (enemy.getAggression() > 0) {
+								updateHistory(input, "Why would you attack a friendly?");
+								req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+							}
+						} else if(count == 0) {
+							updateHistory(input, "There is no npc of " + enemy.getName());
+						} else if(count > 1) {
+							updateHistory(input, "Honestly, don't know what to do here. My bad.");
+						}
+					}
 					
-					//Creates a new combat model to pass to CombatServlet
-					Combat combatMod = new Combat(player, enemy);
-					session.setAttribute("combatMod", combatMod);
-					//Sets initial attributes for CombatServlet
-					req.setAttribute("player", combatMod.getActor1().getName());
-					req.setAttribute("enemy", combatMod.getActor2().getName());
-					
-					req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
-					req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
-					
-					req.setAttribute("enemyDMG", combatMod.getActor2().getActorStats().getDmg());
-					req.setAttribute("playerDMG", combatMod.getActor1().getActorStats().getDmg());
-					
-					req.setAttribute("enemyDEF", combatMod.getActor2().getActorStats().getDef());
-					req.setAttribute("playerDEF", combatMod.getActor1().getActorStats().getDef());
-					
-					req.setAttribute("enemySPD", combatMod.getActor2().getActorStats().getSpd());
-					req.setAttribute("playerSPD", combatMod.getActor1().getActorStats().getSpd());
-					
-					req.setAttribute("enemyWeapon", combatMod.getActor2().getEqWeap().getName());
-					req.setAttribute("playerWeapon", combatMod.getActor1().getEqWeap().getName());
-					
-					req.setAttribute("playerLVL", combatMod.getActor1().getActorStats().getCurLvl());
-					req.setAttribute("playerEXP", combatMod.getActor1().getActorStats().getCurExp());
-					req.setAttribute("playerMaxEXP", combatMod.getActor1().getActorStats().getMaxExp());
-				//} else {
-					// Return message asking for clarification of who should be attacked
-				//}
-				req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
-			}
-			else if(input.equalsIgnoreCase("level up") || input.equalsIgnoreCase("levelup") ||
+				}
+				req.getRequestDispatcher("/_view/game.jsp").forward(req, resp);
+			} else if(input.equalsIgnoreCase("level up") || input.equalsIgnoreCase("levelup") ||
 					input.equalsIgnoreCase("lvl up")) {
 				LevelUp levelUpModel = new LevelUp(player);
 				session.setAttribute("levelUpModel", levelUpModel);
@@ -487,39 +646,64 @@ public class GameServlet extends HttpServlet{
 				
 				if(input.equalsIgnoreCase("enter")) {
 					activation = input;
+					int count = 0;
+					Interactable Obj = null;
+					for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
+						if(obj.getActivationKeyword().equalsIgnoreCase("enter")) {
+							Obj = obj;
+							count++;
+						}
+					}
+					if(count == 1) {
+						updateHistory(player.activateObj(activation, Obj));
+						objActivated = true;
+						session.setAttribute("objActivated", objActivated);
+						System.out.println("First activated obj");
+						activeObj = Obj;
+						session.setAttribute("activeObj", activeObj);
+					} else if(count < 1) {
+						updateHistory(input + " does not work here.");
+					} else if (count > 1) {
+						updateHistory("What object are you trying to interact with?");
+					}
 				} else {
 					String[] splitStr = input.split(" ");
 					activation = splitStr[0];
-				}
-				int count = 0;
-				Interactable Obj;
-				
-				//This block of code is for testing only, will be deleted later
-				Keypad ob = new Keypad();
-				PinPuzzle pinPuzzle = new PinPuzzle();
-				Obj = ob;
-				ob.setPuzzle(pinPuzzle);
-				player.getLocation().addInteractable(ob);
-				//---------------------------------//
-				
-				for(Interactable obj : player.getLocation().getRoomInteractables()) {
-					if(obj.getActivationKeyword().equalsIgnoreCase("enter")) {
-						Obj = obj;
-						count++;
+					String objName = splitStr[1];
+					int count = 0;
+					Interactable Obj = null;
+					
+					for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
+						if(obj.getName().equalsIgnoreCase(objName)) {
+							Obj = obj;
+							count++;
+							System.out.println("Count++: " + count + " " + Obj.getName());
+						}
+					}
+					
+					if(count == 1) {
+						updateHistory(player.activateObj(activation, Obj));
+						objActivated = true;
+						session.setAttribute("objActivated", objActivated);
+						activeObj = Obj;
+						session.setAttribute("activeObj", activeObj);
+					} else if(count < 1) {
+						updateHistory(input, "Could not find object of " + objName + " with activation of " + activation);
+					} else if (count > 1) {
+						updateHistory("Sorry, mistakes were made.");
 					}
 				}
-				if(count == 1) {
-					updateHistory(player.activateObj(activation, Obj));
-					objActivated = true;
-					session.setAttribute("objActivated", objActivated);
-					System.out.println("First activated obj");
-					activeObj = Obj;
-					session.setAttribute("activeObj", activeObj);
-				} else if(count < 1) {
-					updateHistory(input + " does not work here.");
-				} else if (count > 1) {
-					updateHistory("What object are you trying to interact with?");
-				}
+				
+				
+				//This block of code is for testing only, will be deleted later
+//				Keypad ob = new Keypad();
+//				PinPuzzle pinPuzzle = new PinPuzzle();
+//				Obj = ob;
+//				ob.setPuzzle(pinPuzzle);
+//				player.getLocation().addInteractable(ob);
+				//---------------------------------//
+				
+				
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 			else if(input.startsWith("talk")) {
@@ -539,7 +723,10 @@ public class GameServlet extends HttpServlet{
 //							for(String str : conversation.getDisplayList()) {
 //								updateHistory(str);
 //							}
-							updateHistory(conversation.getDisplayList());
+							//updateHistory(conversation.getDisplayList());
+							ArrayList<String> strList = conversation.getDisplayList();
+							Collections.reverse(strList);
+							updateHistory(strList);
 						} else {
 							updateHistory(input, player.getLocation().getNPCsInRoom().get(0).getName() + " doesn't want to talk.");
 						}
@@ -571,8 +758,10 @@ public class GameServlet extends HttpServlet{
 //								for(String str : conversation.getDisplayList()) {
 //									updateHistory(str);
 //								}
-								updateHistory(conversation.getDisplayList());
-
+								//updateHistory(conversation.getDisplayList());
+								ArrayList<String> strList = conversation.getDisplayList();
+								Collections.reverse(strList);
+								updateHistory(strList);
 							} else {
 								updateHistory(input, talking.getName() + " doesn't want to talk.");
 							}
@@ -591,21 +780,68 @@ public class GameServlet extends HttpServlet{
 				
 				if(input.equalsIgnoreCase("open")) {
 					activation = input;
+					int count = 0;
+					Interactable Obj = null;
+	
+					for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
+						if(obj.getActivationKeyword().equalsIgnoreCase("open")) {
+							Obj = obj;
+							count++;
+							System.out.println("Count++: " + count + " " + Obj.getName());
+						}
+					}
+					System.out.println("Count: " + count);
+					if(count == 1) {
+						updateHistory(player.activateObj(activation, Obj));
+						//objActivated = true;
+						//session.setAttribute("objActivated", objActivated);
+						System.out.println("First activated obj");
+						//activeObj = Obj;
+						//session.setAttribute("activeObj", activeObj);
+					} else if(count < 1) {
+						updateHistory(input + " does not work here.");
+					} else if (count > 1) {
+						updateHistory("What object are you trying to interact with?");
+					}
 				} else {
-					String[] splitStr = input.split(" ");
+					String[] splitStr = input.split(" ", 2);
+					activation = splitStr[0];
+					String objName = splitStr[1];
+					Interactable Obj = null;
+					int count = 0;
+					
+					for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
+						if(obj.getName().equalsIgnoreCase(objName)) {
+							Obj = obj;
+							count++;
+							System.out.println("Count++: " + count + " " + Obj.getName());
+						}
+					}
+					
+					if(count == 1) {
+						updateHistory(player.activateObj(activation, Obj));
+					} else if(count < 1) {
+						updateHistory(input, "Could not find object of " + objName + " with activation of " + activation);
+					} else if (count > 1) {
+						updateHistory("Sorry, mistakes were made.");
+					}
+				}
+				
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+			} else if (input.startsWith("read")) {
+				String activation;
+				
+				if(input.equalsIgnoreCase("read")) {
+					activation = input;
+				} else {
+					String[] splitStr = input.split(" ", 2);
 					activation = splitStr[0];
 				}
 				int count = 0;
-				Interactable Obj;
-				
-				//This block of code is for testing only, will be deleted later
-				Door ob = new Door();
-				Obj = ob;
-				player.getLocation().addInteractable(ob);
-				//---------------------------------//
-				
-				for(Interactable obj : player.getLocation().getRoomInteractables()) {
-					if(obj.getActivationKeyword().equalsIgnoreCase("open")) {
+				Interactable Obj = null;
+
+				for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
+					if(obj.getActivationKeyword().equalsIgnoreCase("read")) {
 						Obj = obj;
 						count++;
 					}
@@ -626,21 +862,21 @@ public class GameServlet extends HttpServlet{
 			} else if (input.startsWith("look")) {
 				if(input.equalsIgnoreCase("look")) {
 					ArrayList<String> strList = new ArrayList<String>();
-					Room location = player.getLocation();
+					Room location = map.getRoom(player.getRoomId());
 					
 					/* To be deleted */
-					NPC npc = new NPC();
-					npc.setLocation(location);
-					NPC npc2 = new NPC();
-					npc2.setLocation(location);
-					location.addNPCInRoom(npc);
-					location.addNPCInRoom(npc2);
-					location.setRoomInv(new Inventory(100));
+					//NPC npc = new NPC();
+//					npc.setLocation(location);
+//					NPC npc2 = new NPC();
+//					npc2.setLocation(location);
+//					location.addNPCInRoom(npc);
+//					location.addNPCInRoom(npc2);
+//					location.setRoomInv(new Inventory(100));
 					//-----------------------//
 					System.out.println("Gets this far");
 					if(location.getRoomNPCDescription() != null) {
 						strList.addAll(location.getRoomNPCDescription());
-						strList.add("");
+						//strList.add("");
 					}
 					
 					if(location.getRoomInv().getInventoryDescription() != null) {
@@ -661,7 +897,7 @@ public class GameServlet extends HttpServlet{
 					String useItem = splitStr[1];
 					for(Consumable item : player.getInventory().getConsumables().values()) {
 						if(item.getName().equalsIgnoreCase(useItem)) {
-							updateHistory(player.use(item));
+							updateHistory(input, player.use(item));
 							System.out.println(player.getActorStats().getMaxHP());
 							System.out.println(player.getActorStats().getCurHP());
 							break;
@@ -669,13 +905,26 @@ public class GameServlet extends HttpServlet{
 					}
 					for(Treasure item : player.getInventory().getTreasures().values()) {
 						if(item.getName().equalsIgnoreCase(useItem)) {
-							updateHistory(player.use(item));
+							updateHistory(input, player.use(item));
 							break;
 						}
 					}
 				}
 				System.out.println("Servlet MaxHP: " + player.getActorStats().getMaxHP());
 				System.out.println("Servlet CurHP: " + player.getActorStats().getCurHP());
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+			} else if (input.startsWith("teleport")) {
+				if(input.equalsIgnoreCase("teleport")) {
+					updateHistory(input, "PLease specify roomID");
+				} else {
+					String[] strList = input.split(" ", 2);
+					String str = strList[1];
+					int roomID = Integer.parseInt(str);
+					
+					player.move(roomID);
+					forwardRoomDesc(player, roomID, input, req, resp);
+				}
+				
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 			else {

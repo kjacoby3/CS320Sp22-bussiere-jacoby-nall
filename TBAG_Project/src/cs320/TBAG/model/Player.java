@@ -36,7 +36,7 @@ public class Player extends Actor implements ActionsInterface{
 		this.actorStats = actorStats;
 		this.eqWeap = eqWeap;
 		this.equipped = equipped;
-		currency = 0;
+		currency = 20;
 	}
 	
 	public void setPlayerId(int playerId) {
@@ -427,10 +427,10 @@ public class Player extends Actor implements ActionsInterface{
 							result = puzzle.checkConditions();
 						} else {
 							//Treasure item does not match required key item.
-							result = "That does not work here.";
+							result = "That does not work here 1.";
 						}
 					} else {
-						result = "That does not work here.";
+						result = "That does not work here 2.";
 					}
 				}
 			}

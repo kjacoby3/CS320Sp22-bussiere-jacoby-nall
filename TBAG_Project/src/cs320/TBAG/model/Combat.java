@@ -353,6 +353,10 @@ public class Combat{
 			result = "The combat is over, please go back.";
 		}
 		
+		if(((NPC) actor2).getAggression() == 0) {
+			((NPC) actor2).setAggression(-1);
+		}
+		
 		updateTurn();
 		return result;
 	}
