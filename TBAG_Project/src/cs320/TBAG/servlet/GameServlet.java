@@ -159,12 +159,16 @@ public class GameServlet extends HttpServlet{
 		
 		if(input != null) {
 			input = input.toLowerCase();
+			System.out.println("conversationEnded: " + conversationEnded);
 			if(conversation != null && !conversationEnded) {
 				System.out.println("Working");
 				//updateHistory(input, )
 				if(input.equalsIgnoreCase("exit")) {
+					conversation.setEnded(true);
+				} else {
 					Boolean validChoice = false;
-					for(int i = 1; i <= conversation.getSelectedNode().getResponseList().size(); i++) {
+					System.out.println("ResponseList.size()" + conversation.getSelectedNode().getResponseList().size());
+					for(int i = 0; i <= conversation.getSelectedNode().getResponseList().size() + 1; i++) {
 						String intToStr = "" + i;
 						if(input.equalsIgnoreCase(intToStr)) {
 							conversation.selectResponse(i);
@@ -177,12 +181,20 @@ public class GameServlet extends HttpServlet{
 					} else {
 						updateHistory(input);
 					}
-					updateHistory(conversation.getDisplayList());
+					
+					if(!conversation.getEnded()) {
+						updateHistory(conversation.getDisplayList());
+					} else {
+						updateHistory("The conversation is over.");
+					}
 				}
-				conversation.setEnded(true);
+				//conversation.setEnded(true);
+				session.setAttribute("conversation", conversation);
+				session.setAttribute("conversationEnded", conversation.getEnded());
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 			
-			if(objActivated != null && activeObj != null && objActivated) {
+			else if(objActivated != null && activeObj != null && objActivated) {
 				System.out.println("ObjActivated");
 				updateHistory(input, player.activateObj(input, activeObj));
 				objActivated = false;
@@ -499,9 +511,9 @@ public class GameServlet extends HttpServlet{
 			}
 			else if(input.startsWith("talk")) {
 				/* To delete Later */
-				NPC newNPC = new NPC();
-				newNPC.setLocation(player.getLocation());
-				player.getLocation().addNPCInRoom(newNPC);
+				//NPC newNPC = new NPC();
+				//newNPC.setLocation(player.getLocation());
+				//player.getLocation().addNPCInRoom(newNPC);
 				//-----------------------------//
 				int count = 0;
 				if(input.equalsIgnoreCase("talk")) {
@@ -537,6 +549,8 @@ public class GameServlet extends HttpServlet{
 						}
 						if(count == 1 ) {
 							if(talking.getAggression() >= 0) {
+								System.out.println("Talking NPC Name: " + talking.getName());
+								System.out.println("Talking NPC ConversationTree: " + talking.getConversationTree());
 								conversation = new Conversation(player, talking);
 								session.setAttribute("conversation", conversation);
 								session.setAttribute("conversationEnded", conversation.getEnded());
@@ -556,6 +570,8 @@ public class GameServlet extends HttpServlet{
 						}
 					}
 				}
+				System.out.println("PLayer location: " + player.getLocation());
+				System.out.println("NPCs in Room: " + player.getLocation().getNPCsInRoom());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			} else if (input.startsWith("open")) {
 				String activation;
@@ -664,6 +680,8 @@ public class GameServlet extends HttpServlet{
 			req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			//resp.getWriter().write("Nothing Happens");
 		}
+		player.setLocation(map.getRoom(player.getRoomId()));
+		System.out.println("Player roomID: " + player.getRoomId());
 		session.setAttribute("player", player);
 	}
 	

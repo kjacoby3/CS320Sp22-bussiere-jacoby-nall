@@ -21,7 +21,11 @@ public class Conversation {
 		this.player = player;
 		this.npc = npc;
 		npcDialog = npc.getConversationTree();
-		selectedNode = npcDialog.getConversationTreeMap().get(1);
+		if(npcDialog != null) {
+			if(npcDialog.getConversationTreeMap() != null) {
+				selectedNode = npcDialog.getConversationTreeMap().get(1);
+			}
+		}
 		displayList = displaySelectedNodeMSG();
 		ended = false;
 	}
@@ -110,13 +114,14 @@ public class Conversation {
 		}
 		
 		if(selectedResponse instanceof EndResponse) {
+			System.out.println("EndResponse Chosen");
 			ended = true;
 		}
 		
 		selectNode(selectedResponse.getResultNode());
 		System.out.println("      " + responseNum);
 		displayList = displaySelectedNodeMSG();
-		displaySelectedNodeMSG();
+		//displaySelectedNodeMSG();
 		//} else {
 		//	selectNode(selectedResponse.getResultNode());
 		//	displaySelectedNodeMSG();
