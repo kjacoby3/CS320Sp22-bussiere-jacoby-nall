@@ -103,6 +103,10 @@ public class Game {
 		actorsList.add(npc);
 	}
 	
+	public void addPlayer(Player player) {
+		actorsList.add(player);
+	}
+	
 	public void addInventory(Inventory inventory) {
 		inventories.add(inventory);
 	}

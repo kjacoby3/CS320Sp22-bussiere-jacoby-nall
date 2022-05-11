@@ -124,8 +124,10 @@ public abstract class Actor{
 	
 	public boolean isDead() {
 		if(actorStats.getCurHP() <= 0) {
+			System.out.println("is dead");
 			return true;
 		} else {
+			System.out.println("is not dead");
 			return false;
 		}
 	}
