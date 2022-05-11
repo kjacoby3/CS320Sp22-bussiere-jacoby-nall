@@ -1,3 +1,4 @@
+-2|Dump|THIS PLACE IS A DUMP|THIS PLACE IS A DUMP|0|false|1|null
 1|Your Cabin|This is your cabin.  Your cabinmate still isn't here|You awaken to sound of explosions and the rocking of the ship.  You shoot up out of bed and notice that your cabinmate is not in their bed.  There is a door leading out into the hall|1|false|1|null
 2|Hallway A|This is the hall outside of your cabin|You enter the hall outside of your cabin.  There are shiphands running to various locations.  Everyone seems too focused to talk.  The hallway goes left (Northward) or right (Southward)|1|false|1|null
 3|Hallway B|This hallway leads to the infirmary or your cabin.  There is a cabin on this corner|The hallway comes to a corner and heads Eastward to the infirmary or Southward toward your cabin.  There is a cabin on the corner Westward|1|false|1|null
