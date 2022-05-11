@@ -2621,6 +2621,8 @@ public class DerbyDatabase implements IDatabase {
 						enemyPuzzle.setExpReward(exp);
 						enemyPuzzle.setRewardItemId(itemID);
 						
+						enemyPuzzle.setNPC(getNPCByNPCID(npcID));
+						
 						result = enemyPuzzle;
 					}
 					
@@ -2674,7 +2676,42 @@ public class DerbyDatabase implements IDatabase {
 		});
 	}
 	
-	
+	@Override
+	public NPC getNPCByNPCID(int npcID) {
+		return executeTransaction(new Transaction<NPC>() {
+			@Override
+			public NPC execute(Connection conn) throws SQLException {
+				PreparedStatement npcStmt = null;
+				ResultSet npcSet = null;
+				NPC npc = new NPC();
+				
+				try {
+					npcStmt = conn.prepareStatement(
+							"select * from npcs "
+							+ "where npcs.npcID = ?"
+				);
+					npcStmt.setInt(1, npcID);
+				
+					npcSet = npcStmt.executeQuery();
+				
+				while(npcSet.next()) {
+					npc.setNPCId(npcID);
+					npc.setName(npcSet.getString(2));
+					npc.setType(npcSet.getString(3));
+					npc.setRoomId(npcSet.getInt(4));
+					npc.setStatsId(npcSet.getInt(5));
+					npc.setAggression(npcSet.getInt(6));
+					npc.setConversationTreeId(npcSet.getInt(7));
+					npc.setCurrency(npcSet.getInt(8));
+				}
+					
+				return npc;
+				}finally {
+					DBUtil.closeQuietly(npcStmt);
+				}
+			}
+		});
+	}
 	/*----------------------------------------------------------------*/
 
 }
