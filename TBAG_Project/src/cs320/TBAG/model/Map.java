@@ -38,7 +38,20 @@ public class Map{
 				//newRoom = roomConnection.getNorth();
 				//return newRoom;
 				
-				if(aggroInRoom == false && prevRoomConnection.getSouth() == roomID) {
+				if(aggroInRoom == false) {
+					if(room.getDoor(direction) != null){
+						if(room.getDoor(direction).getActivated()) {
+							prevRoomID = roomID;
+							newRoom = roomConnection.getNorth();
+						} else {
+							return newRoom;
+						}
+					} else {
+						prevRoomID = roomID;
+						newRoom = roomConnection.getNorth();
+						return newRoom;
+					}
+				} else if(aggroInRoom == true && prevRoomConnection.getSouth() == roomID){
 					if(room.getDoor(direction) != null){
 						if(room.getDoor(direction).getActivated()) {
 							prevRoomID = roomID;
@@ -65,7 +78,7 @@ public class Map{
 			if (roomConnection.getEast() > 0){
 				//newRoom = roomConnection.getEast();
 				//return newRoom;
-				if(aggroInRoom == false && prevRoomConnection.getWest() == roomID) {
+				if(aggroInRoom == false) {
 					if(room.getDoor(direction) != null){
 						if(room.getDoor(direction).getActivated()) {
 							prevRoomID = roomID;
@@ -78,6 +91,21 @@ public class Map{
 						newRoom = roomConnection.getEast();
 						return newRoom;
 					}
+				} else if(aggroInRoom == true && prevRoomConnection.getWest() == roomID) {
+					if(room.getDoor(direction) != null){
+						if(room.getDoor(direction).getActivated()) {
+							prevRoomID = roomID;
+							newRoom = roomConnection.getEast();
+						} else {
+							return newRoom;
+						}
+					} else {
+						prevRoomID = roomID;
+						newRoom = roomConnection.getEast();
+						return newRoom;
+					}
+				} else {
+					return newRoom;
 				}
 			}
 			else {
@@ -89,7 +117,7 @@ public class Map{
 			if (roomConnection.getSouth() > 0){
 				//newRoom = roomConnection.getSouth();
 				//return newRoom;
-				if(aggroInRoom == false && prevRoomConnection.getNorth() == roomID) {
+				if(aggroInRoom == false) {
 					if(room.getDoor(direction) != null){
 						if(room.getDoor(direction).getActivated()) {
 							prevRoomID = roomID;
@@ -102,6 +130,21 @@ public class Map{
 						newRoom = roomConnection.getSouth();
 						return newRoom;
 					}
+				} else if(aggroInRoom == true && prevRoomConnection.getNorth() == roomID) {
+					if(room.getDoor(direction) != null){
+						if(room.getDoor(direction).getActivated()) {
+							prevRoomID = roomID;
+							newRoom = roomConnection.getSouth();
+						} else {
+							return newRoom;
+						}
+					} else {
+						prevRoomID = roomID;
+						newRoom = roomConnection.getSouth();
+						return newRoom;
+					}
+				} else {
+					return newRoom;
 				}
 			}
 			else {
@@ -114,7 +157,7 @@ public class Map{
 			if (roomConnection.getWest() > 0){
 				//newRoom = roomConnection.getWest();
 				//return newRoom;
-				if(aggroInRoom == false && prevRoomConnection.getEast() == roomID) {
+				if(aggroInRoom == false) {
 					if(room.getDoor(direction) != null){
 						if(room.getDoor(direction).getActivated()) {
 							prevRoomID = roomID;
@@ -127,6 +170,21 @@ public class Map{
 						newRoom = roomConnection.getWest();
 						return newRoom;
 					}
+				} else if(aggroInRoom == true && prevRoomConnection.getEast() == roomID) {
+					if(room.getDoor(direction) != null){
+						if(room.getDoor(direction).getActivated()) {
+							prevRoomID = roomID;
+							newRoom = roomConnection.getWest();
+						} else {
+							return newRoom;
+						}
+					} else {
+						prevRoomID = roomID;
+						newRoom = roomConnection.getWest();
+						return newRoom;
+					}
+				} else {
+					return newRoom;
 				}
 			}
 			else {
@@ -160,5 +218,12 @@ public class Map{
 		rooms.put(roomID, room);
 	}
 	
+	public void setPrevRoomID(int prevRoomID) {
+		this.prevRoomID = prevRoomID;
+	}
+	
+	public int getPrevRoomID() {
+		return prevRoomID;
+	}
 	
 }

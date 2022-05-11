@@ -58,7 +58,7 @@ public class GameServlet extends HttpServlet{
 			playerID = 1;
 		}
 		else {
-			playerID = Integer.parseInt((String) session.getAttribute("playerID"));
+			playerID = (int) session.getAttribute("playerID");
 		}
 		playerID=1;
 		gameID = 1;
@@ -80,10 +80,11 @@ public class GameServlet extends HttpServlet{
 		session.setAttribute("gameID", gameID);
 		session.setAttribute("history", new ArrayList<String>());
 		
+		req.setAttribute("name", player.getName());
 		req.setAttribute("weapon", player.getEqWeap());
 		req.setAttribute("equipment", player.getEquipped());
 		req.setAttribute("playerStats", player.getActorStats());
-		req.setAttribute("roomName", map.getRoom(player.getRoomId()));
+		req.setAttribute("roomName", map.getRoom(player.getRoomId()).getRoomName());
 		
 		forwardRoomDesc(player, player.getRoomId(), null, req, resp);
 		
@@ -131,6 +132,14 @@ public class GameServlet extends HttpServlet{
 		player.setActorStats(new ActorStats());
 		player.getInventory().addItem(healthPotion);
 		System.out.println("" + input);
+		
+		
+		System.out.println(player.getName());
+		req.setAttribute("name", player.getName());
+		req.setAttribute("weapon", player.getEqWeap());
+		req.setAttribute("equipment", player.getEquipped());
+		req.setAttribute("playerStats", player.getActorStats());
+		req.setAttribute("roomName", map.getRoom(player.getRoomId()).getRoomName());
 		
 		//Player player= model.getPlayer();
 		//Map map = model.getMap();
@@ -719,6 +728,7 @@ public class GameServlet extends HttpServlet{
 	public void forwardRoomDesc (Player player, int directionCheck, String input, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//player.move(directionCheck);
 		Room newRoom = map.getRoom(directionCheck);
+		req.setAttribute("name", player.getName());
 		req.setAttribute("weapon", player.getEqWeap());
 		req.setAttribute("equipment", player.getEquipped());
 		req.setAttribute("playerStats", player.getActorStats());

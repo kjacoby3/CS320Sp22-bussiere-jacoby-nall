@@ -167,6 +167,7 @@ public class InitialData {
 				player.setRoomId(Integer.parseInt(i.next()));
 				player.setStatsId(Integer.parseInt(i.next()));
 				player.setCurrency(Integer.parseInt(i.next()));
+				player.setPrevRoomId(Integer.parseInt(i.next()));
 				
 				playerList.add(player);
 			}

@@ -836,7 +836,7 @@ public class DerbyDatabase implements IDatabase {
 					players = conn.prepareStatement(
 						"create table players ("
 						+ " playerID integer primary key generated always as identity (start with 0, increment by 1),"
-						+ "name varchar(40), roomID integer, statsID integer, currency integer, level integer)"
+						+ "name varchar(40), roomID integer, statsID integer, currency integer, prevRoomID integer, level integer)"
 						);
 					players.executeUpdate();
 					
@@ -934,14 +934,14 @@ public class DerbyDatabase implements IDatabase {
 					convoNode = conn.prepareStatement(
 							"create table conversationNode ("
 							+ "convoNodeID integer, convoTreeID integer,"
-							+ "convoNodeKey integer, statement varchar(100))"
+							+ "convoNodeKey integer, statement varchar(300))"
 					);
 					convoNode.executeUpdate();
 					
 					defaultResp = conn.prepareStatement(
 							"create table defaultResponse ("
 							+ "defaultResponseID integer, convoTreeID integer,"
-							+ "convoNodeID integer, response varchar(100), "
+							+ "convoNodeID integer, response varchar(300), "
 							+ "resultNodeID integer)"
 					);
 					defaultResp.executeUpdate();
@@ -949,7 +949,7 @@ public class DerbyDatabase implements IDatabase {
 					endResp = conn.prepareStatement(
 							"create table endResponse ("
 							+ "endResponseID integer, convoTreeID integer, "
-							+ "convoNodeID integer, response varchar(100), "
+							+ "convoNodeID integer, response varchar(300), "
 							+ "resultNodeID integer)"
 					);
 					endResp.executeUpdate();	
@@ -957,7 +957,7 @@ public class DerbyDatabase implements IDatabase {
 					puzzleResp = conn.prepareStatement(
 							"create table puzzleResponse ("
 							+ "puzzleResponseID integer, convoTreeID integer, "
-							+ "convoNodeID integer, response varchar(100), "
+							+ "convoNodeID integer, response varchar(300), "
 							+ "resultNodeID integer, puzzleID integer, completeResultNodeID integer)"
 					);
 					puzzleResp.executeUpdate();
@@ -965,7 +965,7 @@ public class DerbyDatabase implements IDatabase {
 					rewardResp = conn.prepareStatement(
 							"create table rewardResponse ("
 							+ "rewardResponseID integer, convoTreeID integer, "
-							+ "convoNodeID integer, response varchar(100), "
+							+ "convoNodeID integer, response varchar(300), "
 							+ "resultNodeID integer, itemID integer, "
 							+ "currency integer, exp integer, collected boolean)"
 					);
@@ -1635,14 +1635,15 @@ public class DerbyDatabase implements IDatabase {
 					System.out.println("EnemyPuzzle table successfully populated");
 					
 					try {
-						insertPlayer = conn.prepareStatement("insert into players (name, roomID, statsID, currency)"
-								+ "values (?, ?, ?, ?)");
+						insertPlayer = conn.prepareStatement("insert into players (name, roomID, statsID, currency, prevRoomID)"
+								+ "values (?, ?, ?, ?, ?)");
 						for(Player player : playerList) {
 							//insertPlayer.setInt(1, player.getPlayerId());
 							insertPlayer.setString(1, player.getName());
 							insertPlayer.setInt(2, player.getRoomId());
 							insertPlayer.setInt(3, player.getStatsId());
 							insertPlayer.setInt(4,  player.getCurrency());
+							insertPlayer.setInt(5, player.getPrevRoomId());
 							
 							insertPlayer.addBatch();
 						}
@@ -1737,6 +1738,7 @@ public class DerbyDatabase implements IDatabase {
 					player.setRoomId(playerSet.getInt(3));
 					player.setStatsId(playerSet.getInt(4));
 					player.setCurrency(playerSet.getInt(5));
+					player.setPrevRoomId(playerSet.getInt(6));
 					
 					playerList.add(player);
 				}
@@ -2635,6 +2637,7 @@ public class DerbyDatabase implements IDatabase {
 					player.setRoomId(playerSet.getInt(3));
 					player.setStatsId(playerSet.getInt(4));
 					player.setCurrency(playerSet.getInt(5));
+					player.setPrevRoomId(playerSet.getInt(6));
 				}
 					
 				return player;

@@ -160,11 +160,11 @@
             color:red;
             font-size:125%;
         }
+
         #failureCreateMessage{
             color: #ff0000;
             font-size:125%;
         }
-
         
         </style>
         </head>
@@ -202,6 +202,7 @@
               <button type="submit" style="color:black">Login</button>
 
               <div id="resultID"></div>
+              <div id="failureMessage"></div>
             </div>
         
             <div class="container" style="background-color:#f1f1f1">

@@ -39,6 +39,7 @@ public class GameController {
 		map = mapController.createMap();
 		model.setMap(map);
 		createPlayers(playerID);
+		map.setPrevRoomID(player.getPrevRoomId());
 		//for(room : )
 		//createNPCs();
 	}

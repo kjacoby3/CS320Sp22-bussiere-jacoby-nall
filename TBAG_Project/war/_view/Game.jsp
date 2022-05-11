@@ -188,7 +188,7 @@
 
                 <div id="sectionTitle">Player Information</div>
                 <div id="location">Location: ${roomName}</div>
-                <div id="playerInfo">Name: ${play.name}<br>
+                <div id="playerInfo">Name: ${name}<br>
                 <span style="text-align: left">Level ${playerStats.curLvl}</span><br>
                 <span style="text-align: left"> XP:${playerStats.curExp}/${playerStats.maxExp} </span></div>
                 <div id="playerStats"><div style="text-align: center;">Player Stats</div>
