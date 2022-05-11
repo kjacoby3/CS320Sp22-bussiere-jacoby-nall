@@ -18,13 +18,13 @@ public class InventoryTest extends TestCase {
 	
 	@Before
 	protected void setUp() throws Exception{
-		weapon = new Weapon("Sword", 15, 450,0,0,0,true);
-		usable = new Usable("Key",0,0,0,0);
-		trophy = new Trophy("Claw", 10, 10, 10, 10);
-		treasure = new Treasure("Keepsake", 0, 0, 2, 0);
-		equipment1 = new Equipment("Chest Armor", 800, 20, 0, 0,0,0,0,false);
-		equipment2 = new Equipment("Leg Armor", 400, 15, 0, 2,0,0,0,false);
-		equipment3 = new Equipment("Boots", 470, 10, 0, 0,0,0,0,false);
+		weapon = new Weapon(0,"Sword", 15, 450,0,0,0,true);
+		usable = new Usable(0,"Key",0,0,0,0);
+		trophy = new Trophy(0,"Claw", 10, 10, 10, 10);
+		treasure = new Treasure(0,"Keepsake", 0, 0, 2, 0);
+		equipment1 = new Equipment(0,"Chest Armor", 800, 20, 0, 0,0,0,0,false);
+		equipment2 = new Equipment(0,"Leg Armor", 400, 15, 0, 2,0,0,0,false);
+		equipment3 = new Equipment(0,"Boots", 470, 10, 0, 0,0,0,0,false);
 		
 		
 	}

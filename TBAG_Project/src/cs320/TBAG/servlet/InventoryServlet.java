@@ -2,6 +2,7 @@ package cs320.TBAG.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -66,12 +67,12 @@ public class InventoryServlet extends HttpServlet{
 		HttpSession session = req.getSession();
 		Inventory inventory = ((Player) session.getAttribute("player")).getInventory();
 		
-		List<Weapon> weapons = new ArrayList<>(inventory.getWeapons().values());
-		List<Equipment> equipment = new ArrayList<>(inventory.getEquipment().values());
-		List<Trophy> trophies = new ArrayList<>(inventory.getTrophies().values());
-		List<Usable> usables = new ArrayList<>(inventory.getUsables().values());
-		List<Treasure> treasures = new ArrayList<>(inventory.getTreasures().values());
-		List<Consumable> consumables = new ArrayList<>(inventory.getConsumables().values());
+		List<Weapon> weapons = new ArrayList<Weapon>(inventory.getWeapons().values());
+		List<Equipment> equipment = new ArrayList<Equipment>(inventory.getEquipment().values());
+		List<Trophy> trophies = new ArrayList<Trophy>(inventory.getTrophies().values());
+		List<Usable> usables = new ArrayList<Usable>(inventory.getUsables().values());
+		List<Treasure> treasures = new ArrayList<Treasure>(inventory.getTreasures().values());
+		List<Consumable> consumables = new ArrayList<Consumable>(inventory.getConsumables().values());
 		
 		
 		

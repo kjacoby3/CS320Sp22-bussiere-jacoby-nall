@@ -812,6 +812,7 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement actorStats = null;
 				PreparedStatement connections = null;
 				PreparedStatement accounts = null;
+				PreparedStatement accountPlayers = null;
 				
 				PreparedStatement convoTree = null;
 				PreparedStatement convoNode = null;
@@ -834,10 +835,12 @@ public class DerbyDatabase implements IDatabase {
 				
 				try {
 					players = conn.prepareStatement(
+
 						"create table players ("
 						+ " playerID integer primary key generated always as identity (start with 1, increment by 1),"
 						+ "name varchar(40), roomID integer, statsID integer, currency integer, prevRoomID integer, level integer)"
 						);
+
 					players.executeUpdate();
 					
 					accounts = conn.prepareStatement(
@@ -846,6 +849,14 @@ public class DerbyDatabase implements IDatabase {
 							+ "username varchar(32), password varchar(128), salt varchar(32))"						
 							);
 					accounts.executeUpdate();
+					
+					accountPlayers = conn.prepareStatement(
+							"create table accountPlayers ("
+							+ "accountID integer constraint accountID references accounts,"
+							+ "playerID integer constraint playerID references players)"
+							);
+					accountPlayers.executeUpdate();
+							
 							
 					
 					npcs = conn.prepareStatement(
@@ -1173,6 +1184,7 @@ public class DerbyDatabase implements IDatabase {
 					PreparedStatement insertPlayer = null;
 					PreparedStatement insertNPC = null;
 					PreparedStatement insertActorStats = null;
+					PreparedStatement insertAccountPlayers = null;
 					
 					try {
 						// populate Rooms table 
@@ -1647,6 +1659,10 @@ public class DerbyDatabase implements IDatabase {
 							insertPlayer.addBatch();
 						}
 						insertPlayer.executeBatch();
+						
+						insertAccountPlayers = conn.prepareStatement("insert into accountPlayers (accountID, playerID)"
+								+ "values (0,0)");
+						insertAccountPlayers.executeUpdate();
 					} finally {
 						DBUtil.closeQuietly(insertPlayer);
 					}
@@ -1725,7 +1741,7 @@ public class DerbyDatabase implements IDatabase {
 				ArrayList<Player> playerList = new ArrayList<Player>();
 				try {
 					playerStmt = conn.prepareStatement(
-							"select player.* from player"
+							"select players.* from players"
 				);
 					
 				playerSet = playerStmt.executeQuery();
