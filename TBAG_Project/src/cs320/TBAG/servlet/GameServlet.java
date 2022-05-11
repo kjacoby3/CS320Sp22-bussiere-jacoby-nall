@@ -883,6 +883,11 @@ public class GameServlet extends HttpServlet{
 						strList.addAll(location.getRoomInv().getInventoryDescription());
 					}
 					
+					if(location.getObjDescription() != null) {
+						strList.addAll(location.getObjDescription());
+					}
+					
+					strList.add("");
 					Collections.reverse(strList);
 					updateHistory(strList);
 					
