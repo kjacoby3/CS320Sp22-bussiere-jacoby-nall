@@ -2942,7 +2942,7 @@ public class DerbyDatabase implements IDatabase {
 						String name = signSet.getString(index++);
 						String description = signSet.getString(index++);
 						Boolean activated = signSet.getBoolean(index++);
-						index++;
+						String message = signSet.getString(index++);
 						int puzzleID = signSet.getInt(index++);
 						
 						Sign sign = new Sign();
@@ -2952,6 +2952,7 @@ public class DerbyDatabase implements IDatabase {
 						sign.setDescription(description);
 						sign.setActivated(activated);
 						sign.setRoomId(roomId);
+						sign.setMessage(message);
 						sign.setPuzzleId(puzzleID);
 						sign.setPuzzle(getPuzzleByPuzzleID(puzzleID));
 						
@@ -3133,43 +3134,6 @@ public class DerbyDatabase implements IDatabase {
 				return player;
 				}finally {
 					DBUtil.closeQuietly(playerStmt);
-				}
-			}
-		});
-	}
-	
-	@Override
-	public NPC getNPCByNPCID(int npcID) {
-		return executeTransaction(new Transaction<NPC>() {
-			@Override
-			public NPC execute(Connection conn) throws SQLException {
-				PreparedStatement npcStmt = null;
-				ResultSet npcSet = null;
-				NPC npc = new NPC();
-				
-				try {
-					npcStmt = conn.prepareStatement(
-							"select * from npcs "
-							+ "where npcs.npcID = ?"
-				);
-					npcStmt.setInt(1, npcID);
-				
-					npcSet = npcStmt.executeQuery();
-				
-				while(npcSet.next()) {
-					npc.setNPCId(npcID);
-					npc.setName(npcSet.getString(2));
-					npc.setType(npcSet.getString(3));
-					npc.setRoomId(npcSet.getInt(4));
-					npc.setStatsId(npcSet.getInt(5));
-					npc.setAggression(npcSet.getInt(6));
-					npc.setConversationTreeId(npcSet.getInt(7));
-					npc.setCurrency(npcSet.getInt(8));
-				}
-					
-				return npc;
-				}finally {
-					DBUtil.closeQuietly(npcStmt);
 				}
 			}
 		});
