@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import cs320.TBAG.model.Combat;
 import cs320.TBAG.model.Equipment;
+import cs320.TBAG.model.Game;
 import cs320.TBAG.model.Inventory;
 import cs320.TBAG.model.Map;
 import cs320.TBAG.model.NPC;
@@ -32,6 +33,7 @@ public class CombatServlet extends HttpServlet{
 		
 		session = req.getSession();
 		
+		Game model = (Game) session.getAttribute("model");
 		combatMod = (Combat) session.getAttribute("combatMod");
 		String playerName = combatMod.getActor1().getName();
 		String npcName = combatMod.getActor2().getName();
@@ -66,6 +68,7 @@ public class CombatServlet extends HttpServlet{
 		session = req.getSession();
 		
 		combatMod = (Combat) session.getAttribute("combatMod");
+		Game model = (Game) session.getAttribute("model");
 		
 		String error = null;
 		String finish = null;
@@ -82,6 +85,8 @@ public class CombatServlet extends HttpServlet{
 			result1 = combatMod.actor1Attack();
 			if(combatMod.getActor2Defeated() == true) {
 				result3 = combatMod.actor1DefeatsActor2();
+				model.getMap().getRoom(combatMod.getActor2().getRoomId()).removeNPCInRoom((NPC) combatMod.getActor2());
+				model.getMap().getRoom(-2).addNPCInRoom((NPC) combatMod.getActor2());
 				finish = "true";
 			}
 		}
@@ -124,6 +129,7 @@ public class CombatServlet extends HttpServlet{
 		req.setAttribute("playerLVL", combatMod.getActor1().getActorStats().getCurLvl());
 		req.setAttribute("playerEXP", combatMod.getActor1().getActorStats().getCurExp());
 		req.setAttribute("playerMaxEXP", combatMod.getActor1().getActorStats().getMaxExp());
+		
 		
 		req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
 	}
