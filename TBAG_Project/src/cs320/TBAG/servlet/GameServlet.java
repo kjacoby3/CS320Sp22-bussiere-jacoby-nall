@@ -184,7 +184,10 @@ public class GameServlet extends HttpServlet{
 					}
 					
 					if(!conversation.getEnded()) {
-						updateHistory(conversation.getDisplayList());
+						//updateHistory(conversation.getDisplayList());
+						ArrayList<String> strList = conversation.getDisplayList();
+						Collections.reverse(strList);
+						updateHistory(strList);
 					} else {
 						updateHistory("The conversation is over.");
 					}
@@ -459,33 +462,38 @@ public class GameServlet extends HttpServlet{
 							}
 						}
 						if(count == 1) {
-							Combat combatMod = new Combat(player, enemy);
-							session.setAttribute("combatMod", combatMod);
-							//Sets initial attributes for CombatServlet
-							req.setAttribute("player", combatMod.getActor1().getName());
-							req.setAttribute("enemy", combatMod.getActor2().getName());
-							
-							req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
-							req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
-							
-							req.setAttribute("enemyDMG", combatMod.getActor2().getActorStats().getDmg());
-							req.setAttribute("playerDMG", combatMod.getActor1().getActorStats().getDmg());
-							
-							req.setAttribute("enemyDEF", combatMod.getActor2().getActorStats().getDef());
-							req.setAttribute("playerDEF", combatMod.getActor1().getActorStats().getDef());
-							
-							req.setAttribute("enemySPD", combatMod.getActor2().getActorStats().getSpd());
-							req.setAttribute("playerSPD", combatMod.getActor1().getActorStats().getSpd());
-							
-							req.setAttribute("enemyWeapon", combatMod.getActor2().getEqWeap().getName());
-							req.setAttribute("playerWeapon", combatMod.getActor1().getEqWeap().getName());
-							
-							req.setAttribute("playerLVL", combatMod.getActor1().getActorStats().getCurLvl());
-							req.setAttribute("playerEXP", combatMod.getActor1().getActorStats().getCurExp());
-							req.setAttribute("playerMaxEXP", combatMod.getActor1().getActorStats().getMaxExp());
-							
-							updateHistory(input, "Attacking " + enemy.getName());
-							req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
+							if(enemy.getAggression() <= 0) {
+								Combat combatMod = new Combat(player, enemy);
+								session.setAttribute("combatMod", combatMod);
+								//Sets initial attributes for CombatServlet
+								req.setAttribute("player", combatMod.getActor1().getName());
+								req.setAttribute("enemy", combatMod.getActor2().getName());
+								
+								req.setAttribute("enemyHealth", combatMod.getActor2().getActorStats().getCurHP());
+								req.setAttribute("playerHealth", combatMod.getActor1().getActorStats().getCurHP());
+								
+								req.setAttribute("enemyDMG", combatMod.getActor2().getActorStats().getDmg());
+								req.setAttribute("playerDMG", combatMod.getActor1().getActorStats().getDmg());
+								
+								req.setAttribute("enemyDEF", combatMod.getActor2().getActorStats().getDef());
+								req.setAttribute("playerDEF", combatMod.getActor1().getActorStats().getDef());
+								
+								req.setAttribute("enemySPD", combatMod.getActor2().getActorStats().getSpd());
+								req.setAttribute("playerSPD", combatMod.getActor1().getActorStats().getSpd());
+								
+								req.setAttribute("enemyWeapon", combatMod.getActor2().getEqWeap().getName());
+								req.setAttribute("playerWeapon", combatMod.getActor1().getEqWeap().getName());
+								
+								req.setAttribute("playerLVL", combatMod.getActor1().getActorStats().getCurLvl());
+								req.setAttribute("playerEXP", combatMod.getActor1().getActorStats().getCurExp());
+								req.setAttribute("playerMaxEXP", combatMod.getActor1().getActorStats().getMaxExp());
+								
+								updateHistory(input, "Attacking " + enemy.getName());
+								req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
+							} else if (enemy.getAggression() > 0) {
+								updateHistory(input, "Why would you attack a friendly?");
+								req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+							}
 						} else if(count == 0) {
 							updateHistory(input, "There is no npc of " + enemy.getName());
 						} else if(count > 1) {
@@ -675,7 +683,10 @@ public class GameServlet extends HttpServlet{
 //							for(String str : conversation.getDisplayList()) {
 //								updateHistory(str);
 //							}
-							updateHistory(conversation.getDisplayList());
+							//updateHistory(conversation.getDisplayList());
+							ArrayList<String> strList = conversation.getDisplayList();
+							Collections.reverse(strList);
+							updateHistory(strList);
 						} else {
 							updateHistory(input, player.getLocation().getNPCsInRoom().get(0).getName() + " doesn't want to talk.");
 						}
@@ -707,8 +718,10 @@ public class GameServlet extends HttpServlet{
 //								for(String str : conversation.getDisplayList()) {
 //									updateHistory(str);
 //								}
-								updateHistory(conversation.getDisplayList());
-
+								//updateHistory(conversation.getDisplayList());
+								ArrayList<String> strList = conversation.getDisplayList();
+								Collections.reverse(strList);
+								updateHistory(strList);
 							} else {
 								updateHistory(input, talking.getName() + " doesn't want to talk.");
 							}
@@ -931,7 +944,7 @@ public class GameServlet extends HttpServlet{
 		if(hist==null) {
 			hist = new ArrayList<String>();
 		}
-		//Collections.reverse(hist);
+		Collections.reverse(hist);
 		for(int i = 0; i < inputList.size(); i++) {
 			hist.add(inputList.get(i));
 		}
