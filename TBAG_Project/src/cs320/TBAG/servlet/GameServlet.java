@@ -833,31 +833,54 @@ public class GameServlet extends HttpServlet{
 				
 				if(input.equalsIgnoreCase("read")) {
 					activation = input;
+					int count = 0;
+					Interactable Obj = null;
+	
+					for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
+						if(obj.getActivationKeyword().equalsIgnoreCase("read")) {
+							Obj = obj;
+							count++;
+						}
+					}
+					if(count == 1) {
+						updateHistory(player.activateObj(activation, Obj));
+						//objActivated = true;
+						//session.setAttribute("objActivated", objActivated);
+						//System.out.println("First activated obj");
+						//activeObj = Obj;
+						//session.setAttribute("activeObj", activeObj);
+					} else if(count < 1) {
+						updateHistory(input + " does not work here.");
+					} else if (count > 1) {
+						updateHistory("What object are you trying to interact with?");
+					}
 				} else {
 					String[] splitStr = input.split(" ", 2);
 					activation = splitStr[0];
-				}
-				int count = 0;
-				Interactable Obj = null;
-
-				for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
-					if(obj.getActivationKeyword().equalsIgnoreCase("read")) {
-						Obj = obj;
-						count++;
+					String objName = splitStr[1];
+					Interactable Obj = null;
+					int count = 0;
+					
+					for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
+						if(obj.getActivationKeyword().equalsIgnoreCase("read")) {
+							Obj = obj;
+							count++;
+						}
+					}
+					if(count == 1) {
+						updateHistory(player.activateObj(activation, Obj));
+						//objActivated = true;
+						//session.setAttribute("objActivated", objActivated);
+						//System.out.println("First activated obj");
+						//activeObj = Obj;
+						//session.setAttribute("activeObj", activeObj);
+					} else if(count < 1) {
+						updateHistory(input, "Could not find object of " + objName + " with activation of " + activation);
+					} else if (count > 1) {
+						updateHistory("Sorry, mistakes were made.");
 					}
 				}
-				if(count == 1) {
-					updateHistory(player.activateObj(activation, Obj));
-					objActivated = true;
-					session.setAttribute("objActivated", objActivated);
-					System.out.println("First activated obj");
-					activeObj = Obj;
-					session.setAttribute("activeObj", activeObj);
-				} else if(count < 1) {
-					updateHistory(input + " does not work here.");
-				} else if (count > 1) {
-					updateHistory("What object are you trying to interact with?");
-				}
+				
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			} else if (input.startsWith("look")) {
 				if(input.equalsIgnoreCase("look")) {
