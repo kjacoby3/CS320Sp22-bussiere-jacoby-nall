@@ -863,7 +863,7 @@ public class GameServlet extends HttpServlet{
 					System.out.println("Gets this far");
 					if(location.getRoomNPCDescription() != null) {
 						strList.addAll(location.getRoomNPCDescription());
-						strList.add("");
+						//strList.add("");
 					}
 					
 					if(location.getRoomInv().getInventoryDescription() != null) {
@@ -910,6 +910,7 @@ public class GameServlet extends HttpServlet{
 					
 					player.move(roomID);
 				}
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 			else {
 				//String error = "unsupported command";
