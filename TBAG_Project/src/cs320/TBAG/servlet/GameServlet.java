@@ -441,7 +441,7 @@ public class GameServlet extends HttpServlet{
 			}
 			else if(input.startsWith("attack")) {
 				if(input.equalsIgnoreCase("attack")) {
-					updateHistory(input);
+					//updateHistory(input);
 					req.setAttribute("game", model);
 					
 					//For purposes of testing, I am foregoing this test and creating a blank enemy
