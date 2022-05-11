@@ -239,7 +239,4 @@ public class Map{
 		return prevRoomID;
 	}
 	
-	public HashMap<Integer, Room> getRooms(){
-		return rooms;
-	}
 }
