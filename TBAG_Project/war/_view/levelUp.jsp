@@ -81,6 +81,7 @@
                 <td class="body">${curHP}/${maxHP}
                     <input id="hpPlus" style="height:30px; width:30px;" type="image" name="incHP" src="plusIcon.jpg"
 					action="${pageContext.servletContext.contextPath}/levelUp" method="post">
+					<!--<form action="$pageContext.servletContext.contextpath}/levelUp" method = "post" id="levelUp"><img src="plusIcon.jpg" id = "hpPlus"></form>-->
 					<class id="hpInc" class="projected" style="font-size:100%"></class>
                 </td>
 				<td class="body">Health: <class id="projHP" class="projected" style="font-size:100%; color:black">${curHP}/${maxHP} </class></td>
@@ -93,6 +94,8 @@
 				<td class="body">${dmg}
                     <input id="dmgPlus" style="height:30px; width:30px;" type="image" name="incDMG" src="plusIcon.jpg" 
 					action="${pageContext.servletContext.contextPath}/levelUp" method="post">
+					<!--<form action="$pageContext.servletContext.contextpath}/levelUp" method = "post" id="levelUp"><img src="plusIcon.jpg" id = "dmgPlus"></form>-->
+					
 					<class id="dmgInc" class="projected" style="font-size:100%"></class>
                 </td>
 				<td class="body">Damage: <class id="projDMG" class="projected" style="font-size:100%; color:black">${dmg} </class></td>
@@ -103,6 +106,7 @@
 				<td class="body">${def}
                         <input id="defPlus" style="height:30px; width:30px;" type="image" name="incDEF" src="plusIcon.jpg"
 					    action="${pageContext.servletContext.contextPath}/levelUp" method="post">
+						<!--<form action="$pageContext.servletContext.contextpath}/levelUp" method = "post" id="levelUp"><img src="plusIcon.jpg" id = "defPlus"></form>-->
 					    <class id="defInc" class="projected" style="font-size:100%"></class>
                 </td>
 				<td class="body">Defense: <class id="projDEF" class="projected" style="font-size:100%; color:black">${def} </class></td>
@@ -113,6 +117,7 @@
 				<td class="body">${spd}
                     <input id="spdPlus" style="height:30px; width:30px;" type="image" name="incSPD" src="plusIcon.jpg"
 					action="${pageContext.servletContext.contextPath}/levelUp" method="post">
+					<!--<form action="$pageContext.servletContext.contextpath}/levelUp" method = "post" id="levelUp"><img src="plusIcon.jpg" id = "spdPlus"></form>-->
 					<class id="spdInc" class="projected" style="font-size:100%"></class>
                 </td>
 				<td class="body">Speed: <class id="projSPD" class="projected" style="font-size:100%; color:black">${spd} </class></td>
@@ -123,6 +128,7 @@
     <div> Result: ${result} </div>
 
 <script>
+
 document.getElementById("hpPlus").addEventListener("mouseover", projHPOn);
 document.getElementById("hpPlus").addEventListener("mouseout", projHPOff);
 

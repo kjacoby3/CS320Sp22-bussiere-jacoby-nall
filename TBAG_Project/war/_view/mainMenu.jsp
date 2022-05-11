@@ -175,7 +175,7 @@
             <button onclick="document.getElementById('id01').style.display='block'" id="login">Login</button>
             <button onclick="document.getElementById('id02').style.display='block'" id="createAccount">Create Account</button>
             <!--<button onclick="document.getElementById('id03').style.display='block'" id="loadGame">Load Game</button>-->
-            <form action="${pageContext.servletContext.contextPath}/loginAjax" method = post id="loadGameID"><button type="submit" id="loadGame">Load Game</button></form>
+            <form action="${pageContext.servletContext.contextPath}/game" method = get id="loadGameID"><button type="submit" id="loadGame">Load Game</button></form>
             <form action="${pageContext.servletContext.contextPath}/game" method = get id="startNewGame"><button type= "submit" id="startNewGame">Create New Game</button></form>
             <form action="/TBAG/game" method="get" id="goToGame">
 
@@ -316,7 +316,7 @@
                 });
 
                 $("#loadGameID").on("submit",function(e){
-                    e.preventDefault();
+                   /* e.preventDefault();
                     $.post(this.action,
                     function(data){
                         //$("#resultID").html("Payment Successful");
@@ -330,7 +330,7 @@
                             //$('#serverResponse').text("You are currently logged in as: " + data);
                         }
                     }
-                    );
+                    );*/
                 });
 
                 $("#startNewGame").on("submit",function(e){

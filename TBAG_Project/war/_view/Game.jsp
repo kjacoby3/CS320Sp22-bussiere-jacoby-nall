@@ -108,19 +108,19 @@
                 color:hsl(208, 85%, 48%);
             }
             #equipmentPrice{
-                grid-row: 12;
+                grid-row: 15;
                 color:hsl(208, 85%, 48%);
             }
             #equipmentDefenseMod{
-                grid-row: 13;
+                grid-row: 12;
                 color:hsl(208, 85%, 48%);
             }
             #equipmentHPMod{
-                grid-row: 14;
+                grid-row: 13;
                 color:hsl(208, 85%, 48%);
             }
             #equipmentSpeedMod{
-                grid-row: 15;
+                grid-row: 14;
                 color:hsl(208, 85%, 48%);
             }
             #playerInfo{
@@ -171,11 +171,11 @@
                 <div id="sectionTitle">Equipped Items</div>
                 <div id="weapon">Weapon: ${weapon.name}</div>
                 <div id="weaponDamage">Damage: ${weapon.damage}</div>
-                <div id="weaponPrice">Price: ${weapon.price}</div>
+                <div id="weaponPrice">Sell Price: ${weapon.sellPrice}</div>
                 <div id="equipment">Equipment: ${equipment.name}</div>
                 <div id="equipmentDefenseMod">${equipment.defenseMod} Armor</div>
                 <div id="equipmentHPMod">${equipment.HPMod} HP</div>
-                <div id="equipmentSpeedMod">+${equipment.speedMod} Speed</div>
+                <div id="equipmentSpeedMod">${equipment.speedMod} Speed</div>
                 <div id="equipmentPrice">Sell Price: ${equipment.sellPrice}</div>
             </div>
             <div class = "terminal">
@@ -204,7 +204,8 @@
                 <div id="location">Location: ${roomName}</div>
                 <div id="playerInfo">Name: ${name}<br>
                 <span style="text-align: left">Level ${playerStats.curLvl}</span><br>
-                <span style="text-align: left"> XP:${playerStats.curExp}/${playerStats.maxExp} </span></div>
+                <span style="text-align: left"> XP: ${playerStats.curExp}/${playerStats.maxExp} </span><br>
+                <span style="text-align: left">Coins: ${player.currency}</span></div>
                 <div id="playerStats"><div style="text-align: center;">Player Stats</div>
                     HP: ${playerStats.curHP}/${playerStats.maxHP}<br>
                     Damage: ${playerStats.dmg}<br>
