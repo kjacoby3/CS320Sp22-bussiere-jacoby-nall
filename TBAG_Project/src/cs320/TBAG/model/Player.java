@@ -427,10 +427,10 @@ public class Player extends Actor implements ActionsInterface{
 							result = puzzle.checkConditions();
 						} else {
 							//Treasure item does not match required key item.
-							result = "That does not work here.";
+							result = "That does not work here 1.";
 						}
 					} else {
-						result = "That does not work here.";
+						result = "That does not work here 2.";
 					}
 				}
 			}

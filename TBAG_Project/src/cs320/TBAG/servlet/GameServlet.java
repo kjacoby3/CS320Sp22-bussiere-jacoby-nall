@@ -321,6 +321,7 @@ public class GameServlet extends HttpServlet{
 							}
 						} else if(roomInv.getTreasures().size() == 1) {
 							for(Treasure item : roomInv.getTreasures().values()) {
+								System.out.println("Player Treasures: " + player.getInventory().getTreasures());
 								player.pickUp(item);
 								updateHistory(input, "You picked up " + item.getName());
 							}
@@ -343,7 +344,7 @@ public class GameServlet extends HttpServlet{
 							player.pickUp(roomInv.getConsumables().get(name));
 							count++;
 							item = roomInv.removeItem(roomInv.getConsumables().get(name));
-							map.getRoom(-2).getRoomInv().addItem(item);
+							//map.getRoom(-2).getRoomInv().addItem(item);
 							updateHistory(input, "You picked up " + name);
 						}
 					}
@@ -353,7 +354,7 @@ public class GameServlet extends HttpServlet{
 							player.pickUp(roomInv.getUsables().get(name));
 							count++;
 							item = roomInv.removeItem(roomInv.getUsables().get(name));
-							map.getRoom(-2).getRoomInv().addItem(item);
+							//map.getRoom(-2).getRoomInv().addItem(item);
 							updateHistory(input, "You picked up " + name);
 						}
 					}
@@ -363,7 +364,7 @@ public class GameServlet extends HttpServlet{
 							player.pickUp(roomInv.getWeapons().get(name));
 							count++;
 							item = roomInv.removeItem(roomInv.getWeapons().get(name));
-							map.getRoom(-2).getRoomInv().addItem(item);
+							//map.getRoom(-2).getRoomInv().addItem(item);
 							updateHistory(input, "You picked up " + name);
 						}
 					}
@@ -373,7 +374,7 @@ public class GameServlet extends HttpServlet{
 							player.pickUp(roomInv.getEquipment().get(name));
 							count++;
 							item = roomInv.removeItem(roomInv.getEquipment().get(name));
-							map.getRoom(-2).getRoomInv().addItem(item);
+							//map.getRoom(-2).getRoomInv().addItem(item);
 							updateHistory(input, "You picked up " + name);
 						}
 					}
@@ -383,7 +384,8 @@ public class GameServlet extends HttpServlet{
 							player.pickUp(roomInv.getTreasures().get(name));
 							count++;
 							item = roomInv.removeItem(roomInv.getTreasures().get(name));
-							map.getRoom(-2).getRoomInv().addItem(item);
+							//map.getRoom(-2).getRoomInv().addItem(item);
+							System.out.println("Player Treasures: " + player.getInventory().getTreasures());
 							updateHistory(input, "You picked up " + name);
 						}
 					}
@@ -631,12 +633,54 @@ public class GameServlet extends HttpServlet{
 				
 				if(input.equalsIgnoreCase("enter")) {
 					activation = input;
+					int count = 0;
+					Interactable Obj = null;
+					for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
+						if(obj.getActivationKeyword().equalsIgnoreCase("enter")) {
+							Obj = obj;
+							count++;
+						}
+					}
+					if(count == 1) {
+						updateHistory(player.activateObj(activation, Obj));
+						objActivated = true;
+						session.setAttribute("objActivated", objActivated);
+						System.out.println("First activated obj");
+						activeObj = Obj;
+						session.setAttribute("activeObj", activeObj);
+					} else if(count < 1) {
+						updateHistory(input + " does not work here.");
+					} else if (count > 1) {
+						updateHistory("What object are you trying to interact with?");
+					}
 				} else {
 					String[] splitStr = input.split(" ");
 					activation = splitStr[0];
+					String objName = splitStr[1];
+					int count = 0;
+					Interactable Obj = null;
+					
+					for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
+						if(obj.getName().equalsIgnoreCase(objName)) {
+							Obj = obj;
+							count++;
+							System.out.println("Count++: " + count + " " + Obj.getName());
+						}
+					}
+					
+					if(count == 1) {
+						updateHistory(player.activateObj(activation, Obj));
+						objActivated = true;
+						session.setAttribute("objActivated", objActivated);
+						activeObj = Obj;
+						session.setAttribute("activeObj", activeObj);
+					} else if(count < 1) {
+						updateHistory(input, "Could not find object of " + objName + " with activation of " + activation);
+					} else if (count > 1) {
+						updateHistory("Sorry, mistakes were made.");
+					}
 				}
-				int count = 0;
-				Interactable Obj = null;
+				
 				
 				//This block of code is for testing only, will be deleted later
 //				Keypad ob = new Keypad();
@@ -646,24 +690,7 @@ public class GameServlet extends HttpServlet{
 //				player.getLocation().addInteractable(ob);
 				//---------------------------------//
 				
-				for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
-					if(obj.getActivationKeyword().equalsIgnoreCase("enter")) {
-						Obj = obj;
-						count++;
-					}
-				}
-				if(count == 1) {
-					updateHistory(player.activateObj(activation, Obj));
-					objActivated = true;
-					session.setAttribute("objActivated", objActivated);
-					System.out.println("First activated obj");
-					activeObj = Obj;
-					session.setAttribute("activeObj", activeObj);
-				} else if(count < 1) {
-					updateHistory(input + " does not work here.");
-				} else if (count > 1) {
-					updateHistory("What object are you trying to interact with?");
-				}
+				
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 			else if(input.startsWith("talk")) {
@@ -740,33 +767,53 @@ public class GameServlet extends HttpServlet{
 				
 				if(input.equalsIgnoreCase("open")) {
 					activation = input;
+					int count = 0;
+					Interactable Obj = null;
+	
+					for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
+						if(obj.getActivationKeyword().equalsIgnoreCase("open")) {
+							Obj = obj;
+							count++;
+							System.out.println("Count++: " + count + " " + Obj.getName());
+						}
+					}
+					System.out.println("Count: " + count);
+					if(count == 1) {
+						updateHistory(player.activateObj(activation, Obj));
+						//objActivated = true;
+						//session.setAttribute("objActivated", objActivated);
+						System.out.println("First activated obj");
+						//activeObj = Obj;
+						//session.setAttribute("activeObj", activeObj);
+					} else if(count < 1) {
+						updateHistory(input + " does not work here.");
+					} else if (count > 1) {
+						updateHistory("What object are you trying to interact with?");
+					}
 				} else {
-					String[] splitStr = input.split(" ");
+					String[] splitStr = input.split(" ", 2);
 					activation = splitStr[0];
-				}
-				int count = 0;
-				Interactable Obj = null;
-
-				for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
-					if(obj.getActivationKeyword().equalsIgnoreCase("open")) {
-						Obj = obj;
-						count++;
-						System.out.println("Count++: " + count + " " + Obj.getName());
+					String objName = splitStr[1];
+					Interactable Obj = null;
+					int count = 0;
+					
+					for(Interactable obj : map.getRoom(player.getRoomId()).getRoomInteractables()) {
+						if(obj.getName().equalsIgnoreCase(objName)) {
+							Obj = obj;
+							count++;
+							System.out.println("Count++: " + count + " " + Obj.getName());
+						}
+					}
+					
+					if(count == 1) {
+						updateHistory(player.activateObj(activation, Obj));
+					} else if(count < 1) {
+						updateHistory(input, "Could not find object of " + objName + " with activation of " + activation);
+					} else if (count > 1) {
+						updateHistory("Sorry, mistakes were made.");
 					}
 				}
-				System.out.println("Count: " + count);
-				if(count == 1) {
-					updateHistory(player.activateObj(activation, Obj));
-					objActivated = true;
-					session.setAttribute("objActivated", objActivated);
-					System.out.println("First activated obj");
-					activeObj = Obj;
-					session.setAttribute("activeObj", activeObj);
-				} else if(count < 1) {
-					updateHistory(input + " does not work here.");
-				} else if (count > 1) {
-					updateHistory("What object are you trying to interact with?");
-				}
+				
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			} else if (input.startsWith("read")) {
 				String activation;
@@ -774,7 +821,7 @@ public class GameServlet extends HttpServlet{
 				if(input.equalsIgnoreCase("read")) {
 					activation = input;
 				} else {
-					String[] splitStr = input.split(" ");
+					String[] splitStr = input.split(" ", 2);
 					activation = splitStr[0];
 				}
 				int count = 0;

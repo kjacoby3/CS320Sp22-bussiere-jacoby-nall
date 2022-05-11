@@ -111,25 +111,38 @@ public class Inventory{
 					consumables.put(item.getName(), (Consumable) item);
 					consumableCount.put(item.getName(), 1);
 				}
+			}	return true;
+		}
+		
+		else if(item.getType().equals("Treasure")) {
+			if(treasures.size()<treasuresMaxSize || treasures.containsKey(item.getName())) {
+				if(treasures.containsKey(item.getName())) {
+					treasureCount.merge(item.getName(), 1, Integer::sum);
+				}
+				else {
+					treasures.put(item.getName(), (Treasure) item);
+					treasureCount.put(item.getName(), 1);
+				}
+				return true;
 			}
 		}
 		return false;
 	}
 	
-	public boolean addItem(Treasure item) {
-		if(treasures.size()<treasuresMaxSize || treasures.containsKey(item.getName())) {
-			if(treasures.containsKey(item.getName())) {
-				treasureCount.merge(item.getName(), 1, Integer::sum);
-			}
-			else {
-				treasures.put(item.getName(), item);
-				treasureCount.put(item.getName(), 1);
-			}
-			return true;
-		}
-		
-		return false;
-	}
+//	public boolean addItem(Treasure item) {
+//		if(treasures.size()<treasuresMaxSize || treasures.containsKey(item.getName())) {
+//			if(treasures.containsKey(item.getName())) {
+//				treasureCount.merge(item.getName(), 1, Integer::sum);
+//			}
+//			else {
+//				treasures.put(item.getName(), item);
+//				treasureCount.put(item.getName(), 1);
+//			}
+//			return true;
+//		}
+//		
+//		return false;
+//	}
 	
 	public Item removeItem(Item item) {
 		if(item.getType().equals("Equipment")) {
