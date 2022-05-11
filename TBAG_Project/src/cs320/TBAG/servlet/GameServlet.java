@@ -909,7 +909,9 @@ public class GameServlet extends HttpServlet{
 					int roomID = Integer.parseInt(str);
 					
 					player.move(roomID);
+					forwardRoomDesc(player, roomID, input, req, resp);
 				}
+				
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			}
 			else {
