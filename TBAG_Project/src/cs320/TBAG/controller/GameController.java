@@ -61,9 +61,15 @@ public class GameController {
 		createNPCs();
 		player.setPlayerId(playerID);
 		
+		
 	}
 	
-	public void saveGame() {
+	public ArrayList<String> getHistory(){
+		ArrayList<String> history = db.loadHistory();
+		return history;
+	}
+	
+	public void saveGame(ArrayList<String> history) {
 		//Player player = model.getPlayer();
 		//System.out.println("roomID" + player.getRoomId());
 		//Player testPlayer = db.getPlayerByPlayerID(player.getPlayerId());
@@ -72,6 +78,7 @@ public class GameController {
 		db.updatePlayerInfo(player.getPlayerId(), player.getName(), player.getRoomId(), player.getStatsId(), player.getCurrency(), player.getPrevRoomId(), player.getActorStats().getCurLvl());
 		db.updateInventories(player, model.getNPCs(), rooms);
 		db.updateInteractables(rooms);
+		db.storeHistory(history);
 		//db.updateActorStats(player, model.getNPCs());		
 		//testPlayer = db.getPlayerByPlayerID(player.getPlayerId());
 		//System.out.println("postSave " + testPlayer.getRoomId());
