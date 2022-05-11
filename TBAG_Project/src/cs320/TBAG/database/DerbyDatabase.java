@@ -1197,6 +1197,73 @@ public class DerbyDatabase implements IDatabase {
 			
 		}
 		
+		public Boolean storeHistory(ArrayList<String> history) {
+			return executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement delete = null;
+					PreparedStatement create = null;
+					PreparedStatement insert = null;
+					ResultSet resultSet = null;
+					
+					try {
+						delete = conn.prepareStatement("drop table history");
+						delete.executeUpdate();
+						
+						create = conn.prepareStatement("create table history ("
+								+ "inputID integer primary key generated always as identity (start with 1, increment by 1),"
+								+ "line varchar(400))");
+						create.executeUpdate();
+						
+						insert = conn.prepareStatement("insert into history (line) values(?)");
+						
+						for(String string : history) {
+							insert.setString(1, string);
+							insert.addBatch();
+						}
+						insert.executeBatch();
+						return true;
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						//DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+			
+		}
+		
+		public ArrayList<String> loadHistory() {
+			return executeTransaction(new Transaction<ArrayList<String>>() {
+				@Override
+				public ArrayList<String> execute(Connection conn) throws SQLException {
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+					ArrayList<String> history = new ArrayList<String>();
+					
+					try {
+						stmt = conn.prepareStatement("select history.line from history");
+						resultSet = stmt.executeQuery();
+						boolean found = false;
+						while(resultSet.next()) {
+							history.add(resultSet.getString(1));
+							found = true;
+						}
+						
+						if(!found) {
+							return null;
+						}
+						else {
+							return history;
+						}
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						//DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+			
+		}
+		
 		
 		
 		
@@ -1293,9 +1360,15 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement keyPuzzle = null;
 				PreparedStatement pinPuzzle = null;
 				PreparedStatement enemyPuzzle = null;
+				PreparedStatement createTable = null;
 				
 				
 				try {
+					createTable = conn.prepareStatement("create table history ("
+							+ "inputID integer primary key generated always as identity (start with 1, increment by 1),"
+							+ "line varchar(400))");
+					createTable.executeUpdate();
+					
 					players = conn.prepareStatement(
 
 						"create table players ("
@@ -3138,7 +3211,7 @@ public class DerbyDatabase implements IDatabase {
 		});
 	}
 	
-	@Override
+	/*@Override
 	public NPC getNPCByNPCID(int npcID) {
 		return executeTransaction(new Transaction<NPC>() {
 			@Override
@@ -3173,7 +3246,7 @@ public class DerbyDatabase implements IDatabase {
 				}
 			}
 		});
-	}
+	}*/
 	
 	@Override
 	public NPC getNPCByNPCID(int npcID) {

@@ -58,6 +58,7 @@ public class GameServlet extends HttpServlet{
 		System.out.println("Player Name" + session.getAttribute("playerName"));
 		System.out.println(session.getAttribute("playerID"));
 		String playerName = (String) session.getAttribute("playerName");
+		ArrayList<String> history = new ArrayList<String>();
 		controller = new GameController();
 		model = new Game();
 		controller.setModel(model);
@@ -68,13 +69,19 @@ public class GameServlet extends HttpServlet{
 			playerID = 0;
 			session.setAttribute("playerID", playerID);
 			controller.createNewGame("Admin", playerID);
+			history = controller.getHistory();
+					
+			//session.setAttribute("history", controller.createNewGame("Admin", playerID));
 			
 		}
 		else {
 			playerID = 1;
 			session.setAttribute("playerID", playerID);
-			controller.loadGame(playerName, playerID);
-	
+			//controller.createNewGame(playerName, playerID);
+			controller.createNewGame(playerName, playerID);
+			history = controller.getHistory();
+			//session.setAttribute("history", controller.createNewGame(playerName, playerID));
+			
 		}
 		
 		player = model.getPlayer();
@@ -93,7 +100,17 @@ public class GameServlet extends HttpServlet{
 		req.setAttribute("playerStats", player.getActorStats());
 		req.setAttribute("roomName", map.getRoom(player.getRoomId()).getRoomName());
 		
-		forwardRoomDesc(player, player.getRoomId(), null, req, resp);
+		
+		if(history == null) {
+			forwardRoomDesc(player, player.getRoomId(), null, req, resp);
+		}
+		else {
+			Collections.reverse(history);
+			updateHistory(history);
+			req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+		}
+		
+
 		
 		
 		//String roomDesc = map.getRoomDescription();
@@ -301,8 +318,9 @@ public class GameServlet extends HttpServlet{
 				resp.sendRedirect("/TBAG/inventory");
 			}
 			else if(input.equalsIgnoreCase("save")) {
+				ArrayList<String> history = (ArrayList<String>) session.getAttribute("history");
 				model.setPlayer((Player)session.getAttribute("player"));
-				controller.saveGame();
+				controller.saveGame(history);
 				updateHistory(input, "game Saved Successfully");
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req,resp);
 			}
