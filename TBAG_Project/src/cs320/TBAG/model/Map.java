@@ -218,6 +218,10 @@ public class Map{
 		rooms.put(roomID, room);
 	}
 	
+	public HashMap<Integer, Room> getRooms(){
+		return rooms;
+	}
+	
 	public void setPrevRoomID(int prevRoomID) {
 		this.prevRoomID = prevRoomID;
 	}

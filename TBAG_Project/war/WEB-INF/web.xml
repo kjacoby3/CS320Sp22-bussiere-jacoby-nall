@@ -43,8 +43,8 @@
   	<servlet-class>cs320.TBAG.servlet.CombatServlet</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>CreateAccountServlet</servlet-name>
-  	<servlet-class>cs320.TBAG.servlet.CreateAccountServlet</servlet-class>
+  	<servlet-name>CreateGameServlet</servlet-name>
+  	<servlet-class>cs320.TBAG.servlet.CreateGameServlet</servlet-class>
   </servlet>
     <servlet>
   	<servlet-name>LevelUpServlet</servlet-name>
@@ -91,8 +91,8 @@
   </servlet-mapping>
   
   <servlet-mapping>
-  	<servlet-name>CreateAccountServlet</servlet-name>
-  	<url-pattern>/createAccount</url-pattern>
+  	<servlet-name>CreateGameServlet</servlet-name>
+  	<url-pattern>/createGame</url-pattern>
   </servlet-mapping>
   
     <servlet-mapping>

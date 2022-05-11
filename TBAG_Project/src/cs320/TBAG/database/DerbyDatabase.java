@@ -733,7 +733,469 @@ public class DerbyDatabase implements IDatabase {
 			});
 		}
 		
+		public Player createPlayer(String name, int roomID, int currency, int prevRoomID, int level) {
+			return executeTransaction(new Transaction<Player>() {
+				@Override
+				public Player execute(Connection conn) throws SQLException {
+					PreparedStatement playerStmt = null;
+					PreparedStatement insertActorStats = null;
+					PreparedStatement statsIDQ = null;
+					ResultSet pass = null;
+					String salt = null;
+					
+					try {
+						ActorStats stats = null;
+						try {
+							stats = InitialData.getActorStats().get(0);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						insertActorStats = conn.prepareStatement("insert into actorStats (curHP, maxHP, dmg, def, spd, curExp, maxExp, curLvl)"
+								+ "values (?, ?, ?, ?, ?, ?, ?, ?)");
+						//insertActorStats.setInt(1, stats.getStatsId());
+						insertActorStats.setInt(1, stats.getCurHP());
+						insertActorStats.setInt(2, stats.getMaxHP());
+						insertActorStats.setInt(3, stats.getDmg());
+						insertActorStats.setInt(4, stats.getDef());
+						insertActorStats.setInt(5, stats.getSpd());
+						insertActorStats.setInt(6,  stats.getCurExp());
+						insertActorStats.setInt(7,  stats.getMaxExp());
+						insertActorStats.setInt(8,  stats.getCurLvl());
+						
+						insertActorStats.executeUpdate();
+						
+						statsIDQ = conn.prepareStatement("select max(statsID) from actorStats");
+						
+						pass = statsIDQ.executeQuery();
+						pass.next();
+						int statsID=pass.getInt(1);
+						
+						playerStmt = conn.prepareStatement(
+								"insert into player (name, roomID, statsID, currency, prevRoomID, level) values (?,?,?,?,?,?");
+						
+						playerStmt.setString(1, name);
+						playerStmt.setInt(2, roomID);
+						playerStmt.setInt(3, statsID);
+						playerStmt.setInt(4, currency);
+						playerStmt.setInt(5, prevRoomID);
+						playerStmt.setInt(6, level);
+						
+						playerStmt.executeUpdate();
+						
+						Player player = new Player();
+						
+						if(pass.next()) {
+						salt = pass.getString(1);
+						}
+						
+						return player;
+						
+						
+					} 
+						
+						finally {
+						//DBUtil.closeQuietly(resultSet);
+						//DBUtil.closeQuietly(stmt);
+							DBUtil.closeQuietly(pass);
+					}
+					
+				}
+			});
+		}
 		
+		public Boolean updatePlayerInfo(int playerID,String name, int roomID, int statsID, int currency, int prevRoomID, int level) {
+			return executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+					
+					try {
+						stmt = conn.prepareStatement(
+								"update players set name = ?, roomID = ?, statsID = ?, currency = ?, prevRoomID = ?, level = ?"
+								+ "where playerID = ?"
+						);
+						
+						
+						int index = 1;
+						stmt.setString(index++, name);
+						stmt.setInt(index++, roomID);
+						stmt.setInt(index++, statsID);
+						stmt.setInt(index++, currency);
+						stmt.setInt(index++, prevRoomID);
+						stmt.setInt(index++, level);
+						stmt.setInt(index++, playerID);
+						
+						stmt.executeUpdate();
+						
+						
+						return true;
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+			
+		}
+		
+		public Boolean updateInventories(Player player, ArrayList<NPC> npcs, List<Room> rooms) {
+			return executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement weaponstmt = null;
+					PreparedStatement equipmentstmt = null;
+					PreparedStatement usablestmt = null;
+					PreparedStatement treasurestmt = null;
+					PreparedStatement trophystmt = null;
+					PreparedStatement consumablestmt = null;
+					ResultSet resultSet = null;
+					int playerID = player.getPlayerId();
+					
+					try {
+						weaponstmt = conn.prepareStatement(
+								"update weapons set playerID = ?, roomID = 0, NPCID = 0, equipped = false where weapons.name = ?");
+						for(Weapon weapon : player.getInventory().getWeapons().values()) {
+							int index = 1;
+							weaponstmt.setInt(index++, playerID);
+							weaponstmt.setString(index++, weapon.getName());
+							
+							weaponstmt.addBatch();
+							
+						}
+						weaponstmt.executeBatch();
+						
+						
+						equipmentstmt = conn.prepareStatement(
+								"update equipment set playerID = ?, roomID = 0, NPCID = 0, equipped = false where equipment.name = ?");
+						for(Equipment equipment : player.getInventory().getEquipment().values()) {
+							int index = 1;
+							equipmentstmt.setInt(index++, playerID);
+							equipmentstmt.setString(index++, equipment.getName());
+							
+							equipmentstmt.addBatch();
+							
+						}
+						equipmentstmt.executeBatch();
+						
+						usablestmt = conn.prepareStatement(
+								"update usables set playerID = ?, roomID = 0, NPCID = 0 where usables.name = ?");
+						for(Usable usable : player.getInventory().getUsables().values()) {
+							int index = 1;
+							usablestmt.setInt(index++, playerID);
+							usablestmt.setString(index++, usable.getName());
+							
+							usablestmt.addBatch();
+							
+						}
+						usablestmt.executeBatch();
+						
+						treasurestmt = conn.prepareStatement(
+								"update treasures set playerID = ?, roomID = 0, NPCID = 0 where treasures.name = ?");
+						for(Treasure treasure : player.getInventory().getTreasures().values()) {
+							int index = 1;
+							treasurestmt.setInt(index++, playerID);
+							treasurestmt.setString(index++, treasure.getName());
+							
+							treasurestmt.addBatch();
+							
+						}
+						treasurestmt.executeBatch();
+						
+						trophystmt = conn.prepareStatement(
+								"update trophies set playerID = ?, roomID = 0, NPCID = 0 where trophies.name = ?");
+						for(Trophy trophy : player.getInventory().getTrophies().values()) {
+							int index = 1;
+							trophystmt.setInt(index++, playerID);
+							trophystmt.setString(index++, trophy.getName());
+							
+							trophystmt.addBatch();
+							
+						}
+						trophystmt.executeBatch();
+						
+						consumablestmt = conn.prepareStatement(
+								"update consumables set playerID = ?, roomID = 0, NPCID = 0 where consumables.name = ?");
+						for(Consumable consumable : player.getInventory().getConsumables().values()) {
+							int index = 1;
+							consumablestmt.setInt(index++, playerID);
+							consumablestmt.setString(index++, consumable.getName());
+							
+							consumablestmt.addBatch();
+							
+						}
+						consumablestmt.executeBatch();
+						
+						
+						for(NPC npc : npcs) {
+							int npcID = npc.getNPCId();
+							weaponstmt = conn.prepareStatement(
+									"update weapons set npcID = ?, roomID = 0, PLAYERID = 0, equipped = false where weapons.name = ?");
+							for(Weapon weapon : npc.getInventory().getWeapons().values()) {
+								int index = 1;
+								weaponstmt.setInt(index++, npcID);
+								weaponstmt.setString(index++, weapon.getName());
+								
+								weaponstmt.addBatch();
+								
+							}
+							weaponstmt.executeBatch();
+							
+							
+							equipmentstmt = conn.prepareStatement(
+									"update equipment set npcID = ?, roomID = 0, PLAYERID = 0, equipped = false where equipment.name = ?");
+							for(Equipment equipment : npc.getInventory().getEquipment().values()) {
+								int index = 1;
+								equipmentstmt.setInt(index++, npcID);
+								equipmentstmt.setString(index++, equipment.getName());
+								
+								equipmentstmt.addBatch();
+								
+							}
+							equipmentstmt.executeBatch();
+							
+							usablestmt = conn.prepareStatement(
+									"update usables set npcID = ?, roomID = 0, PLAYERID = 0 where usables.name = ?");
+							for(Usable usable : npc.getInventory().getUsables().values()) {
+								int index = 1;
+								usablestmt.setInt(index++, npcID);
+								usablestmt.setString(index++, usable.getName());
+								
+								usablestmt.addBatch();
+								
+							}
+							usablestmt.executeBatch();
+							
+							treasurestmt = conn.prepareStatement(
+									"update treasures set npcID = ?, roomID = 0, PLAYERID = 0 where treasures.name = ?");
+							for(Treasure treasure : npc.getInventory().getTreasures().values()) {
+								int index = 1;
+								treasurestmt.setInt(index++, npcID);
+								treasurestmt.setString(index++, treasure.getName());
+								
+								treasurestmt.addBatch();
+								
+							}
+							treasurestmt.executeBatch();
+							
+							trophystmt = conn.prepareStatement(
+									"update trophies set npcID = ?, roomID = 0, PLAYERID = 0 where trophies.name = ?");
+							for(Trophy trophy : npc.getInventory().getTrophies().values()) {
+								int index = 1;
+								trophystmt.setInt(index++, npcID);
+								trophystmt.setString(index++, trophy.getName());
+								
+								trophystmt.addBatch();
+								
+							}
+							trophystmt.executeBatch();
+							
+							consumablestmt = conn.prepareStatement(
+									"update consumables set npcID = ?, roomID = 0, PLAYERID = 0 where consumables.name = ?");
+							for(Consumable consumable : npc.getInventory().getConsumables().values()) {
+								int index = 1;
+								consumablestmt.setInt(index++, npcID);
+								consumablestmt.setString(index++, consumable.getName());
+								
+								consumablestmt.addBatch();
+								
+							}
+							consumablestmt.executeBatch();
+						}
+						
+						for(Room room : rooms) {
+							int roomID = room.getRoomID();
+							weaponstmt = conn.prepareStatement(
+									"update weapons set roomID = ?, NPCID = 0, PLAYERID = 0, equipped = false where weapons.name = ?");
+							for(Weapon weapon : room.getRoomInv().getWeapons().values()) {
+								int index = 1;
+								weaponstmt.setInt(index++, roomID);
+								weaponstmt.setString(index++, weapon.getName());
+								
+								weaponstmt.addBatch();
+								
+							}
+							weaponstmt.executeBatch();
+							
+							
+							equipmentstmt = conn.prepareStatement(
+									"update equipment set roomID = ?, NPCID = 0, PLAYERID = 0, equipped = false where equipment.name = ?");
+							for(Equipment equipment : room.getRoomInv().getEquipment().values()) {
+								int index = 1;
+								equipmentstmt.setInt(index++, roomID);
+								equipmentstmt.setString(index++, equipment.getName());
+								
+								equipmentstmt.addBatch();
+								
+							}
+							equipmentstmt.executeBatch();
+							
+							usablestmt = conn.prepareStatement(
+									"update usables set roomID = ?, NPCID = 0, PLAYERID = 0 where usables.name = ?");
+							for(Usable usable : room.getRoomInv().getUsables().values()) {
+								int index = 1;
+								usablestmt.setInt(index++, roomID);
+								usablestmt.setString(index++, usable.getName());
+								
+								usablestmt.addBatch();
+								
+							}
+							usablestmt.executeBatch();
+							
+							treasurestmt = conn.prepareStatement(
+									"update treasures set roomID = ?, NPCID = 0, PLAYERID = 0 where treasures.name = ?");
+							for(Treasure treasure : room.getRoomInv().getTreasures().values()) {
+								int index = 1;
+								treasurestmt.setInt(index++, roomID);
+								treasurestmt.setString(index++, treasure.getName());
+								
+								treasurestmt.addBatch();
+								
+							}
+							treasurestmt.executeBatch();
+							
+							trophystmt = conn.prepareStatement(
+									"update trophies set roomID = ?, NPCID = 0, PLAYERID = 0 where trophies.name = ?");
+							for(Trophy trophy : room.getRoomInv().getTrophies().values()) {
+								int index = 1;
+								trophystmt.setInt(index++, roomID);
+								trophystmt.setString(index++, trophy.getName());
+								
+								trophystmt.addBatch();
+								
+							}
+							trophystmt.executeBatch();
+							
+							consumablestmt = conn.prepareStatement(
+									"update consumables set roomID = ?, NPCID = 0, PLAYERID = 0 where consumables.name = ?");
+							for(Consumable consumable : room.getRoomInv().getConsumables().values()) {
+								int index = 1;
+								consumablestmt.setInt(index++, roomID);
+								consumablestmt.setString(index++, consumable.getName());
+								
+								consumablestmt.addBatch();
+								
+							}
+							consumablestmt.executeBatch();
+						}
+						
+						
+						
+						
+						
+						
+						return true;
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+					}
+				}
+			});
+			
+		}
+		
+		public Boolean updateInteractables(List<Room> rooms) {
+			return executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement doorstmt = null;
+					PreparedStatement cheststmt = null;
+					PreparedStatement keypadstmt = null;
+					PreparedStatement signstmt = null;
+					ResultSet resultSet = null;
+				
+					try {
+						for(Room room : rooms) {
+							
+						
+							doorstmt = conn.prepareStatement(
+									"update door set activated = ? "
+									+ "where door.doorID = ?"
+							);
+							cheststmt = conn.prepareStatement(
+									"update chest set activated = ? "
+									+ "where chest.chestID = ?");
+							keypadstmt = conn.prepareStatement(
+									"update keypad set activated = ? "
+									+ "where keypad.keypadID = ?");
+							signstmt = conn.prepareStatement(
+									"update sign set activated = ? "
+									+ "where sign.signID = ?");
+							
+							
+							
+							for(Interactable interactable : room.getRoomInteractables()) {
+								if(interactable instanceof Door) {
+									doorstmt.setBoolean(1, interactable.getActivated());
+									doorstmt.setInt(2, ((Door)interactable).getDoorId());
+									doorstmt.addBatch();
+								}
+								if(interactable instanceof Chest) {
+									cheststmt.setBoolean(1, interactable.getActivated());
+									cheststmt.setInt(2, ((Chest)interactable).getChestId());
+									cheststmt.addBatch();
+								}
+								if(interactable instanceof Keypad) {
+									keypadstmt.setBoolean(1, interactable.getActivated());
+									keypadstmt.setInt(2, ((Keypad)interactable).getKeypadId());
+									keypadstmt.addBatch();
+								}
+								if(interactable instanceof Sign) {
+									signstmt.setBoolean(1, interactable.getActivated());
+									signstmt.setInt(2, ((Sign)interactable).getSignId());
+									signstmt.addBatch();
+								}
+	
+							}
+							doorstmt.executeBatch();
+							cheststmt.executeBatch();
+							keypadstmt.executeBatch();
+							signstmt.executeBatch();
+						
+						
+						}
+						return true;
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+					}
+				}
+			});
+			
+		}
+		
+		public Boolean updateActorStats(Player player, ArrayList<NPC> npcs) {
+			return executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement playerstmt = null;
+					ResultSet resultSet = null;
+					
+					try {
+						/*playerstmt = conn.prepareStatement(
+						);
+						
+						
+						int index = 1;
+						stmt.setString(index++, name);
+						stmt.setInt(index++, roomID);
+						stmt.setInt(index++, statsID);
+						stmt.setInt(index++, currency);
+						stmt.setInt(index++, prevRoomID);
+						stmt.setInt(index++, level);
+						stmt.setInt(index++, playerID);
+						
+						stmt.executeUpdate();
+						
+						*/
+						return true;
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						//DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+			
+		}
 		
 		
 		
@@ -837,7 +1299,7 @@ public class DerbyDatabase implements IDatabase {
 					players = conn.prepareStatement(
 
 						"create table players ("
-						+ " playerID integer primary key generated always as identity (start with 1, increment by 1),"
+						+ " playerID integer primary key generated always as identity (start with 0, increment by 1),"
 						+ "name varchar(40), roomID integer, statsID integer, currency integer, prevRoomID integer, level integer)"
 						);
 
