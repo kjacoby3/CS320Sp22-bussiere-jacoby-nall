@@ -339,8 +339,8 @@ public class GameServlet extends HttpServlet{
 						if(str.equalsIgnoreCase(name)) {
 							player.pickUp(roomInv.getConsumables().get(name));
 							count++;
-							roomInv.removeItem(roomInv.getConsumables().get(name));
-							map.getRoom(-2).getRoomInv().addItem(roomInv.getConsumables().get(name));
+							item = roomInv.removeItem(roomInv.getConsumables().get(name));
+							map.getRoom(-2).getRoomInv().addItem(item);
 							updateHistory(input, "You picked up " + name);
 						}
 					}
@@ -349,8 +349,8 @@ public class GameServlet extends HttpServlet{
 						if(str.equalsIgnoreCase(name)) {
 							player.pickUp(roomInv.getUsables().get(name));
 							count++;
-							roomInv.removeItem(roomInv.getUsables().get(name));
-							map.getRoom(-2).getRoomInv().addItem(roomInv.getUsables().get(name));
+							item = roomInv.removeItem(roomInv.getUsables().get(name));
+							map.getRoom(-2).getRoomInv().addItem(item);
 							updateHistory(input, "You picked up " + name);
 						}
 					}
@@ -359,8 +359,8 @@ public class GameServlet extends HttpServlet{
 						if(str.equalsIgnoreCase(name)) {
 							player.pickUp(roomInv.getWeapons().get(name));
 							count++;
-							roomInv.removeItem(roomInv.getWeapons().get(name));
-							map.getRoom(-2).getRoomInv().addItem(roomInv.getWeapons().get(name));
+							item = roomInv.removeItem(roomInv.getWeapons().get(name));
+							map.getRoom(-2).getRoomInv().addItem(item);
 							updateHistory(input, "You picked up " + name);
 						}
 					}
@@ -369,8 +369,8 @@ public class GameServlet extends HttpServlet{
 						if(str.equalsIgnoreCase(name)) {
 							player.pickUp(roomInv.getEquipment().get(name));
 							count++;
-							roomInv.removeItem(roomInv.getEquipment().get(name));
-							map.getRoom(-2).getRoomInv().addItem(roomInv.getEquipment().get(name));
+							item = roomInv.removeItem(roomInv.getEquipment().get(name));
+							map.getRoom(-2).getRoomInv().addItem(item);
 							updateHistory(input, "You picked up " + name);
 						}
 					}
@@ -379,8 +379,8 @@ public class GameServlet extends HttpServlet{
 						if(str.equalsIgnoreCase(name)) {
 							player.pickUp(roomInv.getTreasures().get(name));
 							count++;
-							roomInv.removeItem(roomInv.getTreasures().get(name));
-							map.getRoom(-2).getRoomInv().addItem(roomInv.getTreasures().get(name));
+							item = roomInv.removeItem(roomInv.getTreasures().get(name));
+							map.getRoom(-2).getRoomInv().addItem(item);
 							updateHistory(input, "You picked up " + name);
 						}
 					}
