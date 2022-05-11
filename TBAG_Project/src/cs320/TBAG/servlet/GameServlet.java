@@ -339,8 +339,8 @@ public class GameServlet extends HttpServlet{
 						if(str.equalsIgnoreCase(name)) {
 							player.pickUp(roomInv.getConsumables().get(name));
 							count++;
-							roomInv.removeItem(roomInv.getConsumables().get(name));
-							map.getRoom(-2).getRoomInv().addItem(roomInv.getConsumables().get(name));
+							item = roomInv.removeItem(roomInv.getConsumables().get(name));
+							map.getRoom(-2).getRoomInv().addItem(item);
 							updateHistory(input, "You picked up " + name);
 						}
 					}
@@ -380,7 +380,7 @@ public class GameServlet extends HttpServlet{
 							player.pickUp(roomInv.getTreasures().get(name));
 							count++;
 							item = roomInv.removeItem(roomInv.getTreasures().get(name));
-							map.getRoom(-2).getRoomInv().addItem(item));
+							map.getRoom(-2).getRoomInv().addItem(item);
 							updateHistory(input, "You picked up " + name);
 						}
 					}
