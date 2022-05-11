@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import cs320.TBAG.database.DerbyDatabase;
+import cs320.TBAG.model.Player;
 
 public class CreateAccountAjaxServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
@@ -64,7 +66,8 @@ public class CreateAccountAjaxServlet extends HttpServlet{
 				e.printStackTrace();
 			}
 			
-			
+			ArrayList<Player> players = db.findAllPlayers();
+			System.out.println(players.get(0).getName());
 			db.insertAccount(req.getParameter("username"), passwordHashHex, saltHex);
 			resp.setContentType("text/plain");
 			session.setAttribute("playerID", 1);

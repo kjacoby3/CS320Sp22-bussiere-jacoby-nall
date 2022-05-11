@@ -124,13 +124,13 @@ body {
     <h3 style="text-align: center; color:white;">Weapons</h3>
     
     <p><c:forEach var="weapon" items="${weapons}">
-        <c:if test="${! empty weapons}">
-        <div class="ite">${weapon.name}</div>
+        
+        <div class="item">${weapon.name}</div>
         <div class="hide" >
             Damage: ${weapon.damage}<br>
             Price: ${weapon.sellPrice}
         </div>
-    </c:if>
+ 
     </c:forEach></p>
 </div>
 
