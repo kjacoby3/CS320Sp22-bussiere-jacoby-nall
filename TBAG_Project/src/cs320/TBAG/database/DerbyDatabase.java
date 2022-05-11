@@ -20,6 +20,7 @@ import cs320.TBAG.model.ActorStats;
 import cs320.TBAG.model.Consumable;
 import cs320.TBAG.model.Equipment;
 import cs320.TBAG.model.Inventory;
+import cs320.TBAG.model.Item;
 import cs320.TBAG.model.NPC;
 import cs320.TBAG.model.Player;
 import cs320.TBAG.model.Room;
@@ -2328,7 +2329,7 @@ public class DerbyDatabase implements IDatabase {
 					try {
 						insertActorStats = conn.prepareStatement("insert into actorStats (statsID, curHP, maxHP, dmg, def, spd, curExp, maxExp, curLvl)"
 								+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-						for(ActorStats stats : statsList) {buyresp=
+						for(ActorStats stats : statsList) {
 							//insertNPC.setInt(1, npc.getNPCId());
 							insertActorStats.setInt(1, stats.getStatsId());
 							insertActorStats.setInt(2, stats.getCurHP());
@@ -3414,6 +3415,128 @@ public class DerbyDatabase implements IDatabase {
 				return npc;
 				}finally {
 					DBUtil.closeQuietly(npcStmt);
+				}
+			}
+		});
+	}
+	
+	public Item getItemByItemID(int itemID) {
+		return executeTransaction(new Transaction<Item>() {
+			@Override
+			public Item execute(Connection conn) throws SQLException {
+				PreparedStatement weaponStmt = null;
+				PreparedStatement equipmentStmt = null;
+				PreparedStatement usableStmt = null;
+				PreparedStatement consumableStmt = null;
+				PreparedStatement treasureStmt = null;
+				PreparedStatement trophyStmt = null;
+				
+				ResultSet weaponSet = null;
+				ResultSet equipmentSet = null;
+				ResultSet usableSet = null;
+				ResultSet consumableSet = null;
+				ResultSet treasureSet = null;
+				ResultSet trophySet = null;
+				
+				Item item = null;
+				
+				try {
+					weaponStmt = conn.prepareStatement(
+							"select * from weapons "
+							+ "where weapons.itemID = ?"
+							);
+					weaponStmt.setInt(1, itemID);
+				
+					weaponSet = weaponStmt.executeQuery();
+				
+					while(weaponSet.next()) {
+						item = new Weapon(itemID, weaponSet.getString(2), weaponSet.getInt(3), 
+								weaponSet.getInt(4), weaponSet.getInt(5), weaponSet.getInt(6),
+								weaponSet.getInt(7), weaponSet.getBoolean(8));
+					}
+				
+				
+			
+					equipmentStmt = conn.prepareStatement(
+							"select * from equipment "
+							+ "where equipment.itemID = ?"
+							);
+					equipmentStmt.setInt(1, itemID);
+				
+					equipmentSet = equipmentStmt.executeQuery();
+				
+					while(equipmentSet.next()) {
+						item = new Equipment(itemID, equipmentSet.getString(2), equipmentSet.getInt(3), 
+								equipmentSet.getInt(4), equipmentSet.getInt(5), equipmentSet.getInt(6),
+								equipmentSet.getInt(7), equipmentSet.getInt(8), equipmentSet.getInt(9),
+								equipmentSet.getBoolean(10));
+					}
+			
+				
+
+					usableStmt = conn.prepareStatement(
+							"select * from usables "
+							+ "where usables.itemID = ?"
+							);
+					usableStmt.setInt(1, itemID);
+				
+					usableSet = usableStmt.executeQuery();
+				
+					while(usableSet.next()) {
+						item = new Usable(itemID, usableSet.getString(2), usableSet.getInt(3), 
+								usableSet.getInt(4), usableSet.getInt(5), usableSet.getInt(6));
+					}
+	
+				
+					consumableStmt = conn.prepareStatement(
+							"select * from consumables "
+							+ "where consumables.itemID = ?"
+							);
+					consumableStmt.setInt(1, itemID);
+				
+					consumableSet = consumableStmt.executeQuery();
+				
+					while(consumableSet.next()) {
+						item = new Consumable(itemID, consumableSet.getString(2), consumableSet.getInt(3), 
+								consumableSet.getInt(4), consumableSet.getInt(5), consumableSet.getInt(6),
+								consumableSet.getInt(7), consumableSet.getInt(8), consumableSet.getInt(9),
+								consumableSet.getInt(10), consumableSet.getInt(11));
+					}
+					
+					treasureStmt = conn.prepareStatement(
+							"select * from treasures "
+							+ "where treasures.itemID = ?"
+							);
+					treasureStmt.setInt(1, itemID);
+				
+					treasureSet = treasureStmt.executeQuery();
+				
+					while(treasureSet.next()) {
+						item = new Usable(itemID, treasureSet.getString(2), treasureSet.getInt(3), 
+								treasureSet.getInt(4), treasureSet.getInt(5), treasureSet.getInt(6));
+					}
+					
+					trophyStmt = conn.prepareStatement(
+							"select * from trophies "
+							+ "where trophies.itemID = ?"
+							);
+					trophyStmt.setInt(1, itemID);
+				
+					trophySet = trophyStmt.executeQuery();
+				
+					while(trophySet.next()) {
+						item = new Usable(itemID, trophySet.getString(2), trophySet.getInt(3), 
+								trophySet.getInt(4), trophySet.getInt(5), trophySet.getInt(6));
+					}
+				
+				return item;
+				}finally {
+					DBUtil.closeQuietly(weaponStmt);
+					DBUtil.closeQuietly(equipmentSet);
+					DBUtil.closeQuietly(usableSet);
+					DBUtil.closeQuietly(consumableSet);
+					DBUtil.closeQuietly(treasureSet);
+					DBUtil.closeQuietly(trophySet);
 				}
 			}
 		});

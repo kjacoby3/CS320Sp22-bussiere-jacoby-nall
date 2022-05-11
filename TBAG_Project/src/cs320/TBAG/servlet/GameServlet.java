@@ -542,45 +542,54 @@ public class GameServlet extends HttpServlet{
 					
 				}
 				req.getRequestDispatcher("/_view/game.jsp").forward(req, resp);
-			} else if(input.equalsIgnoreCase("level up") || input.equalsIgnoreCase("levelup") ||
-					input.equalsIgnoreCase("lvl up")) {
-				LevelUp levelUpModel = new LevelUp(player);
-				session.setAttribute("levelUpModel", levelUpModel);
+			} else if(input.startsWith("levelup")) {
+					LevelUp levelUpModel = new LevelUp(player);
+					session.setAttribute("levelUpModel", levelUpModel);
+				if(input.equalsIgnoreCase("levelup")) {
+					
+					req.setAttribute("player", player.getName());
+					
+					req.setAttribute("level", player.getActorStats().getCurLvl());
+					req.setAttribute("projLvl", levelUpModel.getProjLvl());
+					
+					req.setAttribute("curXP", player.getActorStats().getCurExp());
+					req.setAttribute("maxXP", player.getActorStats().getMaxExp());
+					
+					req.setAttribute("curHP", player.getActorStats().getCurHP());
+					req.setAttribute("maxHP", player.getActorStats().getMaxHP());
+					
+					req.setAttribute("dmg", player.getActorStats().getDmg());
+					
+					req.setAttribute("def", player.getActorStats().getDef());
+					
+					req.setAttribute("spd", player.getActorStats().getSpd());
+					
+					req.setAttribute("projCurHP", levelUpModel.getProjCurHP());
+					req.setAttribute("projMaxHP", levelUpModel.getProjMaxHP());
+					req.setAttribute("hpInc", levelUpModel.getHPInc());
+					
+					req.setAttribute("projDMG", levelUpModel.getProjDMG());
+					req.setAttribute("dmgInc", levelUpModel.getDMGInc());
+					
+					req.setAttribute("projDEF", levelUpModel.getProjDEF());
+					req.setAttribute("defInc", levelUpModel.getDEFInc());
+					
+					req.setAttribute("projSPD", levelUpModel.getProjSPD());
+					req.setAttribute("spdInc", levelUpModel.getSPDInc());
+					
+					req.setAttribute("projCurXP", levelUpModel.getProjCurExp());
+					req.setAttribute("projMaxXP", levelUpModel.getProjMaxExp());
+					
+					req.getRequestDispatcher("/_view/levelUp.jsp").forward(req, resp);
+				} else {
+					String[] strList = input.split(" ", 2);
+					String stat = strList[1];
+					updateHistory(input, levelUpModel.useLevelUp(stat));
+					
+					req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+				}
 				
-				req.setAttribute("player", player.getName());
 				
-				req.setAttribute("level", player.getActorStats().getCurLvl());
-				req.setAttribute("projLvl", levelUpModel.getProjLvl());
-				
-				req.setAttribute("curXP", player.getActorStats().getCurExp());
-				req.setAttribute("maxXP", player.getActorStats().getMaxExp());
-				
-				req.setAttribute("curHP", player.getActorStats().getCurHP());
-				req.setAttribute("maxHP", player.getActorStats().getMaxHP());
-				
-				req.setAttribute("dmg", player.getActorStats().getDmg());
-				
-				req.setAttribute("def", player.getActorStats().getDef());
-				
-				req.setAttribute("spd", player.getActorStats().getSpd());
-				
-				req.setAttribute("projCurHP", levelUpModel.getProjCurHP());
-				req.setAttribute("projMaxHP", levelUpModel.getProjMaxHP());
-				req.setAttribute("hpInc", levelUpModel.getHPInc());
-				
-				req.setAttribute("projDMG", levelUpModel.getProjDMG());
-				req.setAttribute("dmgInc", levelUpModel.getDMGInc());
-				
-				req.setAttribute("projDEF", levelUpModel.getProjDEF());
-				req.setAttribute("defInc", levelUpModel.getDEFInc());
-				
-				req.setAttribute("projSPD", levelUpModel.getProjSPD());
-				req.setAttribute("spdInc", levelUpModel.getSPDInc());
-				
-				req.setAttribute("projCurXP", levelUpModel.getProjCurExp());
-				req.setAttribute("projMaxXP", levelUpModel.getProjMaxExp());
-				
-				req.getRequestDispatcher("/_view/levelUp.jsp").forward(req, resp);
 			}
 			else if (input.startsWith("equip")){
 				if (input.equalsIgnoreCase("equip")) {
@@ -590,25 +599,31 @@ public class GameServlet extends HttpServlet{
 					String equipName = splitStr[1];
 					Boolean itemWasEquipped = false;
 					Item equippedItem;
-					if(player.getInventory().getWeapons().size() > 0) {
+					
+					int weaponSize = player.getInventory().getWeapons().size();
+					int equipmentSize = player.getInventory().getEquipment().size();
+					
+					if(weaponSize > 0) {
 						for(Weapon i : player.getInventory().getWeapons().values()) {
 							if (equipName.equalsIgnoreCase(i.getName())) {
 								player.equipWeapon(i);
 								itemWasEquipped = true;
 								equippedItem = i;
+								break;
 								//updateHistory(i.getName() + " was equipped.");
 								//req.setAttribute("roomMessage", map.getRoomDescription());
 								//req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 							} 
 						}
 					}
-					if(player.getInventory().getEquipment().size() > 0) {
+					if(player.getInventory().getWeapons().size() > 0) {
 						for(Equipment i : player.getInventory().getEquipment().values()) {
 							if (equipName.equalsIgnoreCase(i.getName())) {
 								player.equipEquipment(i);
 								System.out.println(player.getInventory().getEquipment());
 								itemWasEquipped = true;
 								equippedItem = i;
+								break;
 							}
 						}
 					}

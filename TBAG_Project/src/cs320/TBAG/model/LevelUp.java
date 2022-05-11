@@ -130,7 +130,7 @@ public class LevelUp{
 		String result;
 		
 		if(stats.checkLevelUp()) {
-			if(stat == "Health" || stat == "HP") {
+			if(stat.equalsIgnoreCase("Health") || stat.equalsIgnoreCase("HP")) {
 				result = "Your Health increased from " + maxHP + " to " + projMaxHP + ".";
 				stats.setCurExp(projCurExp);
 				stats.setMaxHP(projMaxHP);
@@ -138,21 +138,21 @@ public class LevelUp{
 				stats.setMaxExp(calcNewMaxExp());
 				stats.setCurLvl(projLvl);
 				//updateStats();
-			} else if(stat == "Damage" || stat == "DMG" || stat == "dmg" || stat == "Dmg") {
+			} else if(stat.equalsIgnoreCase("Damage") || stat.equalsIgnoreCase("DMG")) {
 				result = "Your Damage increased from " + dmg + " to " + projDMG + ".";
 				stats.setCurExp(curExp - maxExp);
 				stats.setDmg(projDMG);
 				stats.setMaxExp(calcNewMaxExp());
 				stats.setCurLvl(projLvl);
 				//updateStats();
-			} else if(stat == "Defense" || stat == "DEF" || stat == "def" || stat == "Def") {
+			} else if(stat.equalsIgnoreCase("Defense") || stat.equalsIgnoreCase("DEF")) {
 				result = "Your Defense increased from " + def + " to " + projDEF + ".";
 				stats.setCurExp(curExp - maxExp);
 				stats.setDef(projDEF);
 				stats.setMaxExp(calcNewMaxExp());
 				stats.setCurLvl(projLvl);
 				//updateStats();
-			} else if(stat == "Speed" || stat == "SPD" || stat == "spd" || stat == "Spd") {
+			} else if(stat.equalsIgnoreCase("Speed") || stat.equalsIgnoreCase("SPD")) {
 				result = "Your Speed increased from " + spd + " to " + projSPD + ".";
 				stats.setCurExp(curExp - maxExp);
 				stats.setSpd(projSPD);

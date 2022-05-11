@@ -16,12 +16,15 @@ import cs320.TBAG.model.Room;
 import cs320.TBAG.model.NPC;
 import cs320.TBAG.model.Map;
 import cs320.TBAG.model.Inventory;
+import cs320.TBAG.model.Item;
 import cs320.TBAG.model.Save;
 import cs320.TBAG.model.Weapon;
+import cs320.TBAG.model.Convo.BuyResponse;
 import cs320.TBAG.model.Convo.ConversationNode;
 import cs320.TBAG.model.Convo.ConversationResponse;
 import cs320.TBAG.model.Convo.ConversationTree;
 import cs320.TBAG.model.Convo.PuzzleResponse;
+import cs320.TBAG.model.Convo.SellResponse;
 import cs320.TBAG.model.InteractableObj.Interactable;
 import cs320.TBAG.model.PuzzleType.EnemyPuzzle;
 import cs320.TBAG.database.DatabaseProvider;
@@ -178,6 +181,15 @@ public class GameController {
 													enemyPuzz.setNPC(npc);
 												}
 											}
+										}
+										if(resp instanceof BuyResponse) {
+											Item item = db.getItemByItemID(((BuyResponse) resp).getBuyItemId());
+											((BuyResponse) resp).setBuyItem(item);
+										}
+										
+										if(resp instanceof SellResponse) {
+											Item item = db.getItemByItemID(((SellResponse) resp).getSellItemId());
+											((SellResponse) resp).setSellItem(item);
 										}
 									}
 								}
