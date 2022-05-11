@@ -634,7 +634,7 @@ public class DerbyDatabase implements IDatabase {
 			});
 		}
 		
-		public boolean insertAccount(String username, String password) {
+		public boolean insertAccount(String username, String password, String salt) {
 			return executeTransaction(new Transaction<Boolean>() {
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {
@@ -643,10 +643,11 @@ public class DerbyDatabase implements IDatabase {
 					
 					try {
 						account = conn.prepareStatement(
-								"insert into accounts (username, password) values (?,?)");
+								"insert into accounts (username, password, salt) values (?,?,?)");
 						
 						account.setString(1, username);
 						account.setString(2, password);
+						account.setString(3, salt);
 						
 						account.executeUpdate();
 						
@@ -663,7 +664,7 @@ public class DerbyDatabase implements IDatabase {
 			});
 		}
 		
-		public String selectAccountFromUsername(String username) {
+		public String selectPasswordFromUsername(String username) {
 			return executeTransaction(new Transaction<String>() {
 				@Override
 				public String execute(Connection conn) throws SQLException {
@@ -684,8 +685,6 @@ public class DerbyDatabase implements IDatabase {
 						}
 						
 						return password;
-						
-						
 					} 
 						
 						finally {
@@ -697,6 +696,43 @@ public class DerbyDatabase implements IDatabase {
 				}
 			});
 		}
+		
+		public String selectSaltFromUsername(String username) {
+			return executeTransaction(new Transaction<String>() {
+				@Override
+				public String execute(Connection conn) throws SQLException {
+					PreparedStatement account = null;
+					ResultSet pass = null;
+					String salt = null;
+					
+					try {
+						account = conn.prepareStatement(
+								"select accounts.salt from accounts where accounts.username = ?");
+						
+						account.setString(1, username);
+						
+						pass = account.executeQuery();
+						
+						if(pass.next()) {
+						salt = pass.getString(1);
+						}
+						
+						return salt;
+						
+						
+					} 
+						
+						finally {
+						//DBUtil.closeQuietly(resultSet);
+						//DBUtil.closeQuietly(stmt);
+							DBUtil.closeQuietly(account);
+							DBUtil.closeQuietly(pass);
+					}
+					
+				}
+			});
+		}
+		
 		
 		
 		
@@ -806,9 +842,8 @@ public class DerbyDatabase implements IDatabase {
 					
 					accounts = conn.prepareStatement(
 							"create table accounts ("
-							+ "playerID integer primary key generated always as identity (start with 1, increment by 1),"
-							+ "username varchar(30), password varchar(30))"
-							
+							+ "accountID integer primary key generated always as identity (start with 0, increment by 1),"
+							+ "username varchar(32), password varchar(128), salt varchar(32))"						
 							);
 					accounts.executeUpdate();
 							
@@ -1168,7 +1203,7 @@ public class DerbyDatabase implements IDatabase {
 						insertRoomConnections.executeBatch();
 						
 						System.out.println("Execute insertAccount");
-						insertAccount = conn.prepareStatement("insert into accounts (username, password) values('admin','password')");
+						insertAccount = conn.prepareStatement("insert into accounts (username, password, salt) values('admin','e9795645e75d58ff42d162afda7e230a84dfd4d359088a748f2448046066727f737cc9269cb692a561e1772fafaf2ea12bcae7991be1154a5deef2f146a4fb53', '3a48442caaed5f0db7f9ea530417969d')");
 						insertAccount.executeUpdate();
 						
 						int index;

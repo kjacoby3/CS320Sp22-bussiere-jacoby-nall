@@ -155,8 +155,14 @@
             grid-row:10;
             grid-column: 1/-1;
         }
+
         #failureMessage{
             color:red;
+            font-size:125%;
+        }
+
+        #failureCreateMessage{
+            color: #ff0000;
             font-size:125%;
         }
         
@@ -224,6 +230,7 @@
               <button type="submit" style="color: black">CreateAccount</button>
 
               <div id="resultID"></div>
+              <div id="failureCreateMessage"></div>
             </div>
         
             <div class="container" style="background-color:#f1f1f1">
@@ -263,21 +270,28 @@
 
                 $("#createAccountID").on("submit",function(e){
                     e.preventDefault();
-                    $.post(this.action, {username: $("#createUsername").val(), password: $("#createPassword").val(), confirmPassword: $("#confirmPassword").val()},
-                    function(data){
-                        //$("#resultID").html("Payment Successful");
-                        alert(data);
-                        if(data === "match"){
-                            $("#failureCreateMessage").text("Username and Password do not Match");
-                        }
-                        else{
-                            //$("#cancelCreateButton").click();
+
+                    if($("#createPassword").val()== $("#confirmPassword").val()){
+                        $.post(this.action, {username: $("#createUsername").val(), password: $("#createPassword").val(), confirmPassword: $("#confirmPassword").val()},
+                        function(data){
+                            //$("#resultID").html("Payment Successful");
+                            alert(data);
+                            /*if(data === "match"){
+                                $("#failureCreateMessage").text("Username and Password do not Match");
+                            }
+                            else{*/
+                                //$("#cancelCreateButton").click();
                             username = data;
                             $('#id02').hide();
                             $('#serverResponse').text("You are currently logged in as: " + data);
+                            //}
                         }
+                        );
                     }
-                    );
+                    else{
+                        $("#failureCreateMessage").text("Passwords do not Match");
+                        $("#confirmPassword").css("borderColor", "#ff0000");
+                    }
                 });
 
                 $("#loadGameID").on("submit",function(e){
