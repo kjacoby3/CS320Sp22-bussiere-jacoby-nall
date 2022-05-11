@@ -11,7 +11,7 @@ public class PuzzleResponse extends ConversationResponse {
 	
 	public PuzzleResponse() {
 		resultNode = 0;
-		defaultResultNode = resultNode;
+		//defaultResultNode = resultNode;
 		completeResultNode = 1;
 		response = "I'm finished";
 		puzzleLock = null;
@@ -26,7 +26,8 @@ public class PuzzleResponse extends ConversationResponse {
 	}
 	
 	public int checkResultNode() {
-		resultNode = defaultResultNode;
+		defaultResultNode = resultNode;
+		//resultNode = defaultResultNode;
 		if(puzzleLock != null) {
 			puzzleLock.checkConditions();
 			if(puzzleLock.getComplete()) {

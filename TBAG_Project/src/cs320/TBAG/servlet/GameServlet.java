@@ -190,6 +190,7 @@ public class GameServlet extends HttpServlet{
 				//updateHistory(input, )
 				if(input.equalsIgnoreCase("exit")) {
 					conversation.setEnded(true);
+					updateHistory(input, "The conversation is over.");
 				} else {
 					Boolean validChoice = false;
 					System.out.println("ResponseList.size()" + conversation.getSelectedNode().getResponseList().size());
@@ -480,7 +481,12 @@ public class GameServlet extends HttpServlet{
 						req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
 					} else if(map.getRoom(player.getRoomId()).getNPCsInRoom().size() > 1) {
 						//Return message asking for clarification of who should be attacked
+						
 						updateHistory(input, "Please specify who you want to attack");
+						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+					} else if(map.getRoom(player.getRoomId()).getNPCsInRoom().size() <= 0) {
+						updateHistory(input, "There is no one here to attack.");
+						req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 					}
 				} else {
 					String[] splitStr = input.split(" ", 2);
