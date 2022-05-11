@@ -803,6 +803,16 @@ public class GameServlet extends HttpServlet{
 				System.out.println("Servlet MaxHP: " + player.getActorStats().getMaxHP());
 				System.out.println("Servlet CurHP: " + player.getActorStats().getCurHP());
 				req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
+			} else if (input.startsWith("teleport")) {
+				if(input.equalsIgnoreCase("teleport")) {
+					updateHistory(input, "PLease specify roomID");
+				} else {
+					String[] strList = input.split(" ", 2);
+					String str = strList[1];
+					int roomID = Integer.parseInt(str);
+					
+					player.move(roomID);
+				}
 			}
 			else {
 				//String error = "unsupported command";
