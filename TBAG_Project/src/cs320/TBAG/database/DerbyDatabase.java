@@ -1661,7 +1661,7 @@ public class DerbyDatabase implements IDatabase {
 						insertPlayer.executeBatch();
 						
 						insertAccountPlayers = conn.prepareStatement("insert into accountPlayers (accountID, playerID)"
-								+ "values (0,0)");
+								+ "values (0,1)");
 						insertAccountPlayers.executeUpdate();
 					} finally {
 						DBUtil.closeQuietly(insertPlayer);
