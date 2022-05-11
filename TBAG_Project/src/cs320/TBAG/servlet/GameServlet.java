@@ -751,8 +751,10 @@ public class GameServlet extends HttpServlet{
 					if(obj.getActivationKeyword().equalsIgnoreCase("open")) {
 						Obj = obj;
 						count++;
+						System.out.println("Count++: " + count + " " + Obj.getName());
 					}
 				}
+				System.out.println("Count: " + count);
 				if(count == 1) {
 					updateHistory(player.activateObj(activation, Obj));
 					objActivated = true;
@@ -835,7 +837,7 @@ public class GameServlet extends HttpServlet{
 					String useItem = splitStr[1];
 					for(Consumable item : player.getInventory().getConsumables().values()) {
 						if(item.getName().equalsIgnoreCase(useItem)) {
-							updateHistory(player.use(item));
+							updateHistory(input, player.use(item));
 							System.out.println(player.getActorStats().getMaxHP());
 							System.out.println(player.getActorStats().getCurHP());
 							break;
@@ -843,7 +845,7 @@ public class GameServlet extends HttpServlet{
 					}
 					for(Treasure item : player.getInventory().getTreasures().values()) {
 						if(item.getName().equalsIgnoreCase(useItem)) {
-							updateHistory(player.use(item));
+							updateHistory(input, player.use(item));
 							break;
 						}
 					}
