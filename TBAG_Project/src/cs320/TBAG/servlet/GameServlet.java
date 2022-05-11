@@ -431,6 +431,7 @@ public class GameServlet extends HttpServlet{
 						req.setAttribute("playerMaxEXP", combatMod.getActor1().getActorStats().getMaxExp());
 						
 						updateHistory(input, "Attacking " + enemy.getName());
+						req.getRequestDispatcher("/_view/game.jsp").forward(req, resp);
 					} else if(map.getRoom(player.getRoomId()).getNPCsInRoom().size() > 1) {
 						//Return message asking for clarification of who should be attacked
 						updateHistory(input, "Please specify who you want to attack");
@@ -474,6 +475,7 @@ public class GameServlet extends HttpServlet{
 							req.setAttribute("playerMaxEXP", combatMod.getActor1().getActorStats().getMaxExp());
 							
 							updateHistory(input, "Attacking " + enemy.getName());
+							req.getRequestDispatcher("/_view/game.jsp").forward(req, resp);
 						} else if(count == 0) {
 							updateHistory(input, "There is no npc of " + enemy.getName());
 						} else if(count > 1) {
@@ -482,7 +484,7 @@ public class GameServlet extends HttpServlet{
 					}
 					
 				}
-				req.getRequestDispatcher("/_view/combat.jsp").forward(req, resp);
+				req.getRequestDispatcher("/_view/game.jsp").forward(req, resp);
 			} else if(input.equalsIgnoreCase("level up") || input.equalsIgnoreCase("levelup") ||
 					input.equalsIgnoreCase("lvl up")) {
 				LevelUp levelUpModel = new LevelUp(player);
