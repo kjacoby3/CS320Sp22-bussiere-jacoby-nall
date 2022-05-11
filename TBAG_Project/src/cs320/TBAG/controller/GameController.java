@@ -32,22 +32,49 @@ public class GameController {
 	private InventoryController invCreator;
 	private Map map;
 	private Player player;
-	IDatabase db = new DerbyDatabase();
+	DerbyDatabase db = new DerbyDatabase();
 	
 	public GameController() {
 		invCreator = new InventoryController();
 		InitDatabase.init(1);
-		db = DatabaseProvider.getInstance();
+		db = new DerbyDatabase();
 	}
 	
-	public void startGame(int playerID, int GameID	) {
+	public void loadGame(String playerName, int playerID) {
 		MapController mapController = new MapController();
-		map = mapController.createMap();
+		map=mapController.createMap();
 		model.setMap(map);
 		createPlayers(playerID);
+		model.getPlayer().setName(playerName);
 		map.setPrevRoomID(player.getPrevRoomId());
-		//for(room : )
 		createNPCs();
+		player.setPlayerId(playerID);
+	}
+	
+	public void createNewGame(String playerName, int playerID) {
+		MapController mapController = new MapController();
+		map=mapController.createMap();
+		model.setMap(map);
+		createPlayers(playerID);
+		model.getPlayer().setName(playerName);
+		map.setPrevRoomID(player.getPrevRoomId());
+		createNPCs();
+		player.setPlayerId(playerID);
+		
+	}
+	
+	public void saveGame() {
+		//Player player = model.getPlayer();
+		//System.out.println("roomID" + player.getRoomId());
+		//Player testPlayer = db.getPlayerByPlayerID(player.getPlayerId());
+		//System.out.println("preSave " + testPlayer.getRoomId());
+		List<Room> rooms = new ArrayList<Room>(model.getMap().getRooms().values());
+		db.updatePlayerInfo(player.getPlayerId(), player.getName(), player.getRoomId(), player.getStatsId(), player.getCurrency(), player.getPrevRoomId(), player.getActorStats().getCurLvl());
+		db.updateInventories(player, model.getNPCs(), rooms);
+		db.updateInteractables(rooms);
+		//db.updateActorStats(player, model.getNPCs());		
+		//testPlayer = db.getPlayerByPlayerID(player.getPlayerId());
+		//System.out.println("postSave " + testPlayer.getRoomId());
 	}
 	
 	

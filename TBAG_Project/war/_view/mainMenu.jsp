@@ -240,6 +240,27 @@
             </form>
         </div>
 
+        <div id="id03" class="modal">
+            
+            <form action="${pageContext.servletContext.contextPath}/game" method="get" id="createGameID">
+            <div class="container">
+              <label for="playerName"><b>Choose a name for your Character</b></label>
+              <input type="text" id="playerName" placeholder="Enter Character Name" name="playerName" value="${playerName}" required>
+                
+                
+              <button type="submit" style="color: black">Create New Game</button>
+
+              <div id="resultID"></div>
+              <div id="failureCreateMessage"></div>
+            </div>
+        
+            <div class="container" style="background-color:#f1f1f1">
+              <button type="button" onclick="document.getElementById('id02').style.display='none'" id="cancelCreateButton" class="cancelButton">Cancel</button>
+              <!--<span class="psw">Forgot <a href="#">password?</a></span>-->
+            </div>
+            </form>
+        </div>
+
 
 
 

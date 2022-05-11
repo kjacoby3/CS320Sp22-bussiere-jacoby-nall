@@ -71,6 +71,7 @@ public class CreateAccountAjaxServlet extends HttpServlet{
 			db.insertAccount(req.getParameter("username"), passwordHashHex, saltHex);
 			resp.setContentType("text/plain");
 			session.setAttribute("playerID", 1);
+			session.setAttribute("playerName", req.getParameter("username"));
 			resp.getWriter().write(req.getParameter("username"));
 			resp.getWriter().close();
 		}

@@ -33,6 +33,10 @@ public class Game {
 		this.map=map;
 	}
 	
+	public ArrayList<NPC> getNPCs() {
+		return npcList;
+	}
+	
 	public String getUsername() {
 		return username;
 	}
