@@ -52,25 +52,31 @@ public class GameServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		
 		System.out.println("doGet");
 		session = req.getSession();
+		System.out.println("Player Name" + session.getAttribute("playerName"));
 		System.out.println(session.getAttribute("playerID"));
-		if(session.getAttribute("playerID")==null) {
-			playerID = 1;
-		}
-		else {
-			playerID = (int) session.getAttribute("playerID");
-		}
-		playerID=1;
-		gameID = 1;
+		String playerName = (String) session.getAttribute("playerName");
 		controller = new GameController();
 		model = new Game();
 		controller.setModel(model);
-		controller.startGame(playerID, gameID);
 		
-		//player = new Player();
-		//gameID = 1;
-		//map = model.getMap();
+		if(playerName==null) {
+			playerName = "Admin";
+			session.setAttribute("playerName", playerName);
+			playerID = 0;
+			session.setAttribute("playerID", playerID);
+			controller.createNewGame("Admin", playerID);
+			
+		}
+		else {
+			playerID = 1;
+			session.setAttribute("playerID", playerID);
+			controller.loadGame(playerName, playerID);
+	
+		}
+		
 		player = model.getPlayer();
 		map = model.getMap();
 		
@@ -106,6 +112,7 @@ public class GameServlet extends HttpServlet{
 				//int gameID = 1;
 		//GameController controller = new GameController();
 		session = req.getSession();
+		System.out.println("playerName " + session.getAttribute("playerName"));
 		
 		/*if(session.getAttribute("player")== null) {
 			System.out.println("null");
@@ -292,6 +299,12 @@ public class GameServlet extends HttpServlet{
 				
 				//resp.sendRedirect("/_view/inventory.jsp");
 				resp.sendRedirect("/TBAG/inventory");
+			}
+			else if(input.equalsIgnoreCase("save")) {
+				model.setPlayer((Player)session.getAttribute("player"));
+				controller.saveGame();
+				updateHistory(input, "game Saved Successfully");
+				req.getRequestDispatcher("/_view/Game.jsp").forward(req,resp);
 			}
 			
 			else if(input.startsWith("pickup")) {

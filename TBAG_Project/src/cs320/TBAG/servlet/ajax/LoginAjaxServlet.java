@@ -50,6 +50,7 @@ public class LoginAjaxServlet extends HttpServlet{
 			//req.getRequestDispatcher("/_view/Game.jsp").forward(req, resp);
 			//resp.sendRedirect("/TBAG/game");
 			session.setAttribute("playerID", 1);
+			session.setAttribute("playerName", username);
 			resp.setContentType("text/plain");
 			resp.getWriter().write(username);
 			resp.getWriter().close();
