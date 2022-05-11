@@ -15,7 +15,7 @@
 14|Navigation|The ship's Navigation|The ship's Navigation Room.  Clarx and Larris are focusing on their consoles|1|false|1|null
 15|Armory|The ship's Armory|The ship's Armory.  There are plenty of weapons in here|1|false|1|null
 16|Hallway G|The hallway outside of the Bridge.  The hallway leads to the Drop Pods or Navigation/Armory|The hallway comes to a T-Intersection.  To the North is the ship's Bridge.  To the West are Navigation and the Armory.  To the South are the Drop Pods|1|false|1|null
-17|Bridge|The ship's Bridge|You enter the ship's Bridge.   DeRock and Zandr are lying slaughtered on the floor.  You see an alien figure snap the neck of the Captain and solemnly lay him on the ground. He closes his eyes, whispers something, and looks to you. There is a terminal that is displaying the security code to the escape pods as 2603|1|false|1|null
+17|Bridge|The ship's Bridge. There is a computer terminal illuminating the grisly scene|You enter the ship's Bridge.   DeRock and Zandr are lying slaughtered on the floor.  You see an alien figure snap the neck of the Captain and solemnly lay him on the ground. He closes his eyes, whispers something, and looks to you. There is a computer terminal illuminating the grisly scene|1|false|1|null
 18|Hallway H|The hallway outside the Drop Pods.  The hallway also leads back toward the bridge|The hallway continues on toward the Drop Pods|1|false|1|null
 19|Drop Pods|The ship's Drop Pods. Is it time to escape?|The ship's Drop Pods. It needs a security code to activate|1|false|1|null
 20|Drop Pods|The ship's Drop Pods. Is it time to escape?|The ship's Drop Pods. Is it time to escape?|1|false|1|null
