@@ -41,7 +41,7 @@ public class GameController {
 		createPlayers(playerID);
 		map.setPrevRoomID(player.getPrevRoomId());
 		//for(room : )
-		//createNPCs();
+		createNPCs();
 	}
 	
 	
@@ -74,8 +74,8 @@ public class GameController {
 					player.equipEquipment(equipped);
 				}
 			}
-			
-		player.setLocation(db.getRoomByID(player.getRoomId()));	
+		player.setLocation(map.getRoom(player.getRoomId()));	
+		//player.setLocation(db.getRoomByID(player.getRoomId()));	
 			//Add player to game list
 		model.setPlayer(player);
 		//}
@@ -103,11 +103,20 @@ public class GameController {
 				}
 			}
 			
-			ConversationTree convoTree = db.constructConversationTreeByNPCID(npc.getNPCId());
-			npc.setConversationTree(convoTree);
-			
-			npc.setLocation(db.getRoomByID(npc.getRoomId()));
+			//ConversationTree convoTree = db.constructConversationTreeByNPCID(npc.getNPCId());
+			System.out.println((db.constructConversationTreeByNPCID(npc.getNPCId()).getConversationTreeMap()));
+			npc.setConversationTree(db.constructConversationTreeByNPCID(npc.getNPCId()));
+			npc.setLocation(map.getRoom(npc.getRoomId()));
+			//npc.setLocation(db.getRoomByID(npc.getRoomId()));
 			npc.getLocation().addNPCInRoom(npc);
+//			System.out.println("Database roomID: " + (db.getRoomByID(npc.getRoomId()).getRoomID()));
+//			System.out.println("NPC roomID: " + npc.getRoomId());
+//			System.out.println("Location roomID: " + npc.getLocation().getRoomID());
+			System.out.println("NPC name: " + npc.getName());
+			System.out.println("NPC ID: " + npc.getNPCId());
+//			System.out.println("NPC loaded into room: " + npc.getLocation().getRoomID() + " " + npc.getLocation().getNPCsInRoom());
+			System.out.println("NPC convoTree: " + npc.getConversationTree());
+//			System.out.println("NPC node1: " + npc.getConversationTree().getNode(1));
 			//Add npc to game list
 			model.addNPC(npc);
 		}

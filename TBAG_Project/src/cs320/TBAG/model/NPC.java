@@ -22,7 +22,7 @@ public class NPC extends Actor implements ActionsInterface{
 		equipped = new Equipment(0,"Bare",0, 10, 10, 0,0,0,0,true);
 		aggression = 0;
 		currency = 0;
-		conversationTree = new ConversationTree();
+		//conversationTree = new ConversationTree();
 	}
 	
 	public NPC(String name, Room location, Inventory inventory,

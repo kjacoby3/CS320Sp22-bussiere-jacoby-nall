@@ -21,7 +21,11 @@ public class Conversation {
 		this.player = player;
 		this.npc = npc;
 		npcDialog = npc.getConversationTree();
-		selectedNode = npcDialog.getConversationTreeMap().get(1);
+		if(npcDialog != null) {
+			if(npcDialog.getConversationTreeMap() != null) {
+				selectedNode = npcDialog.getConversationTreeMap().get(1);
+			}
+		}
 		displayList = displaySelectedNodeMSG();
 		ended = false;
 	}
@@ -60,12 +64,16 @@ public class Conversation {
 	
 	public ArrayList<String> displaySelectedNodeMSG() {
 		ArrayList<String> stringList = new ArrayList<String>();
-		selectedNode.checkResponses();
-		System.out.println(selectedNode.getStatement());
-		stringList.add(selectedNode.getStatement());
-		for(int i = 0; i < selectedNode.getResponseList().size(); i++) {
-			System.out.println("" + (i + 1) + "| " + selectedNode.getResponseList().get(i).getResponseStr());
-			stringList.add("" + (i + 1) + "| " + selectedNode.getResponseList().get(i).getResponseStr());
+		if(selectedNode == null) {
+			stringList.add("Sorry, no conversation here!");
+		} else {
+			selectedNode.checkResponses();
+			System.out.println(selectedNode.getStatement());
+			stringList.add(selectedNode.getStatement());
+			for(int i = 0; i < selectedNode.getResponseList().size(); i++) {
+				System.out.println("" + (i + 1) + "| " + selectedNode.getResponseList().get(i).getResponseStr());
+				stringList.add("" + (i + 1) + "| " + selectedNode.getResponseList().get(i).getResponseStr());
+			}
 		}
 		
 //		for(int i : selectedNode.getResponseMap().keySet()) {
@@ -106,13 +114,14 @@ public class Conversation {
 		}
 		
 		if(selectedResponse instanceof EndResponse) {
+			System.out.println("EndResponse Chosen");
 			ended = true;
 		}
 		
 		selectNode(selectedResponse.getResultNode());
 		System.out.println("      " + responseNum);
 		displayList = displaySelectedNodeMSG();
-		displaySelectedNodeMSG();
+		//displaySelectedNodeMSG();
 		//} else {
 		//	selectNode(selectedResponse.getResultNode());
 		//	displaySelectedNodeMSG();

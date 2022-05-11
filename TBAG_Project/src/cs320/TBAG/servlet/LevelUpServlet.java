@@ -18,6 +18,7 @@ public class LevelUpServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
 	LevelUp levelUpModel;
+	Player player;
 	Game model;
 	HttpSession session;
 	@Override
@@ -44,6 +45,7 @@ public class LevelUpServlet extends HttpServlet{
 		
 		levelUpModel = (LevelUp) session.getAttribute("levelUpModel");
 		model = (Game) session.getAttribute("game");
+		player = (Player) session.getAttribute("player");
 		
 		if (req.getParameter("incHP") != null) {
 			String stat = "health";
@@ -65,7 +67,7 @@ public class LevelUpServlet extends HttpServlet{
 		
 		req.setAttribute("result", result);
 		
-		Player player = model.getPlayer();
+		//Player player = model.getPlayer();
 		
 		req.setAttribute("player", player.getName());
 		

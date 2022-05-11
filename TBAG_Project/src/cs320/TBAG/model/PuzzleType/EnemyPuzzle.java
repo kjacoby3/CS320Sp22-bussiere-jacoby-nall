@@ -19,10 +19,14 @@ public class EnemyPuzzle extends Puzzle{
 	@Override
 	public String checkConditions() {
 		String result;
-		if(npc.isDead()) {
-			complete = true;
+		if(npc != null) {
+			if(npc.isDead()) {
+				complete = true;
+			} else {
+				complete = false;
+			}
 		} else {
-			complete = false;
+			complete = true;
 		}
 		
 		
