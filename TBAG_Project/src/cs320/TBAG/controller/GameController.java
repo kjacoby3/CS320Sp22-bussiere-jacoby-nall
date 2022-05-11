@@ -10,12 +10,18 @@ import cs320.TBAG.model.Actor;
 import cs320.TBAG.model.ActorStats;
 import cs320.TBAG.model.Equipment;
 import cs320.TBAG.model.Player;
+import cs320.TBAG.model.Room;
 import cs320.TBAG.model.NPC;
 import cs320.TBAG.model.Map;
 import cs320.TBAG.model.Inventory;
 import cs320.TBAG.model.Save;
 import cs320.TBAG.model.Weapon;
+import cs320.TBAG.model.Convo.ConversationNode;
+import cs320.TBAG.model.Convo.ConversationResponse;
 import cs320.TBAG.model.Convo.ConversationTree;
+import cs320.TBAG.model.Convo.PuzzleResponse;
+import cs320.TBAG.model.InteractableObj.Interactable;
+import cs320.TBAG.model.PuzzleType.EnemyPuzzle;
 import cs320.TBAG.database.DatabaseProvider;
 import cs320.TBAG.database.DerbyDatabase;
 import cs320.TBAG.database.IDatabase;
@@ -119,6 +125,43 @@ public class GameController {
 //			System.out.println("NPC node1: " + npc.getConversationTree().getNode(1));
 			//Add npc to game list
 			model.addNPC(npc);
+			
+			for(Room room : map.getRooms().values()) {
+				if(room.getNPCsInRoom().size() > 0) {
+					for(NPC n : room.getNPCsInRoom()) {
+						if(n.getConversationTree() != null) {
+							if(n.getConversationTree().getConversationTreeMap() != null) {
+								for(ConversationNode node : n.getConversationTree().getConversationTreeMap().values()) {
+									for(ConversationResponse resp : node.getResponseList()) {
+										if(resp instanceof PuzzleResponse) {
+											if(((PuzzleResponse)resp).getPuzzle() instanceof EnemyPuzzle) {
+												PuzzleResponse puzzleResp = (PuzzleResponse)resp;
+												EnemyPuzzle enemyPuzz = (EnemyPuzzle) puzzleResp.getPuzzle();
+												if(enemyPuzz.getNPCId() == npc.getNPCId()) {
+													enemyPuzz.setNPC(npc);
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				
+				if(room.getRoomInteractables().size() > 0) {
+					for(Interactable obj : room.getRoomInteractables()) {
+						if(obj.getPuzzle() != null) {
+							if(obj.getPuzzle() instanceof EnemyPuzzle) {
+								if(((EnemyPuzzle) obj.getPuzzle()).getNPCId() == npc.getNPCId()) {
+									System.out.println("NPC EnemyPuzzle Found");
+									((EnemyPuzzle) obj.getPuzzle()).setNPC(npc);
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 	

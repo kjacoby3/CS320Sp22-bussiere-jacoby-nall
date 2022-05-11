@@ -104,6 +104,7 @@ public class Conversation {
 		}
 		
 		if(selectedResponse instanceof PuzzleResponse) {
+			System.out.println("PuzzleResponse selected");
 			((PuzzleResponse) selectedResponse).checkResultNode();
 		}
 		
